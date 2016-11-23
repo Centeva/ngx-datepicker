@@ -51,26 +51,6 @@ module.exports = function (grunt) {
 			}
 		},
 		copy: {
-			environmentDev: {
-				files: [
-					{
-						expand: true, cwd: "", src: "config/environment.dev.ts", dest: 'app/',
-						rename: function (dest, src) {
-							return dest + "environment.ts";
-						}
-					}
-				]
-			},
-			environmentDist: {
-				files: [
-					{
-						expand: true, cwd: "", src: "config/environment.prod.ts", dest: 'app/',
-						rename: function (dest, src) {
-							return dest + "environment.ts";
-						}
-					}
-				]
-			},
 			htmlDist: {
 				files: [
 					{ expand: true, cwd: '', src: ['app/**/*.html'], dest: 'dist/' },
