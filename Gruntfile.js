@@ -2,7 +2,7 @@
 module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
     var vendor = grunt.file.readJSON("demo/vendor.json");
-
+    var webpackConfig = require("./demo/webpack.config.js")
     // Project configuration.
     grunt.initConfig({
         ts: {
@@ -55,22 +55,20 @@ module.exports = function (grunt) {
             }
         },
         webpack: {
-            default: require("webpack.config.js")
+            options: webpackConfig,
+            "build-dev": {
+                devtool: "sourcemap"
+            }
         },
         "webpack-dev-server": {
             options: {
-                webpack: {
-                    entry: './demo/main.js',
-                    output: {
-                        filename: 'bundle.js',
-                        path: '/demo/temp',
-                        publicPath: '/',
-                    }
-                },
+                webpack: webpackConfig,
+                publicPath: "/"
             },
             default: {
+                keepAlive: true,
                 webpack: {
-                    devtool: "eval"
+                    devtool: "eval",
                 },
                 inline: true
             }
@@ -96,10 +94,6 @@ module.exports = function (grunt) {
             html: {
                 files: ['demo/app/**/*.html', 'demo/index.html'],
                 tasks: []
-            },
-            ts: {
-                files: ['demo/app/**/*.ts', 'demo/main.ts', 'src/**/*ts'],
-                tasks: ['ts']
             },
             less: {
                 files: ['demo/app/**/*.less', 'demo/main.less', 'demo/style/*.less'],
@@ -129,7 +123,7 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('build', ['ts', 'less:dev'])
+    grunt.registerTask('build', ['less:dev'])
     grunt.registerTask('w', ['build', 'webpack-dev-server:default', 'watch']);
     grunt.registerTask('serve', ['connect', 'w']);
 };
