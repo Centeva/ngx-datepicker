@@ -21,6 +21,10 @@ module.exports = function (grunt) {
 			default: {
 				options: { fast: "always" },
 				tsconfig: 'tsconfig.json'
+			},
+			calendar: {
+				options: { fast: "always" },
+				tsconfig: '../tsconfig.json'
 			}
 		},
 		copy: {
@@ -222,7 +226,7 @@ module.exports = function (grunt) {
 				tasks: []
 			},
 			ts: {
-				files: ['app/**/*.ts', 'system-config.ts', 'main.ts'],
+				files: ['app/**/*.ts', 'system-config.ts', 'main.ts', '../src/**/*.ts'],
 				tasks: ['ts']
 			},
 			less: {

@@ -10,7 +10,6 @@
 		"noImplicitAny": false
 	},
 	"exclude": [
-		"node_modules",
-		"Maintenance/node_modules"
+		"node_modules"
 	]
 }

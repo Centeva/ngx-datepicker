@@ -41,6 +41,7 @@
 			},
 			// our stuff
 			'app': { main: 'index.js' },
+			'app/component/home': { main: 'index.js' },
 		}
 	});
 })(this);

@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 
-//import { SelectComponent } from './select/select';
+import { DatePickerComponent } from './datepicker/datepicker.component';
 
 @NgModule({
-//  exports: [SelectComponent, HighlightPipe, OffClickDirective]
+  exports: [DatePickerComponent]
 })
 export class DatePickerModule {
 }

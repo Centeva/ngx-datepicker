@@ -1,3 +1,4 @@
+import { HomeComponent } from './component/home/';
 import { NgModule } from '@angular/core';
 import { LocationStrategy, HashLocationStrategy, PathLocationStrategy, PlatformLocation } from "@angular/common";
 import { BrowserModule } from '@angular/platform-browser';
@@ -11,7 +12,8 @@ import { appRouterProviders } from './app.routes';
 
 @NgModule({
 	declarations: [
-		AppComponent
+		AppComponent,
+		HomeComponent,
 	],
 	imports: [
 		appRouterProviders,

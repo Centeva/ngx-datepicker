@@ -9,17 +9,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var datepicker_component_1 = require('./datepicker/datepicker.component');
-var DatePickerModule = (function () {
-    function DatePickerModule() {
+var AppComponent = (function () {
+    function AppComponent() {
     }
-    DatePickerModule = __decorate([
-        core_1.NgModule({
-            exports: [datepicker_component_1.DatePickerComponent]
+    AppComponent = __decorate([
+        core_1.Component({
+            moduleId: module.id,
+            selector: 'app-root',
+            templateUrl: 'app.component.html',
+            styleUrls: ['app.component.css'],
         }), 
         __metadata('design:paramtypes', [])
-    ], DatePickerModule);
-    return DatePickerModule;
+    ], AppComponent);
+    return AppComponent;
 }());
-exports.DatePickerModule = DatePickerModule;
-//# sourceMappingURL=datepicker.module.js.map
+exports.AppComponent = AppComponent;
+//# sourceMappingURL=app.component.js.map
