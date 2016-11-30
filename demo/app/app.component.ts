@@ -1,9 +1,10 @@
 import { Component, ViewContainerRef } from '@angular/core';
 
 @Component({
+	moduleId: module.id,
 	selector: 'app-root',
-	template: require('./app.component.html'),
-	styles: [require('./app.component.css')],
+	templateUrl: '/app.component.html',
+	styleUrls: ['/app.component.css'],
 })
 export class AppComponent {
 	constructor() {

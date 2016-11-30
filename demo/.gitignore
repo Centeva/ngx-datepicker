@@ -1,3 +1,5 @@
-/bower_components
-/node_modules
-/temp
+app\**\*.js
+app\**\*.css
+bower_components
+node_modules
+temp

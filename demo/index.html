@@ -12,7 +12,15 @@
 </head>
 <body>
     <app-root>Loading...</app-root>
-    <script id="app_scripts" src="http://localhost:8080/bundle.js"></script>
+
+    <script id="vendor_scripts" src="temp\build\vendor.js"></script>
+    <script id="app_scripts" src=""></script>
+
+    <script>
+      System.import('systemjs.config.js').then(function () {
+        System.import('main.js');
+      }).catch(console.error.bind(console));
+    </script>
 </body>
 </html>
 

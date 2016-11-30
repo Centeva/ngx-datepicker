@@ -1,7 +1,4 @@
 "use strict";
-require('zone.js/dist/zone');
-require('reflect-metadata');
-require('rxjs');
 var platform_browser_dynamic_1 = require('@angular/platform-browser-dynamic');
 var app_module_1 = require('./app/app.module');
 var core_1 = require('@angular/core');
