@@ -16,6 +16,7 @@ var app_component_1 = require('./app.component');
 var forms_1 = require('@angular/forms');
 var http_1 = require('@angular/http');
 var app_routes_1 = require('./app.routes');
+var datepicker_module_1 = require('../../dist/datepicker.module');
 var AppModule = (function () {
     function AppModule() {
     }
@@ -23,13 +24,14 @@ var AppModule = (function () {
         core_1.NgModule({
             declarations: [
                 app_component_1.AppComponent,
-                _1.HomeComponent,
+                _1.HomeComponent
             ],
             imports: [
                 app_routes_1.appRouterProviders,
                 platform_browser_1.BrowserModule,
                 forms_1.FormsModule,
                 http_1.HttpModule,
+                datepicker_module_1.DatePickerModule
             ],
             bootstrap: [
                 app_component_1.AppComponent

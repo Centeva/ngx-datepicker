@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 
 export let HomeRoutes: Routes = [
     {
-        path: '/home',
+        path: 'home',
         component: HomeComponent
     }
 ];

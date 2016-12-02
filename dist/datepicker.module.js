@@ -9,13 +9,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var common_1 = require('@angular/common');
+var forms_1 = require('@angular/forms');
 var datepicker_component_1 = require('./datepicker/datepicker.component');
 var DatePickerModule = (function () {
     function DatePickerModule() {
     }
     DatePickerModule = __decorate([
         core_1.NgModule({
-            exports: [datepicker_component_1.DatePickerComponent]
+            exports: [datepicker_component_1.DatePickerComponent],
+            declarations: [datepicker_component_1.DatePickerComponent],
+            imports: [common_1.CommonModule, forms_1.FormsModule]
         }), 
         __metadata('design:paramtypes', [])
     ], DatePickerModule);

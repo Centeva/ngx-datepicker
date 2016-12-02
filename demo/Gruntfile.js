@@ -53,6 +53,11 @@ module.exports = function (grunt) {
 					{ expand: true, cwd: '', src: ['app/**/*.html'], dest: 'dist/' },
 				]
 			},
+			htmlDist2: {
+				files: [
+					{ expand: true, cwd: '../src', src: ['**/*.html'], dest: '../dist/' },
+				]
+			},
 			imgDev: {
 				files: [
 					{ expand: true, cwd: 'src', src: ['img/**'], dest: 'temp/build/' }
@@ -129,6 +134,14 @@ module.exports = function (grunt) {
 						cwd: "app",
 						src: ["**/*.less", "!style/**/*.less"],
 						dest: 'app',
+						ext: '.css',
+						extDot: 'last'
+					},
+					{
+						expand: true,
+						cwd: "../src/",
+						src: ["**/*.less"],
+						dest: '../dist',
 						ext: '.css',
 						extDot: 'last'
 					}
@@ -225,12 +238,16 @@ module.exports = function (grunt) {
 				files: ['app/**/*.html', 'index.html'],
 				tasks: []
 			},
+			html2: {
+				files: ['../src/**/*.html'],
+				tasks: ['copy:htmlDist2']
+			},
 			ts: {
 				files: ['app/**/*.ts', 'system-config.ts', 'main.ts', '../src/**/*.ts'],
 				tasks: ['ts']
 			},
 			less: {
-				files: ['app/**/*.less', 'main.less', 'style/*.less'],
+				files: ['app/**/*.less', 'main.less', 'style/*.less', '../src/**/*.less'],
 				tasks: ['less:dev']
 			}
 		},
@@ -251,7 +268,7 @@ module.exports = function (grunt) {
 			default: {
 				options: {
 					port: 9001,
-					base: ''
+					base: '..'
 				}
 			}
 		}
@@ -262,6 +279,7 @@ module.exports = function (grunt) {
 		'ts',
 		'concat:vendorDev',
 		'less:dev',
+		'copy:htmlDist2',
 		'copy:imgDev',
 		'copy:ieshim']);
 	grunt.registerTask('rebuild', ['clean:preDev', 'build']);

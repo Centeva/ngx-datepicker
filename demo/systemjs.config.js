@@ -29,7 +29,10 @@
 
 			// testing libraries
 			'systemjs': 'node_modules/systemjs',
-			'traceur': 'node_modules/traceur/bin/traceur.js'
+			'traceur': 'node_modules/traceur/bin/traceur.js',
+
+			// datepicker
+			'datepicker': '../dist'
 		},
 		// packages tells the System loader how to load when no filename and/or no extension
 		packages: {
@@ -37,6 +40,9 @@
 				defaultExtension: 'js'
 			},
 			lodash: {
+				defaultExtension: 'js'
+			},
+			datepicker: {
 				defaultExtension: 'js'
 			},
 			// our stuff
