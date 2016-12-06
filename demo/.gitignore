@@ -1,5 +1,6 @@
 app\**\*.js
 app\**\*.css
+dist
 bower_components
 node_modules
 temp
