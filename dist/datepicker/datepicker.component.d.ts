@@ -1,4 +1,5 @@
 import { AfterViewInit, OnInit, OnDestroy, ElementRef, Renderer } from '@angular/core';
+import * as moment from 'moment';
 import { CalendarComponent } from './calendar.component';
 import { Picker } from './dualpicker.component';
 export declare enum Mode {
@@ -33,6 +34,6 @@ export declare class DatePickerComponent extends Picker implements AfterViewInit
     generateYearData(year: number): void;
     generateMonthData(): void;
     renderCalendar(): void;
-    dateClickListener: (date: number) => () => void;
-    setDate(date: number): void;
+    dateClickListener: (date: moment.Moment) => () => void;
+    setDate(date: moment.Moment): void;
 }

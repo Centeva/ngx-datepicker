@@ -3,11 +3,11 @@ import * as moment from 'moment';
 import { CalendarComponent } from './calendar.component';
 
 export enum Mode {
-    Calendar, Month, Year
+    Calendar, Month, Year, Hidden
 }
 
 export enum GlobalMode {
-    Visible, Hidden
+    To, From, Hidden
 }
 
 export enum Type {
@@ -23,7 +23,6 @@ export class Picker {
     public years: number[] = [];
     public mode: Mode = Mode.Calendar;
     public date: moment.Moment;
-    public dateString: string;
 
     constructor() {
         this.generateMonthData();
@@ -75,7 +74,7 @@ export class Picker {
     moduleId: module.id,
     selector: 'ct-dualpicker',
     templateUrl: 'dualpicker.component.html',
-    styleUrls: ['dualpicker.component.css'],
+    styleUrls: ['datepicker.component.css'],
     encapsulation: ViewEncapsulation.None
 })
 export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
@@ -88,11 +87,16 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
     public picker1 = new Picker();
     public picker2 = new Picker();
 
+    public dateTo: moment.Moment;
+    public dateFrom: moment.Moment;
+    public dateToString: string;
+    public dateFromString: string;
+
     @ViewChild('cal1', CalendarComponent) public cal1: CalendarComponent;
     @ViewChild('cal2', CalendarComponent) public cal2: CalendarComponent;
     @Input("type") private iType: string;
     public type: Type;
-    public globalMode: GlobalMode;
+    public globalMode: GlobalMode = GlobalMode.From;
 
     constructor(private myElement: ElementRef, private renderer: Renderer) {
         this.picker1.date = moment(new Date());
@@ -103,10 +107,17 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
     public changeGlobalMode(mode: GlobalMode) {
         this.globalMode = mode;
         switch (this.globalMode) {
-            case GlobalMode.Visible:
+            case GlobalMode.To:
+            case GlobalMode.From:
                 this.changeMode(Mode.Calendar, this.picker1);
                 this.changeMode(Mode.Calendar, this.picker2);
                 break;
+        }
+    }
+
+    public blur(event) {
+        if ((event.which || event.keyCode) == 9) {
+            this.changeGlobalMode(GlobalMode.Hidden);
         }
     }
 
@@ -124,7 +135,8 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
     public goPrev() {
         if (this.picker1.mode == Mode.Calendar && this.picker2.mode == Mode.Calendar) {
             this.picker1.date.month(this.picker1.date.month() - 1);
-            this.picker2.date.month(this.picker1.date.month() + 1);
+            this.picker2.date = moment(this.picker1.date)
+            this.picker2.date.add({ month: 1 });
             this.renderCalendar();
         } else {
             this.picker1.goPrev();
@@ -135,7 +147,8 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
     public goNext() {
         if (this.picker1.mode == Mode.Calendar && this.picker2.mode == Mode.Calendar) {
             this.picker1.date.month(this.picker1.date.month() + 1);
-            this.picker2.date.month(this.picker1.date.month() + 1);
+            this.picker2.date = moment(this.picker1.date)
+            this.picker2.date.add({ month: 1 });
             this.renderCalendar();
         } else {
             this.picker1.goNext();
@@ -189,19 +202,41 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
     }
 
     renderCalendar() {
-        this.cal1.renderCalendar(this.picker1, this.dateClickListener);
-        this.cal2.renderCalendar(this.picker2, this.dateClickListener);
+        this.cal1.renderCalendar(this.picker1, this.dateClickListener, this.dateTo, this.dateFrom);
+        this.cal2.renderCalendar(this.picker2, this.dateClickListener, this.dateTo, this.dateFrom);
     }
 
-    dateClickListener = (date: number, picker: Picker) => {
+    dateClickListener = (date: moment.Moment) => {
+        let d = moment(date);
         return () => {
-            this.setDate(date, picker);
+            this.setDate(d);
         }
     }
 
-    setDate(date: number, picker: Picker) {
-        picker.date.date(date);
+    setDate(date: moment.Moment) {
+        switch (this.globalMode) {
+            case GlobalMode.From:
+                this.dateFrom = date;
+                this.dateFromString = date.format("MM/DD/YYYY");
+                if (this.dateTo && this.dateFrom.isAfter(this.dateTo)) {
+                    this.dateTo = moment(this.dateFrom);
+                    this.dateTo.add({"day": 1});
+                    this.dateToString = this.dateTo.format("MM/DD/YYYY");                                        
+                }
+                this.changeGlobalMode(GlobalMode.To);
+                break;
+            case GlobalMode.To:
+                this.dateTo = date;
+                this.dateToString = date.format("MM/DD/YYYY");
+                if (this.dateFrom && this.dateTo.isBefore(this.dateFrom)) {
+                    this.dateFrom = moment(this.dateTo);
+                    this.dateFrom.subtract({"day": 1});
+                    this.dateFromString = this.dateFrom.format("MM/DD/YYYY");                    
+                }
+                this.changeGlobalMode(GlobalMode.Hidden);
+                break;
+        }
         this.renderCalendar();
-        picker.dateString = picker.date.format("MM/DD/YYYY");
     }
+    
 }

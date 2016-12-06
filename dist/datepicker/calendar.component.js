@@ -19,7 +19,7 @@ var CalendarComponent = (function () {
     };
     CalendarComponent.prototype.ngOnDestroy = function () {
     };
-    CalendarComponent.prototype.renderCalendar = function (picker, clickCallback) {
+    CalendarComponent.prototype.renderCalendar = function (picker, clickCallback, dateTo, dateFrom) {
         var d = moment(picker.date);
         d.date(1);
         this.renderer.selectRootElement(this.myElement.nativeElement);
@@ -47,10 +47,13 @@ var CalendarComponent = (function () {
             this.renderer.setElementAttribute(el, "ct-dp-cal-day", d.date().toString());
             this.renderer.setElementAttribute(el, "tabindex", "-1");
             this.renderer.setElementClass(el, "ct-dp-cal-day", true);
-            if (d.isSame(picker.date, "day")) {
+            if ((dateTo && d.isSame(dateTo, "day")) || (dateFrom && d.isSame(dateFrom, "day"))) {
                 this.renderer.setElementClass(el, "active", true);
             }
-            this.renderer.listen(el, "click", clickCallback(d.date(), picker));
+            if (dateFrom && dateTo && d.isBetween(dateFrom, dateTo)) {
+                this.renderer.setElementClass(el, "between", true);
+            }
+            this.renderer.listen(el, "click", clickCallback(d));
             d.date(d.date() + 1);
         }
     };

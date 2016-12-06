@@ -1,7 +1,21 @@
 <div class="ct-dp">
-    <input class="ct-dp-input" type="text" *ngIf="type == Type.Text" (focus)="changeGlobalMode(GlobalMode.Visible)" [ngModel]="picker1.dateString"
+    <input 
+        class="ct-dp-input" 
+        type="text" 
+        *ngIf="type == Type.Text" 
+        (focus)="changeGlobalMode(GlobalMode.From)"
+        (keydown)="blur($event)" 
+        [ngModel]="dateFromString"
+        [ngClass]="{'focus': globalMode == GlobalMode.From}"
     /><!--
- --><input class="ct-dp-input" type="text" *ngIf="type == Type.Text" (focus)="changeGlobalMode(GlobalMode.Visible)" [ngModel]="picker2.dateString"
+ --><input 
+        class="ct-dp-input" 
+        type="text" 
+        *ngIf="type == Type.Text" 
+        (focus)="changeGlobalMode(GlobalMode.To)"
+        (keydown)="blur($event)"          
+        [ngModel]="dateToString"
+        [ngClass]="{'focus': globalMode == GlobalMode.To}"        
     />
     <div class="ct-dp-shadow-box" (click)="changeGlobalMode(GlobalMode.Hidden)" *ngIf="globalMode != GlobalMode.Hidden">
     </div>

@@ -16,6 +16,10 @@
     position: relative;
     width: @full-width;
     z-index: @z-index + 1;
+
+    &.focus {
+        background-color: lightskyblue;
+    }
 }
 
 .ct-dp-shadow-box {
@@ -126,6 +130,10 @@
 .ct-dp-cal-day.active {
     background-color: lightblue;
 }
+.ct-dp-cal-day.between {
+    background-color: lightgray;
+}
+
 
 //Utilities
 .clearfix {

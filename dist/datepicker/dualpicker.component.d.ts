@@ -5,10 +5,12 @@ export declare enum Mode {
     Calendar = 0,
     Month = 1,
     Year = 2,
+    Hidden = 3,
 }
 export declare enum GlobalMode {
-    Visible = 0,
-    Hidden = 1,
+    To = 0,
+    From = 1,
+    Hidden = 2,
 }
 export declare enum Type {
     Text = 0,
@@ -21,7 +23,6 @@ export declare class Picker {
     years: number[];
     mode: Mode;
     date: moment.Moment;
-    dateString: string;
     constructor();
     generateMonthData(): void;
     generateYearData(year: number): void;
@@ -36,6 +37,10 @@ export declare class DualPickerComponent implements AfterViewInit, OnDestroy, On
     GlobalMode: typeof GlobalMode;
     picker1: Picker;
     picker2: Picker;
+    dateTo: moment.Moment;
+    dateFrom: moment.Moment;
+    dateToString: string;
+    dateFromString: string;
     cal1: CalendarComponent;
     cal2: CalendarComponent;
     private iType;
@@ -43,6 +48,7 @@ export declare class DualPickerComponent implements AfterViewInit, OnDestroy, On
     globalMode: GlobalMode;
     constructor(myElement: ElementRef, renderer: Renderer);
     changeGlobalMode(mode: GlobalMode): void;
+    blur(event: any): void;
     changeMode(mode: Mode, picker: Picker): void;
     goPrev(): void;
     goNext(): void;
@@ -52,6 +58,6 @@ export declare class DualPickerComponent implements AfterViewInit, OnDestroy, On
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
     renderCalendar(): void;
-    dateClickListener: (date: number, picker: Picker) => () => void;
-    setDate(date: number, picker: Picker): void;
+    dateClickListener: (date: moment.Moment) => () => void;
+    setDate(date: moment.Moment): void;
 }

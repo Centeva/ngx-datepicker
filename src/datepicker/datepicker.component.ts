@@ -124,17 +124,18 @@ export class DatePickerComponent extends Picker implements AfterViewInit, OnDest
   }
 
   renderCalendar() {
-    this.cal1.renderCalendar(this, this.dateClickListener);
+    this.cal1.renderCalendar(this, this.dateClickListener, this.date, this.date);
   }
 
-  dateClickListener = (date: number) => {
+  dateClickListener = (date: moment.Moment) => {
+    let d = moment(date);
     return () => {
-      this.setDate(date);
+      this.setDate(d);
     }
   }
 
-  setDate(date: number) {
-    this.date.date(date);
+  setDate(date: moment.Moment) {
+    this.date = date;
     this.renderCalendar();
     this.dateString = this.date.format("MM/DD/YYYY");
   }

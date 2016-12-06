@@ -41,8 +41,9 @@ var DatePickerComponent = (function (_super) {
         this.Mode = Mode;
         this.Type = Type;
         this.dateClickListener = function (date) {
+            var d = moment(date);
             return function () {
-                _this.setDate(date);
+                _this.setDate(d);
             };
         };
         this.date = moment(new Date());
@@ -123,10 +124,10 @@ var DatePickerComponent = (function (_super) {
         }
     };
     DatePickerComponent.prototype.renderCalendar = function () {
-        this.cal1.renderCalendar(this, this.dateClickListener);
+        this.cal1.renderCalendar(this, this.dateClickListener, this.date, this.date);
     };
     DatePickerComponent.prototype.setDate = function (date) {
-        this.date.date(date);
+        this.date = date;
         this.renderCalendar();
         this.dateString = this.date.format("MM/DD/YYYY");
     };

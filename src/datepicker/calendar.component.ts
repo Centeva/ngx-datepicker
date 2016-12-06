@@ -20,7 +20,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
     }
 
-    renderCalendar(picker: Picker, clickCallback: Function) {
+    renderCalendar(picker: Picker, clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment) {
         let d = moment(picker.date);
         d.date(1); //reset date.
 
@@ -57,10 +57,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
             this.renderer.setElementAttribute(el, "ct-dp-cal-day", d.date().toString());
             this.renderer.setElementAttribute(el, "tabindex", "-1");
             this.renderer.setElementClass(el, "ct-dp-cal-day", true);
-            if (d.isSame(picker.date, "day")) {
+            if ((dateTo && d.isSame(dateTo, "day")) || (dateFrom && d.isSame(dateFrom, "day"))) {
                 this.renderer.setElementClass(el, "active", true);
             }
-            this.renderer.listen(el, "click", clickCallback(d.date(), picker));
+            if (dateFrom && dateTo && d.isBetween(dateFrom, dateTo)) {
+                this.renderer.setElementClass(el, "between", true);                
+            }
+            this.renderer.listen(el, "click", clickCallback(d));
             d.date(d.date() + 1);
         }
     }
