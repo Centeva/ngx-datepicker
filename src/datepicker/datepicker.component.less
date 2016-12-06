@@ -13,7 +13,9 @@
 }
 
 .ct-dp-input {
+    position: relative;
     width: @full-width;
+    z-index: @z-index + 1;
 }
 
 .ct-dp-shadow-box {
@@ -27,10 +29,14 @@
 }
 
 .ct-dp-picker {
-    width: @full-width;
+    width: @full-width;    
+    &.ct-dp-dualpicker {
+        width: 2 * @full-width;
+    }
     border-left: 1px solid @gray;
     border-right: 1px solid @gray;
     border-bottom: 1px solid @gray;
+    box-sizing: content-box;
     position: absolute;
     z-index: @z-index + 1;
     background-color: white;
@@ -40,11 +46,10 @@
     border-bottom: 1px solid @gray;
 }
 
-
-
 .ct-dp-cal {
     padding: @padding;
     width: @full-width;
+    float: left;
     &:after {
         &:extend(.clearfix);
     }
@@ -64,6 +69,7 @@
 
 .ct-dp-months {
     width: @cal-width;
+    float: left;    
     &:after {
         &:extend(.clearfix);
     }
@@ -77,6 +83,7 @@
 
 .ct-dp-years {
     width: @cal-width;
+    float: left;    
     &:after {
         &:extend(.clearfix);
     }

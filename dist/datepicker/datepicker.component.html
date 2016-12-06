@@ -1,5 +1,5 @@
 <div class="ct-dp">
-    <input class="ct-dp-input" type="text" *ngIf="type === 'text'" (focus)="changeMode(Mode.Calendar)" [ngModel]="dateString" />
+    <input class="ct-dp-input" type="text" *ngIf="type == Type.Text" (focus)="changeMode(Mode.Calendar)" [ngModel]="dateString"/>
     <div class="ct-dp-shadow-box" (click)="changeMode(Mode.Hidden)" *ngIf="mode != Mode.Hidden">
     </div>
     <div class="ct-dp-picker" [ngClass]="{'hidden': mode == Mode.Hidden}">
@@ -9,14 +9,7 @@
             <button tabindex="-1" class="ct-dp-btn-year  ct-dp-btn" (click)="changeMode(Mode.Year)">{{date.format("YYYY")}}</button>
             <button tabindex="-1" class="ct-dp-btn-next  ct-dp-btn" (click)="goNext()" [disabled]="mode == Mode.Month">></button>
         </div>
-        <div class="ct-dp-cal" [ngClass]="{'hidden': mode != Mode.Calendar}">
-            <div class="ct-dp-cal-header">
-
-            </div>
-            <div class="ct-dp-cal-body">
-
-            </div>
-        </div>
+        <ct-calendar #cal1></ct-calendar>
         <div class="ct-dp-months" [ngClass]="{'hidden': mode != Mode.Month}">
             <template ngFor let-item [ngForOf]="months" [ngForTrackBy]="myTrackBy" let-i="index">
                 <button tabindex="-1" class="btn btn-default ct-dp-month" (click)="setMonth(i)">{{item}}</button>

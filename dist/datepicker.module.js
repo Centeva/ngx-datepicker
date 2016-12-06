@@ -12,13 +12,15 @@ var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
 var forms_1 = require('@angular/forms');
 var datepicker_component_1 = require('./datepicker/datepicker.component');
+var dualpicker_component_1 = require('./datepicker/dualpicker.component');
+var calendar_component_1 = require('./datepicker/calendar.component');
 var DatePickerModule = (function () {
     function DatePickerModule() {
     }
     DatePickerModule = __decorate([
         core_1.NgModule({
-            exports: [datepicker_component_1.DatePickerComponent],
-            declarations: [datepicker_component_1.DatePickerComponent],
+            exports: [datepicker_component_1.DatePickerComponent, dualpicker_component_1.DualPickerComponent],
+            declarations: [datepicker_component_1.DatePickerComponent, dualpicker_component_1.DualPickerComponent, calendar_component_1.CalendarComponent],
             imports: [common_1.CommonModule, forms_1.FormsModule]
         }), 
         __metadata('design:paramtypes', [])

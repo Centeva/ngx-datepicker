@@ -1,4 +1,9 @@
 "use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10,6 +15,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var moment = require('moment');
+var calendar_component_1 = require('./calendar.component');
+var dualpicker_component_1 = require('./dualpicker.component');
 (function (Mode) {
     Mode[Mode["Calendar"] = 0] = "Calendar";
     Mode[Mode["Month"] = 1] = "Month";
@@ -17,18 +24,28 @@ var moment = require('moment');
     Mode[Mode["Hidden"] = 3] = "Hidden";
 })(exports.Mode || (exports.Mode = {}));
 var Mode = exports.Mode;
-var DatePickerComponent = (function () {
+(function (Type) {
+    Type[Type["Text"] = 0] = "Text";
+    Type[Type["DoubleText"] = 1] = "DoubleText";
+})(exports.Type || (exports.Type = {}));
+var Type = exports.Type;
+var DatePickerComponent = (function (_super) {
+    __extends(DatePickerComponent, _super);
     function DatePickerComponent(myElement, renderer) {
+        var _this = this;
+        _super.call(this);
         this.myElement = myElement;
         this.renderer = renderer;
         this.numYearsShown = 9;
         this.halfNumYearsShown = Math.floor(this.numYearsShown / 2);
         this.Mode = Mode;
+        this.Type = Type;
+        this.dateClickListener = function (date) {
+            return function () {
+                _this.setDate(date);
+            };
+        };
         this.date = moment(new Date());
-        this.dateString = this.date.format("MM/DD/YYYY");
-        this.months = [];
-        this.years = [];
-        this.mode = Mode.Calendar;
         this.generateMonthData();
     }
     DatePickerComponent.prototype.changeMode = function (mode) {
@@ -75,8 +92,17 @@ var DatePickerComponent = (function () {
         this.date.year(year);
         this.changeMode(Mode.Calendar);
     };
-    DatePickerComponent.prototype.ngOnInit = function () {
+    DatePickerComponent.prototype.ngAfterViewInit = function () {
         this.renderCalendar();
+    };
+    DatePickerComponent.prototype.ngOnInit = function () {
+        var iType = this.iType.toLowerCase();
+        if (iType === "text") {
+            this.type = Type.Text;
+        }
+        else if (iType === "doubletext") {
+            this.type = Type.DoubleText;
+        }
     };
     DatePickerComponent.prototype.ngOnDestroy = function () {
     };
@@ -97,42 +123,7 @@ var DatePickerComponent = (function () {
         }
     };
     DatePickerComponent.prototype.renderCalendar = function () {
-        var date = moment(this.date);
-        var d = moment(this.date);
-        var headerElement = this.renderer.selectRootElement(".ct-dp-cal-header");
-        var calElement = this.renderer.selectRootElement(".ct-dp-cal-body");
-        for (var i = 0; i < 7; i++) {
-            d.day(i);
-            var el = this.renderer.createElement(headerElement, "div");
-            this.renderer.setText(el, d.format("dd"));
-            this.renderer.setElementAttribute(el, "ct-cal-dp-day", i.toString());
-            this.renderer.setElementClass(el, "ct-dp-cal-day", true);
-        }
-        d.date(1);
-        for (var i = 0; i < d.day(); i++) {
-            var el = this.renderer.createElement(calElement, "div");
-            this.renderer.setElementAttribute(el, "ct-dp-cal-day", i.toString());
-            this.renderer.setElementClass(el, "ct-dp-cal-day", true);
-        }
-        while (d.month() === date.month()) {
-            var component = this;
-            var el = this.renderer.createElement(calElement, "button");
-            this.renderer.setText(el, (d.date()).toString());
-            this.renderer.setElementAttribute(el, "ct-dp-cal-day", d.date().toString());
-            this.renderer.setElementAttribute(el, "tabindex", "-1");
-            this.renderer.setElementClass(el, "ct-dp-cal-day", true);
-            if (d.isSame(this.date, "day")) {
-                this.renderer.setElementClass(el, "active", true);
-            }
-            this.renderer.listen(el, "click", this.dateClickListener(d.date()));
-            d.date(d.date() + 1);
-        }
-    };
-    DatePickerComponent.prototype.dateClickListener = function (date) {
-        var component = this;
-        return function () {
-            component.setDate(date);
-        };
+        this.cal1.renderCalendar(this, this.dateClickListener);
     };
     DatePickerComponent.prototype.setDate = function (date) {
         this.date.date(date);
@@ -140,9 +131,13 @@ var DatePickerComponent = (function () {
         this.dateString = this.date.format("MM/DD/YYYY");
     };
     __decorate([
+        core_1.ViewChild('cal1', calendar_component_1.CalendarComponent), 
+        __metadata('design:type', calendar_component_1.CalendarComponent)
+    ], DatePickerComponent.prototype, "cal1", void 0);
+    __decorate([
         core_1.Input("type"), 
         __metadata('design:type', String)
-    ], DatePickerComponent.prototype, "type", void 0);
+    ], DatePickerComponent.prototype, "iType", void 0);
     DatePickerComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
@@ -154,6 +149,6 @@ var DatePickerComponent = (function () {
         __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer])
     ], DatePickerComponent);
     return DatePickerComponent;
-}());
+}(dualpicker_component_1.Picker));
 exports.DatePickerComponent = DatePickerComponent;
 //# sourceMappingURL=datepicker.component.js.map
