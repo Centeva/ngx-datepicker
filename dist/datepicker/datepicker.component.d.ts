@@ -26,7 +26,7 @@ export declare class DatePickerComponent implements AfterViewInit, OnDestroy, On
     ngOnDestroy(): void;
     renderCalendar(): void;
     dateClickListener: (date: moment.Moment) => () => void;
-    monthChangeListener: () => void;
-    yearChangeListener: () => void;
+    private monthChangeListener;
+    private yearChangeListener;
     setDate(date: moment.Moment): void;
 }

@@ -97,11 +97,11 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
     }
   }
 
-  monthChangeListener = () => {
+  private monthChangeListener = () => {
     this.changeMode(CalendarMode.Calendar);
   }
 
-  yearChangeListener = () => {
+  private yearChangeListener = () => {
     this.changeMode(CalendarMode.Calendar);
   }
 
