@@ -2,22 +2,22 @@
     <input 
         class="ct-dp-input" 
         type="text" 
-        (focus)="changeGlobalMode(GlobalMode.From)"
+        (focus)="changeGlobalMode(DualPickerMode.From)"
         (keydown)="blur($event)" 
         [ngModel]="dateFromString"
-        [ngClass]="{'focus': globalMode == GlobalMode.From}"
+        [ngClass]="{'focus': mode == DualPickerMode.From}"
     /><!--
  --><input 
         class="ct-dp-input" 
         type="text" 
-        (focus)="changeGlobalMode(GlobalMode.To)"
+        (focus)="changeGlobalMode(DualPickerMode.To)"
         (keydown)="blur($event)"          
         [ngModel]="dateToString"
-        [ngClass]="{'focus': globalMode == GlobalMode.To}"        
+        [ngClass]="{'focus': mode == DualPickerMode.To}"        
     />
-    <div class="ct-dp-shadow-box" (click)="changeGlobalMode(GlobalMode.Hidden)" *ngIf="globalMode != GlobalMode.Hidden">
+    <div class="ct-dp-shadow-box" (click)="changeGlobalMode(DualPickerMode.Hidden)" *ngIf="mode != DualPickerMode.Hidden">
     </div>
-    <div class="ct-dp-picker ct-dp-dualpicker" [ngClass]="{'hidden': globalMode == GlobalMode.Hidden}">
+    <div class="ct-dp-picker ct-dp-dualpicker" [ngClass]="{'hidden': mode == DualPickerMode.Hidden}">
         <div class="ct-dp-header">
             <button tabindex="-1" class="ct-dp-btn-prev  ct-dp-btn" (click)="goPrev()" [disabled]="cal1.mode == CalendarMode.Month || cal2.mode == CalendarMode.Month"><</button>
             <button tabindex="-1" class="ct-dp-btn-month ct-dp-btn" (click)="changeMode(CalendarMode.Month, cal1)">{{cal1.date.format("MMMM")}}</button>

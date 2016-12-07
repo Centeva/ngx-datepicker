@@ -14,16 +14,30 @@ var calendarMode_1 = require('../common/calendarMode');
 var calendarGrid_component_1 = require('../calendarGrid/calendarGrid.component');
 var CalendarComponent = (function () {
     function CalendarComponent() {
-        this.numYearsShown = 9;
-        this.halfNumYearsShown = Math.floor(this.numYearsShown / 2);
         this.CalendarMode = calendarMode_1.CalendarMode;
+        this.mode = calendarMode_1.CalendarMode.Calendar;
         this.months = [];
         this.years = [];
-        this.mode = calendarMode_1.CalendarMode.Calendar;
+        this.monthListeners = [];
+        this.yearListeners = [];
         this.generateMonthData();
     }
     CalendarComponent.prototype.ngOnInit = function () { };
     CalendarComponent.prototype.ngOnDestroy = function () { };
+    CalendarComponent.prototype.subscribeToChangeMonth = function (listener) {
+        this.monthListeners.push(listener);
+    };
+    CalendarComponent.prototype.subscribeToChangeYear = function (listener) {
+        this.yearListeners.push(listener);
+    };
+    CalendarComponent.prototype.changeMode = function (mode) {
+        this.mode = mode;
+        switch (mode) {
+            case calendarMode_1.CalendarMode.Year:
+                this.generateYearData(this.date.year());
+                break;
+        }
+    };
     CalendarComponent.prototype.generateMonthData = function () {
         var date = moment(new Date());
         date.month(0);
@@ -36,8 +50,8 @@ var CalendarComponent = (function () {
     };
     CalendarComponent.prototype.generateYearData = function (year) {
         this.years = [];
-        var y = year - this.halfNumYearsShown;
-        for (var i = 0; i < this.numYearsShown; i++) {
+        var y = year - CalendarComponent.halfNumYearsShown;
+        for (var i = 0; i < CalendarComponent.numYearsShown; i++) {
             this.years.push(y + i);
         }
     };
@@ -48,7 +62,7 @@ var CalendarComponent = (function () {
             case calendarMode_1.CalendarMode.Month:
                 break;
             case calendarMode_1.CalendarMode.Year:
-                this.generateYearData(this.years[this.halfNumYearsShown] - this.numYearsShown);
+                this.generateYearData(this.years[CalendarComponent.halfNumYearsShown] - CalendarComponent.numYearsShown);
         }
     };
     CalendarComponent.prototype.goNext = function () {
@@ -58,12 +72,28 @@ var CalendarComponent = (function () {
             case calendarMode_1.CalendarMode.Month:
                 break;
             case calendarMode_1.CalendarMode.Year:
-                this.generateYearData(this.years[this.halfNumYearsShown] + this.numYearsShown);
+                this.generateYearData(this.years[CalendarComponent.halfNumYearsShown] + CalendarComponent.numYearsShown);
         }
     };
     CalendarComponent.prototype.renderCalendar = function (clickCallback, dateTo, dateFrom) {
         this.grid.renderCalendar(this, clickCallback, dateTo, dateFrom);
     };
+    CalendarComponent.prototype.setMonth = function (index) {
+        this.date.month(index);
+        for (var _i = 0, _a = this.monthListeners; _i < _a.length; _i++) {
+            var fn = _a[_i];
+            fn();
+        }
+    };
+    CalendarComponent.prototype.setYear = function (year) {
+        this.date.year(year);
+        for (var _i = 0, _a = this.yearListeners; _i < _a.length; _i++) {
+            var fn = _a[_i];
+            fn();
+        }
+    };
+    CalendarComponent.numYearsShown = 9;
+    CalendarComponent.halfNumYearsShown = Math.floor(CalendarComponent.numYearsShown / 2);
     __decorate([
         core_1.ViewChild(calendarGrid_component_1.CalendarGridComponent), 
         __metadata('design:type', calendarGrid_component_1.CalendarGridComponent)

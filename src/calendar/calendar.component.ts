@@ -11,15 +11,17 @@ import { CalendarGridComponent } from '../calendarGrid/calendarGrid.component';
     encapsulation: ViewEncapsulation.None
 })
 export class CalendarComponent implements OnInit, OnDestroy {
-    numYearsShown = 9;
-    halfNumYearsShown = Math.floor(this.numYearsShown / 2);
+    private static numYearsShown = 9;
+    private static halfNumYearsShown = Math.floor(CalendarComponent.numYearsShown / 2);
 
     public CalendarMode = CalendarMode;
-
-    public months: string[] = [];
-    public years: number[] = [];
     public mode: CalendarMode = CalendarMode.Calendar;
     public date: moment.Moment;
+
+    private months: string[] = [];
+    private years: number[] = [];
+    private monthListeners: Function[] = [];
+    private yearListeners: Function[] = [];
 
     @ViewChild(CalendarGridComponent) public grid: CalendarGridComponent;
 
@@ -30,7 +32,24 @@ export class CalendarComponent implements OnInit, OnDestroy {
     ngOnInit() { }
     ngOnDestroy() { }
 
-    generateMonthData() {
+    subscribeToChangeMonth(listener: Function) {
+        this.monthListeners.push(listener);
+    }
+
+    subscribeToChangeYear(listener: Function) {
+        this.yearListeners.push(listener);
+    }
+
+    changeMode(mode: CalendarMode) {
+        this.mode = mode;
+        switch (mode) {
+            case CalendarMode.Year:
+                this.generateYearData(this.date.year());
+                break;
+        }
+    }
+
+    private generateMonthData() {
         let date = moment(new Date()); //doesn't change
         date.month(0);
         let d = moment(new Date());
@@ -41,10 +60,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
         }
     }
 
-    generateYearData(year: number) {
+    private generateYearData(year: number) {
         this.years = [];
-        let y = year - this.halfNumYearsShown;
-        for (var i = 0; i < this.numYearsShown; i++) {
+        let y = year - CalendarComponent.halfNumYearsShown;
+        for (var i = 0; i < CalendarComponent.numYearsShown; i++) {
             this.years.push(y + i);
         }
     }
@@ -56,7 +75,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
             case CalendarMode.Month:
                 break;
             case CalendarMode.Year:
-                this.generateYearData(this.years[this.halfNumYearsShown] - this.numYearsShown);
+                this.generateYearData(this.years[CalendarComponent.halfNumYearsShown] - CalendarComponent.numYearsShown);
         }
     }
 
@@ -67,11 +86,25 @@ export class CalendarComponent implements OnInit, OnDestroy {
             case CalendarMode.Month:
                 break;
             case CalendarMode.Year:
-                this.generateYearData(this.years[this.halfNumYearsShown] + this.numYearsShown);
+                this.generateYearData(this.years[CalendarComponent.halfNumYearsShown] + CalendarComponent.numYearsShown);
         }
     }
 
     renderCalendar(clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment) {
         this.grid.renderCalendar(this, clickCallback, dateTo, dateFrom);
+    }
+
+    setMonth(index: number) {
+        this.date.month(index);
+        for (let fn of this.monthListeners) {
+            fn();
+        }
+    }
+
+    setYear(year: number) {
+        this.date.year(year);
+        for (let fn of this.yearListeners) {
+            fn();
+        }
     }
 }

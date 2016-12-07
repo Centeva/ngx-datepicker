@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import { CalendarComponent } from '../calendar/calendar.component';
 import { CalendarMode } from '../common/calendarMode';
 
-export enum GlobalMode {
+export enum DualPickerMode {
     To, From, Hidden
 }
 
@@ -11,14 +11,14 @@ export enum GlobalMode {
     moduleId: module.id,
     selector: 'ct-dualpicker',
     templateUrl: 'dualpicker.component.html',
-    styleUrls: ['datepicker.component.css'],
+    styleUrls: ['dualpicker.component.css', '../common/common.css'],
     encapsulation: ViewEncapsulation.None
 })
 export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
 
 
     public CalendarMode = CalendarMode;
-    public GlobalMode = GlobalMode;
+    public DualPickerMode = DualPickerMode;
 
     public dateTo: moment.Moment;
     public dateFrom: moment.Moment;
@@ -27,17 +27,17 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
 
     @ViewChild('cal1', CalendarComponent) public cal1: CalendarComponent;
     @ViewChild('cal2', CalendarComponent) public cal2: CalendarComponent;
-    public globalMode: GlobalMode = GlobalMode.From;
+    public mode: DualPickerMode = DualPickerMode.Hidden;
 
     constructor(private myElement: ElementRef, private renderer: Renderer) {
 
     }
 
-    public changeGlobalMode(mode: GlobalMode) {
-        this.globalMode = mode;
-        switch (this.globalMode) {
-            case GlobalMode.To:
-            case GlobalMode.From:
+    public changeGlobalMode(mode: DualPickerMode) {
+        this.mode = mode;
+        switch (this.mode) {
+            case DualPickerMode.To:
+            case DualPickerMode.From:
                 this.changeMode(CalendarMode.Calendar, this.cal1);
                 this.changeMode(CalendarMode.Calendar, this.cal2);
                 break;
@@ -46,17 +46,15 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
 
     public blur(event) {
         if ((event.which || event.keyCode) == 9) {
-            this.changeGlobalMode(GlobalMode.Hidden);
+            this.changeGlobalMode(DualPickerMode.Hidden);
         }
     }
 
-    public changeMode(mode: CalendarMode, picker: CalendarComponent) {
-        picker.mode = mode;
-        switch (picker.mode) {
+    public changeMode(mode: CalendarMode, cal: CalendarComponent) {
+        cal.changeMode(mode);
+        switch (mode) {
             case CalendarMode.Calendar:
                 this.renderCalendar();
-            case CalendarMode.Year:
-                picker.generateYearData(picker.date.year());
                 break;
         }
     }
@@ -140,8 +138,8 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
     }
 
     setDate(date: moment.Moment) {
-        switch (this.globalMode) {
-            case GlobalMode.From:
+        switch (this.mode) {
+            case DualPickerMode.From:
                 this.dateFrom = date;
                 this.dateFromString = date.format("MM/DD/YYYY");
                 if (this.dateTo && this.dateFrom.isAfter(this.dateTo)) {
@@ -149,9 +147,9 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
                     this.dateTo.add({ "day": 1 });
                     this.dateToString = this.dateTo.format("MM/DD/YYYY");
                 }
-                this.changeGlobalMode(GlobalMode.To);
+                this.changeGlobalMode(DualPickerMode.To);
                 break;
-            case GlobalMode.To:
+            case DualPickerMode.To:
                 this.dateTo = date;
                 this.dateToString = date.format("MM/DD/YYYY");
                 if (this.dateFrom && this.dateTo.isBefore(this.dateFrom)) {
@@ -159,7 +157,7 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
                     this.dateFrom.subtract({ "day": 1 });
                     this.dateFromString = this.dateFrom.format("MM/DD/YYYY");
                 }
-                this.changeGlobalMode(GlobalMode.Hidden);
+                this.changeGlobalMode(DualPickerMode.Hidden);
                 break;
         }
         this.renderCalendar();
