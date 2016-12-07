@@ -1,0 +1,13 @@
+<div class="ct-dp-cal" [ngClass]="{'hidden': mode != CalendarMode.Calendar}">
+    <ct-calendar-grid></ct-calendar-grid>
+</div>
+<div class="ct-dp-months" [ngClass]="{'hidden': mode != CalendarMode.Month}">
+    <template ngFor let-item [ngForOf]="months" [ngForTrackBy]="myTrackBy" let-i="index">
+        <button tabindex="-1" class="btn btn-default ct-dp-month" (click)="setMonth(i, false)">{{item}}</button>
+    </template>
+</div>
+<div class="ct-dp-years" [ngClass]="{'hidden': mode != CalendarMode.Year}">
+    <template ngFor let-item [ngForOf]="years" [ngForTrackBy]="myTrackBy" let-i="index">
+        <button tabindex="-1" class="btn btn-default ct-dp-year" (click)="setYear(item, false)">{{item}}</button>
+    </template>
+</div>

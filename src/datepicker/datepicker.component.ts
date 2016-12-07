@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, OnInit, OnDestroy, ElementRef, Renderer, ViewEncapsulation, Input, ViewChild, QueryList } from '@angular/core';
 import * as moment from 'moment';
-import { CalendarComponent } from './calendar.component';
-import { Picker } from './dualpicker.component';
+import { CalendarComponent } from '../calendar/calendar.component';
+import { CalendarMode } from '../common/calendarMode';
 
 export enum Mode {
   Calendar, Month, Year, Hidden
@@ -19,73 +19,73 @@ export enum Type {
   styleUrls: ['datepicker.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class DatePickerComponent extends Picker implements AfterViewInit, OnDestroy, OnInit  {
+export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
   numYearsShown = 9;
   halfNumYearsShown = Math.floor(this.numYearsShown / 2);
 
   public Mode = Mode;
   public Type = Type;
 
-  @ViewChild('cal1', CalendarComponent)
+  @ViewChild(CalendarComponent)
   public cal1: CalendarComponent;
 
   @Input("type") private iType: string;
   public type: Type;
 
+  public dateString: string;
+
   constructor(private myElement: ElementRef, private renderer: Renderer) {
-    super();
-    this.date = moment(new Date());
-    this.generateMonthData();
+
   }
 
 
-  public changeMode(mode: Mode) {
-    this.mode = mode;
-    switch (this.mode) {
-      case Mode.Calendar:
+  public changeMode(mode: CalendarMode) {
+    this.cal1.mode = mode;
+    switch (this.cal1.mode) {
+      case CalendarMode.Calendar:
         this.renderCalendar();
-      case Mode.Year:
-        this.generateYearData(this.date.year());
+      case CalendarMode.Year:
+        this.generateYearData(this.cal1.date.year());
         break;
     }
   }
 
   public goPrev() {
-    switch (this.mode) {
-      case Mode.Calendar:
-        this.date.month(this.date.month() - 1);
+    switch (this.cal1.mode) {
+      case CalendarMode.Calendar:
+        this.cal1.date.month(this.cal1.date.month() - 1);
         this.renderCalendar();
         break;
-      case Mode.Month:
+      case CalendarMode.Month:
         break;
-      case Mode.Year:
-        this.generateYearData(this.years[this.halfNumYearsShown] - this.numYearsShown);
+      case CalendarMode.Year:
+        this.generateYearData(this.cal1.years[this.halfNumYearsShown] - this.numYearsShown);
         break;
     }
   }
 
   public goNext() {
-    switch (this.mode) {
-      case Mode.Calendar:
-        this.date.month(this.date.month() + 1);
+    switch (this.cal1.mode) {
+      case CalendarMode.Calendar:
+        this.cal1.date.month(this.cal1.date.month() + 1);
         this.renderCalendar();
         break;
-      case Mode.Month:
+      case CalendarMode.Month:
         break;
-      case Mode.Year:
-        this.generateYearData(this.years[this.halfNumYearsShown] + this.numYearsShown);
+      case CalendarMode.Year:
+        this.generateYearData(this.cal1.years[this.halfNumYearsShown] + this.numYearsShown);
         break;
     }
   }
 
   public setMonth(index: number) {
-    this.date.month(index);
-    this.changeMode(Mode.Calendar);
+    this.cal1.date.month(index);
+    this.changeMode(CalendarMode.Calendar);
   }
 
   public setYear(year: number) {
-    this.date.year(year);
-    this.changeMode(Mode.Calendar);
+    this.cal1.date.year(year);
+    this.changeMode(CalendarMode.Calendar);
   }
 
   ngAfterViewInit() {
@@ -99,6 +99,9 @@ export class DatePickerComponent extends Picker implements AfterViewInit, OnDest
     } else if (iType === "doubletext") {
       this.type = Type.DoubleText
     }
+
+    this.cal1.date = moment(new Date());
+    this.generateMonthData();
   }
 
   ngOnDestroy() {
@@ -106,25 +109,25 @@ export class DatePickerComponent extends Picker implements AfterViewInit, OnDest
   }
 
   generateYearData(year: number) {
-    this.years = [];
+    this.cal1.years = [];
     let y = year - this.halfNumYearsShown;
     for (var i = 0; i < this.numYearsShown; i++) {
-      this.years.push(y + i);
+      this.cal1.years.push(y + i);
     }
   }
 
   generateMonthData() {
-    let date = moment(this.date); //doesn't change
-    let d = moment(this.date);
+    let date = moment(this.cal1.date); //doesn't change
+    let d = moment(this.cal1.date);
     d.month(0);
     while (date.year() === d.year()) {
-      this.months.push(d.format("MMM"));
+      this.cal1.months.push(d.format("MMM"));
       d.month(d.month() + 1);
     }
   }
 
   renderCalendar() {
-    this.cal1.renderCalendar(this, this.dateClickListener, this.date, this.date);
+    this.cal1.renderCalendar(this.dateClickListener, this.cal1.date, this.cal1.date);
   }
 
   dateClickListener = (date: moment.Moment) => {
@@ -135,8 +138,8 @@ export class DatePickerComponent extends Picker implements AfterViewInit, OnDest
   }
 
   setDate(date: moment.Moment) {
-    this.date = date;
+    this.cal1.date = date;
     this.renderCalendar();
-    this.dateString = this.date.format("MM/DD/YYYY");
+    this.dateString = this.cal1.date.format("MM/DD/YYYY");
   }
 }

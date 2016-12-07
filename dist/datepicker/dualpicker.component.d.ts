@@ -1,12 +1,7 @@
 import { AfterViewInit, OnDestroy, ElementRef, OnInit, Renderer } from '@angular/core';
 import * as moment from 'moment';
-import { CalendarComponent } from './calendar.component';
-export declare enum Mode {
-    Calendar = 0,
-    Month = 1,
-    Year = 2,
-    Hidden = 3,
-}
+import { CalendarComponent } from '../calendar/calendar.component';
+import { CalendarMode } from '../common/calendarMode';
 export declare enum GlobalMode {
     To = 0,
     From = 1,
@@ -16,27 +11,12 @@ export declare enum Type {
     Text = 0,
     DoubleText = 1,
 }
-export declare class Picker {
-    numYearsShown: number;
-    halfNumYearsShown: number;
-    months: string[];
-    years: number[];
-    mode: Mode;
-    date: moment.Moment;
-    constructor();
-    generateMonthData(): void;
-    generateYearData(year: number): void;
-    goPrev(): void;
-    goNext(): void;
-}
 export declare class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
     private myElement;
     private renderer;
-    Mode: typeof Mode;
+    CalendarMode: typeof CalendarMode;
     Type: typeof Type;
     GlobalMode: typeof GlobalMode;
-    picker1: Picker;
-    picker2: Picker;
     dateTo: moment.Moment;
     dateFrom: moment.Moment;
     dateToString: string;
@@ -49,7 +29,7 @@ export declare class DualPickerComponent implements AfterViewInit, OnDestroy, On
     constructor(myElement: ElementRef, renderer: Renderer);
     changeGlobalMode(mode: GlobalMode): void;
     blur(event: any): void;
-    changeMode(mode: Mode, picker: Picker): void;
+    changeMode(mode: CalendarMode, picker: CalendarComponent): void;
     goPrev(): void;
     goNext(): void;
     setMonth(index: number, is1: boolean): void;

@@ -1,15 +1,15 @@
 import { Component, OnInit, OnDestroy, ElementRef, Renderer, ViewEncapsulation, Input } from '@angular/core';
 import * as moment from 'moment';
-import {Picker} from './dualpicker.component';
+import { CalendarComponent } from '../calendar/calendar.component';
 
 @Component({
     moduleId: module.id,
-    selector: 'ct-calendar',
+    selector: 'ct-calendar-grid',
     template: '',
-    styleUrls: ['calendar.component.css'],
+    styleUrls: ['calendarGrid.component.css'],
     encapsulation: ViewEncapsulation.None
 })
-export class CalendarComponent implements OnInit, OnDestroy {
+export class CalendarGridComponent implements OnInit, OnDestroy {
     constructor(private myElement: ElementRef, private renderer: Renderer) {
     }
 
@@ -20,8 +20,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
     }
 
-    renderCalendar(picker: Picker, clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment) {
-        let d = moment(picker.date);
+    renderCalendar(cal: CalendarComponent, clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment) {
+        let d = moment(cal.date);
         d.date(1); //reset date.
 
         this.renderer.selectRootElement(this.myElement.nativeElement);
@@ -50,7 +50,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
         }
 
         //Add calendar
-        while (d.month() === picker.date.month()) {
+        while (d.month() === cal.date.month()) {
             let component = this;
             let el: ElementRef = this.renderer.createElement(calElement, "button");
             this.renderer.setText(el, (d.date()).toString());
