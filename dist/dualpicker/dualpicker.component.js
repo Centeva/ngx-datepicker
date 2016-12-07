@@ -26,6 +26,30 @@ var DualPickerComponent = (function () {
         this.CalendarMode = calendarMode_1.CalendarMode;
         this.DualPickerMode = DualPickerMode;
         this.mode = DualPickerMode.Hidden;
+        this.month1ChangeListener = function () {
+            _this.cal2.date = moment(_this.cal1.date);
+            _this.cal2.date.add({ month: 1 });
+            _this.changeMode(calendarMode_1.CalendarMode.Calendar, _this.cal1);
+            _this.changeMode(calendarMode_1.CalendarMode.Calendar, _this.cal2);
+        };
+        this.month2ChangeListener = function () {
+            _this.cal1.date = moment(_this.cal2.date);
+            _this.cal1.date.subtract({ month: 1 });
+            _this.changeMode(calendarMode_1.CalendarMode.Calendar, _this.cal1);
+            _this.changeMode(calendarMode_1.CalendarMode.Calendar, _this.cal2);
+        };
+        this.year1ChangeListener = function () {
+            _this.cal2.date = moment(_this.cal2.date);
+            _this.cal2.date.add({ month: 1 });
+            _this.changeMode(calendarMode_1.CalendarMode.Calendar, _this.cal1);
+            _this.changeMode(calendarMode_1.CalendarMode.Calendar, _this.cal2);
+        };
+        this.year2ChangeListener = function () {
+            _this.cal1.date = moment(_this.cal2.date);
+            _this.cal1.date.subtract({ month: 1 });
+            _this.changeMode(calendarMode_1.CalendarMode.Calendar, _this.cal1);
+            _this.changeMode(calendarMode_1.CalendarMode.Calendar, _this.cal2);
+        };
         this.dateClickListener = function (date) {
             var d = moment(date);
             return function () {
@@ -80,38 +104,14 @@ var DualPickerComponent = (function () {
             this.cal2.goNext();
         }
     };
-    DualPickerComponent.prototype.setMonth = function (index, is1) {
-        if (is1) {
-            this.cal1.date.month(index);
-            this.cal2.date = moment(this.cal1.date);
-            this.cal2.date.add({ month: 1 });
-        }
-        else {
-            this.cal1.date.month(index - 1);
-            this.cal1.date = moment(this.cal2.date);
-            this.cal1.date.subtract({ month: 1 });
-        }
-        this.changeMode(calendarMode_1.CalendarMode.Calendar, this.cal1);
-        this.changeMode(calendarMode_1.CalendarMode.Calendar, this.cal2);
-    };
-    DualPickerComponent.prototype.setYear = function (year, is1) {
-        if (is1) {
-            this.cal1.date.year(year);
-            this.cal2.date = moment(this.cal2.date);
-            this.cal2.date.add({ month: 1 });
-        }
-        else {
-            this.cal2.date.year(year);
-            this.cal1.date = moment(this.cal2.date);
-            this.cal1.date.subtract({ month: 1 });
-        }
-        this.changeMode(calendarMode_1.CalendarMode.Calendar, this.cal1);
-        this.changeMode(calendarMode_1.CalendarMode.Calendar, this.cal2);
-    };
     DualPickerComponent.prototype.ngOnInit = function () {
         this.cal1.date = moment(new Date());
         this.cal2.date = moment(this.cal2.date);
         this.cal2.date.add({ month: 1 });
+        this.cal1.subscribeToChangeMonth(this.month1ChangeListener);
+        this.cal2.subscribeToChangeMonth(this.month2ChangeListener);
+        this.cal1.subscribeToChangeYear(this.year1ChangeListener);
+        this.cal2.subscribeToChangeYear(this.year2ChangeListener);
     };
     DualPickerComponent.prototype.ngAfterViewInit = function () {
         this.renderCalendar();

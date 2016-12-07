@@ -83,30 +83,30 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
         }
     }
 
-    public setMonth(index: number, is1: boolean) {
-        if (is1) {
-            this.cal1.date.month(index);
-            this.cal2.date = moment(this.cal1.date)
-            this.cal2.date.add({ month: 1 });
-        } else {
-            this.cal1.date.month(index - 1);
-            this.cal1.date = moment(this.cal2.date)
-            this.cal1.date.subtract({ month: 1 });
-        }
+    private month1ChangeListener = () => {
+        this.cal2.date = moment(this.cal1.date);
+        this.cal2.date.add({ month: 1 });
         this.changeMode(CalendarMode.Calendar, this.cal1);
         this.changeMode(CalendarMode.Calendar, this.cal2);
     }
 
-    public setYear(year: number, is1: boolean) {
-        if (is1) {
-            this.cal1.date.year(year);
-            this.cal2.date = moment(this.cal2.date)
-            this.cal2.date.add({ month: 1 });
-        } else {
-            this.cal2.date.year(year);
-            this.cal1.date = moment(this.cal2.date)
-            this.cal1.date.subtract({ month: 1 });
-        }
+    private month2ChangeListener = () => {
+        this.cal1.date = moment(this.cal2.date);
+        this.cal1.date.subtract({ month: 1 });
+        this.changeMode(CalendarMode.Calendar, this.cal1);
+        this.changeMode(CalendarMode.Calendar, this.cal2);
+    }
+
+    private year1ChangeListener = () => {
+        this.cal2.date = moment(this.cal2.date);
+        this.cal2.date.add({ month: 1 });
+        this.changeMode(CalendarMode.Calendar, this.cal1);
+        this.changeMode(CalendarMode.Calendar, this.cal2);
+    }
+
+    private year2ChangeListener = () => {
+        this.cal1.date = moment(this.cal2.date);
+        this.cal1.date.subtract({ month: 1 });
         this.changeMode(CalendarMode.Calendar, this.cal1);
         this.changeMode(CalendarMode.Calendar, this.cal2);
     }
@@ -115,6 +115,11 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
         this.cal1.date = moment(new Date());
         this.cal2.date = moment(this.cal2.date);
         this.cal2.date.add({ month: 1 });
+
+        this.cal1.subscribeToChangeMonth(this.month1ChangeListener);
+        this.cal2.subscribeToChangeMonth(this.month2ChangeListener);
+        this.cal1.subscribeToChangeYear(this.year1ChangeListener);
+        this.cal2.subscribeToChangeYear(this.year2ChangeListener);
     }
 
     ngAfterViewInit() {

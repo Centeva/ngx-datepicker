@@ -25,8 +25,10 @@ export declare class DualPickerComponent implements AfterViewInit, OnDestroy, On
     changeMode(mode: CalendarMode, cal: CalendarComponent): void;
     goPrev(): void;
     goNext(): void;
-    setMonth(index: number, is1: boolean): void;
-    setYear(year: number, is1: boolean): void;
+    private month1ChangeListener;
+    private month2ChangeListener;
+    private year1ChangeListener;
+    private year2ChangeListener;
     ngOnInit(): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
