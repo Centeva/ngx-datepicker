@@ -6,6 +6,7 @@
         (keydown)="blur($event)" 
         [ngModel]="dateFromString"
         [ngClass]="{'focus': mode == DualPickerMode.From}"
+        (ngModelChange)="onDateFromStringChange($event)"
     /><!--
  --><input 
         class="ct-dp-input" 
@@ -13,7 +14,8 @@
         (focus)="changeGlobalMode(DualPickerMode.To)"
         (keydown)="blur($event)"          
         [ngModel]="dateToString"
-        [ngClass]="{'focus': mode == DualPickerMode.To}"        
+        [ngClass]="{'focus': mode == DualPickerMode.To}"
+        (ngModelChange)="onDateToStringChange($event)"                
     />
     <div class="ct-dp-shadow-box" (click)="changeGlobalMode(DualPickerMode.Hidden)" *ngIf="mode != DualPickerMode.Hidden">
     </div>

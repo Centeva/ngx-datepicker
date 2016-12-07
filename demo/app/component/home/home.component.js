@@ -13,8 +13,8 @@ var moment = require('moment');
 var HomeComponent = (function () {
     function HomeComponent() {
         this.date1 = moment("2012-05-16");
-        this.date2 = moment();
-        this.date3 = moment();
+        this.date2 = moment("2016-11-25");
+        this.date3 = moment("2016-12-25");
     }
     HomeComponent.prototype.ngOnInit = function () {
     };

@@ -12,7 +12,7 @@ export declare class DatePickerComponent implements AfterViewInit, OnDestroy, On
     CalendarMode: typeof CalendarMode;
     DatePickerMode: typeof DatePickerMode;
     dateChange: EventEmitter<{}>;
-    dateValue: moment.Moment;
+    private dateValue;
     date: moment.Moment;
     dateString: string;
     cal: CalendarComponent;

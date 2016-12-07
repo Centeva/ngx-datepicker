@@ -25,28 +25,26 @@ var DualPickerComponent = (function () {
         this.renderer = renderer;
         this.CalendarMode = calendarMode_1.CalendarMode;
         this.DualPickerMode = DualPickerMode;
+        this.dateFromChange = new core_1.EventEmitter();
+        this.dateToChange = new core_1.EventEmitter();
         this.mode = DualPickerMode.Hidden;
         this.month1ChangeListener = function () {
-            _this.cal2.date = moment(_this.cal1.date);
-            _this.cal2.date.add({ month: 1 });
+            _this.shiftCal2();
             _this.changeMode(calendarMode_1.CalendarMode.Calendar, _this.cal1);
             _this.changeMode(calendarMode_1.CalendarMode.Calendar, _this.cal2);
         };
         this.month2ChangeListener = function () {
-            _this.cal1.date = moment(_this.cal2.date);
-            _this.cal1.date.subtract({ month: 1 });
+            _this.shiftCal1();
             _this.changeMode(calendarMode_1.CalendarMode.Calendar, _this.cal1);
             _this.changeMode(calendarMode_1.CalendarMode.Calendar, _this.cal2);
         };
         this.year1ChangeListener = function () {
-            _this.cal2.date = moment(_this.cal2.date);
-            _this.cal2.date.add({ month: 1 });
+            _this.shiftCal2();
             _this.changeMode(calendarMode_1.CalendarMode.Calendar, _this.cal1);
             _this.changeMode(calendarMode_1.CalendarMode.Calendar, _this.cal2);
         };
         this.year2ChangeListener = function () {
-            _this.cal1.date = moment(_this.cal2.date);
-            _this.cal1.date.subtract({ month: 1 });
+            _this.shiftCal1();
             _this.changeMode(calendarMode_1.CalendarMode.Calendar, _this.cal1);
             _this.changeMode(calendarMode_1.CalendarMode.Calendar, _this.cal2);
         };
@@ -57,6 +55,30 @@ var DualPickerComponent = (function () {
             };
         };
     }
+    Object.defineProperty(DualPickerComponent.prototype, "dateFrom", {
+        get: function () {
+            return this.dateFromValue;
+        },
+        set: function (val) {
+            this.dateFromString = val.format("MM/DD/YYYY");
+            this.dateFromValue = val;
+            this.dateFromChange.emit(val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DualPickerComponent.prototype, "dateTo", {
+        get: function () {
+            return this.dateToValue;
+        },
+        set: function (val) {
+            this.dateToString = val.format("MM/DD/YYYY");
+            this.dateToValue = val;
+            this.dateToChange.emit(val);
+        },
+        enumerable: true,
+        configurable: true
+    });
     DualPickerComponent.prototype.changeGlobalMode = function (mode) {
         this.mode = mode;
         switch (this.mode) {
@@ -66,6 +88,38 @@ var DualPickerComponent = (function () {
                 this.changeMode(calendarMode_1.CalendarMode.Calendar, this.cal2);
                 break;
         }
+    };
+    DualPickerComponent.prototype.onDateFromStringChange = function (val) {
+        this.dateFromString = val;
+        var m = moment(new Date(val));
+        if (m.isValid()) {
+            this.dateFromValue.set(m.toObject());
+            this.correctDateTo();
+            this.cal1.date = this.dateFromValue;
+            this.shiftCal2();
+            this.dateFromChange.emit(this.dateFromValue);
+            this.renderCalendar();
+        }
+    };
+    DualPickerComponent.prototype.onDateToStringChange = function (val) {
+        this.dateToString = val;
+        var m = moment(new Date(val));
+        if (m.isValid()) {
+            this.dateToValue.set(m.toObject());
+            this.correctDateFrom();
+            this.cal2.date = this.dateToValue;
+            this.shiftCal1();
+            this.dateToChange.emit(this.dateToValue);
+            this.renderCalendar();
+        }
+    };
+    DualPickerComponent.prototype.shiftCal1 = function () {
+        this.cal1.date = moment(this.cal2.date);
+        this.cal1.date.subtract({ "month": 1 });
+    };
+    DualPickerComponent.prototype.shiftCal2 = function () {
+        this.cal2.date = moment(this.cal1.date);
+        this.cal2.date.add({ "month": 1 });
     };
     DualPickerComponent.prototype.blur = function (event) {
         if ((event.which || event.keyCode) == 9) {
@@ -83,8 +137,7 @@ var DualPickerComponent = (function () {
     DualPickerComponent.prototype.goPrev = function () {
         if (this.cal1.mode == calendarMode_1.CalendarMode.Calendar && this.cal2.mode == calendarMode_1.CalendarMode.Calendar) {
             this.cal1.date.month(this.cal1.date.month() - 1);
-            this.cal2.date = moment(this.cal1.date);
-            this.cal2.date.add({ month: 1 });
+            this.shiftCal2();
             this.renderCalendar();
         }
         else {
@@ -95,8 +148,7 @@ var DualPickerComponent = (function () {
     DualPickerComponent.prototype.goNext = function () {
         if (this.cal1.mode == calendarMode_1.CalendarMode.Calendar && this.cal2.mode == calendarMode_1.CalendarMode.Calendar) {
             this.cal1.date.month(this.cal1.date.month() + 1);
-            this.cal2.date = moment(this.cal1.date);
-            this.cal2.date.add({ month: 1 });
+            this.shiftCal2();
             this.renderCalendar();
         }
         else {
@@ -105,9 +157,8 @@ var DualPickerComponent = (function () {
         }
     };
     DualPickerComponent.prototype.ngOnInit = function () {
-        this.cal1.date = moment(new Date());
-        this.cal2.date = moment(this.cal2.date);
-        this.cal2.date.add({ month: 1 });
+        this.cal1.date = moment(this.dateFrom);
+        this.shiftCal2();
         this.cal1.subscribeToChangeMonth(this.month1ChangeListener);
         this.cal2.subscribeToChangeMonth(this.month2ChangeListener);
         this.cal1.subscribeToChangeYear(this.year1ChangeListener);
@@ -127,26 +178,48 @@ var DualPickerComponent = (function () {
             case DualPickerMode.From:
                 this.dateFrom = date;
                 this.dateFromString = date.format("MM/DD/YYYY");
-                if (this.dateTo && this.dateFrom.isAfter(this.dateTo)) {
-                    this.dateTo = moment(this.dateFrom);
-                    this.dateTo.add({ "day": 1 });
-                    this.dateToString = this.dateTo.format("MM/DD/YYYY");
-                }
+                this.correctDateTo();
                 this.changeGlobalMode(DualPickerMode.To);
                 break;
             case DualPickerMode.To:
                 this.dateTo = date;
                 this.dateToString = date.format("MM/DD/YYYY");
-                if (this.dateFrom && this.dateTo.isBefore(this.dateFrom)) {
-                    this.dateFrom = moment(this.dateTo);
-                    this.dateFrom.subtract({ "day": 1 });
-                    this.dateFromString = this.dateFrom.format("MM/DD/YYYY");
-                }
+                this.correctDateFrom();
                 this.changeGlobalMode(DualPickerMode.Hidden);
                 break;
         }
         this.renderCalendar();
     };
+    DualPickerComponent.prototype.correctDateTo = function () {
+        if (this.dateTo && this.dateFrom.isAfter(this.dateTo)) {
+            this.dateTo = moment(this.dateFrom);
+            this.dateTo.add({ "day": 1 });
+            this.dateToString = this.dateTo.format("MM/DD/YYYY");
+        }
+    };
+    DualPickerComponent.prototype.correctDateFrom = function () {
+        if (this.dateFrom && this.dateTo.isBefore(this.dateFrom)) {
+            this.dateFrom = moment(this.dateTo);
+            this.dateFrom.subtract({ "day": 1 });
+            this.dateFromString = this.dateFrom.format("MM/DD/YYYY");
+        }
+    };
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], DualPickerComponent.prototype, "dateFromChange", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], DualPickerComponent.prototype, "dateToChange", void 0);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Object)
+    ], DualPickerComponent.prototype, "dateFrom", null);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Object)
+    ], DualPickerComponent.prototype, "dateTo", null);
     __decorate([
         core_1.ViewChild('cal1', calendar_component_1.CalendarComponent), 
         __metadata('design:type', calendar_component_1.CalendarComponent)

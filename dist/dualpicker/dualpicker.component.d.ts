@@ -1,4 +1,4 @@
-import { AfterViewInit, OnDestroy, ElementRef, OnInit, Renderer } from '@angular/core';
+import { AfterViewInit, OnDestroy, ElementRef, OnInit, Renderer, EventEmitter } from '@angular/core';
 import * as moment from 'moment';
 import { CalendarComponent } from '../calendar/calendar.component';
 import { CalendarMode } from '../common/calendarMode';
@@ -12,15 +12,23 @@ export declare class DualPickerComponent implements AfterViewInit, OnDestroy, On
     private renderer;
     CalendarMode: typeof CalendarMode;
     DualPickerMode: typeof DualPickerMode;
-    dateTo: moment.Moment;
+    private dateFromValue;
+    private dateToValue;
+    dateFromChange: EventEmitter<{}>;
+    dateToChange: EventEmitter<{}>;
     dateFrom: moment.Moment;
-    dateToString: string;
+    dateTo: moment.Moment;
     dateFromString: string;
+    dateToString: string;
     cal1: CalendarComponent;
     cal2: CalendarComponent;
     mode: DualPickerMode;
     constructor(myElement: ElementRef, renderer: Renderer);
     changeGlobalMode(mode: DualPickerMode): void;
+    onDateFromStringChange(val: any): void;
+    onDateToStringChange(val: any): void;
+    private shiftCal1();
+    private shiftCal2();
     blur(event: any): void;
     changeMode(mode: CalendarMode, cal: CalendarComponent): void;
     goPrev(): void;
@@ -35,4 +43,6 @@ export declare class DualPickerComponent implements AfterViewInit, OnDestroy, On
     renderCalendar(): void;
     dateClickListener: (date: moment.Moment) => () => void;
     setDate(date: moment.Moment): void;
+    private correctDateTo();
+    private correctDateFrom();
 }

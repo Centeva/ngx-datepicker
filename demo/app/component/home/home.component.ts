@@ -10,8 +10,8 @@ import * as moment from 'moment';
 export class HomeComponent implements OnInit, OnDestroy {
 
   date1: moment.Moment = moment("2012-05-16");
-  date2: moment.Moment = moment();
-  date3: moment.Moment = moment();
+  date2: moment.Moment = moment("2016-11-25");
+  date3: moment.Moment = moment("2016-12-25");
 
   ngOnInit() {
 

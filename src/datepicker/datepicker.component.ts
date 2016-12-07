@@ -21,7 +21,7 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
   public DatePickerMode = DatePickerMode;
 
   @Output() dateChange = new EventEmitter();
-  public dateValue: moment.Moment;
+  private dateValue: moment.Moment;
   @Input()
   get date() {
     return this.dateValue;
