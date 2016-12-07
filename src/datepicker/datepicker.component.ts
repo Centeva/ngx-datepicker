@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnDestroy, ElementRef, OnInit, Renderer, ViewEncapsulation, Input, ViewChild, QueryList } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, ElementRef, OnInit, Renderer, ViewEncapsulation, Input, ViewChild, QueryList, Output, EventEmitter } from '@angular/core';
 import * as moment from 'moment';
 import { CalendarComponent } from '../calendar/calendar.component';
 import { CalendarMode } from '../common/calendarMode';
@@ -20,7 +20,17 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
   public CalendarMode = CalendarMode;
   public DatePickerMode = DatePickerMode;
 
-  public date: moment.Moment;
+  @Output() dateChange = new EventEmitter();
+  public dateValue: moment.Moment;
+  @Input()
+  get date() {
+    return this.dateValue;
+  }
+  set date(val) {
+    this.dateString = val.format("MM/DD/YYYY");
+    this.dateValue = val;
+    this.dateChange.emit(val);
+  }
   public dateString: string;
 
   @ViewChild(CalendarComponent) public cal: CalendarComponent;
@@ -28,6 +38,17 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
 
   constructor(private myElement: ElementRef, private renderer: Renderer) {
 
+  }
+
+  public onDateStringChange(val) {
+    this.dateString = val;
+    let m = moment(new Date(val));
+    if (m.isValid()) {
+      this.dateValue.set(m.toObject());
+      this.cal.date = this.dateValue;
+      this.dateChange.emit(this.dateValue);
+      this.renderCalendar();
+    }
   }
 
   public changeGlobalMode(mode: DatePickerMode) {
@@ -73,7 +94,7 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this.cal.date = moment(new Date());
+    this.cal.date = moment(this.date);
     this.cal.subscribeToChangeMonth(this.monthChangeListener);
     this.cal.subscribeToChangeYear(this.yearChangeListener);
   }
@@ -109,7 +130,6 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
     switch (this.mode) {
       case DatePickerMode.Visible:
         this.date = date;
-        this.dateString = date.format("MM/DD/YYYY");
         this.changeGlobalMode(DatePickerMode.Hidden);
         break;
     }

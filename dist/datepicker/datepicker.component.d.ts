@@ -1,4 +1,4 @@
-import { AfterViewInit, OnDestroy, ElementRef, OnInit, Renderer } from '@angular/core';
+import { AfterViewInit, OnDestroy, ElementRef, OnInit, Renderer, EventEmitter } from '@angular/core';
 import * as moment from 'moment';
 import { CalendarComponent } from '../calendar/calendar.component';
 import { CalendarMode } from '../common/calendarMode';
@@ -11,11 +11,14 @@ export declare class DatePickerComponent implements AfterViewInit, OnDestroy, On
     private renderer;
     CalendarMode: typeof CalendarMode;
     DatePickerMode: typeof DatePickerMode;
+    dateChange: EventEmitter<{}>;
+    dateValue: moment.Moment;
     date: moment.Moment;
     dateString: string;
     cal: CalendarComponent;
     mode: DatePickerMode;
     constructor(myElement: ElementRef, renderer: Renderer);
+    onDateStringChange(val: any): void;
     changeGlobalMode(mode: DatePickerMode): void;
     blur(event: any): void;
     changeMode(mode: CalendarMode): void;

@@ -24,6 +24,7 @@ var DatePickerComponent = (function () {
         this.renderer = renderer;
         this.CalendarMode = calendarMode_1.CalendarMode;
         this.DatePickerMode = DatePickerMode;
+        this.dateChange = new core_1.EventEmitter();
         this.mode = DatePickerMode.Hidden;
         this.dateClickListener = function (date) {
             var d = moment(date);
@@ -38,6 +39,28 @@ var DatePickerComponent = (function () {
             _this.changeMode(calendarMode_1.CalendarMode.Calendar);
         };
     }
+    Object.defineProperty(DatePickerComponent.prototype, "date", {
+        get: function () {
+            return this.dateValue;
+        },
+        set: function (val) {
+            this.dateString = val.format("MM/DD/YYYY");
+            this.dateValue = val;
+            this.dateChange.emit(val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    DatePickerComponent.prototype.onDateStringChange = function (val) {
+        this.dateString = val;
+        var m = moment(new Date(val));
+        if (m.isValid()) {
+            this.dateValue.set(m.toObject());
+            this.cal.date = this.dateValue;
+            this.dateChange.emit(this.dateValue);
+            this.renderCalendar();
+        }
+    };
     DatePickerComponent.prototype.changeGlobalMode = function (mode) {
         this.mode = mode;
         switch (this.mode) {
@@ -78,7 +101,7 @@ var DatePickerComponent = (function () {
         }
     };
     DatePickerComponent.prototype.ngOnInit = function () {
-        this.cal.date = moment(new Date());
+        this.cal.date = moment(this.date);
         this.cal.subscribeToChangeMonth(this.monthChangeListener);
         this.cal.subscribeToChangeYear(this.yearChangeListener);
     };
@@ -94,12 +117,19 @@ var DatePickerComponent = (function () {
         switch (this.mode) {
             case DatePickerMode.Visible:
                 this.date = date;
-                this.dateString = date.format("MM/DD/YYYY");
                 this.changeGlobalMode(DatePickerMode.Hidden);
                 break;
         }
         this.renderCalendar();
     };
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], DatePickerComponent.prototype, "dateChange", void 0);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Object)
+    ], DatePickerComponent.prototype, "date", null);
     __decorate([
         core_1.ViewChild(calendar_component_1.CalendarComponent), 
         __metadata('design:type', calendar_component_1.CalendarComponent)

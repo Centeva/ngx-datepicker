@@ -5,6 +5,7 @@
         (focus)="changeGlobalMode(DatePickerMode.Visible)"
         (keydown)="blur($event)" 
         [ngModel]="dateString"
+        (ngModelChange)="onDateStringChange($event)"
     />
     <div class="ct-dp-shadow-box" (click)="changeGlobalMode(DatePickerMode.Hidden)" *ngIf="mode != DatePickerMode.Hidden">
     </div>
