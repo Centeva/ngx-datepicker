@@ -1,13 +1,20 @@
 <div class="ct-dp">
-    <input class="ct-dp-input" type="text" *ngIf="type == Type.Text" (focus)="changeMode(Mode.Calendar)" [ngModel]="dateString"/>
-    <div class="ct-dp-shadow-box" (click)="changeMode(Mode.Hidden)" *ngIf="mode != Mode.Hidden">
+    <input 
+        class="ct-dp-input" 
+        type="text" 
+        (focus)="changeGlobalMode(GlobalMode.From)"
+        (keydown)="blur($event)" 
+        [ngModel]="dateFromString"
+        [ngClass]="{'focus': globalMode == GlobalMode.From}"
+    />
+    <div class="ct-dp-shadow-box" (click)="changeGlobalMode(GlobalMode.Hidden)" *ngIf="globalMode != GlobalMode.Hidden">
     </div>
-    <div class="ct-dp-picker" [ngClass]="{'hidden': mode == Mode.Hidden}">
+    <div class="ct-dp-picker" [ngClass]="{'hidden': globalMode == GlobalMode.Hidden}">
         <div class="ct-dp-header">
-            <button tabindex="-1" class="ct-dp-btn-prev  ct-dp-btn" (click)="goPrev()" [disabled]="mode == Mode.Month"><</button>
-            <button tabindex="-1" class="ct-dp-btn-month ct-dp-btn" (click)="changeMode(Mode.Month)">{{date.format("MMMM")}}</button>
-            <button tabindex="-1" class="ct-dp-btn-year  ct-dp-btn" (click)="changeMode(Mode.Year)">{{date.format("YYYY")}}</button>
-            <button tabindex="-1" class="ct-dp-btn-next  ct-dp-btn" (click)="goNext()" [disabled]="mode == Mode.Month">></button>
+            <button tabindex="-1" class="ct-dp-btn-prev  ct-dp-btn" (click)="goPrev()" [disabled]="cal.mode == CalendarMode.Month"><</button>
+            <button tabindex="-1" class="ct-dp-btn-month ct-dp-btn" (click)="changeMode(CalendarMode.Month)">{{cal.date.format("MMMM")}}</button>
+            <button tabindex="-1" class="ct-dp-btn-year  ct-dp-btn" (click)="changeMode(Mode.Year)">{{cal.date.format("YYYY")}}</button>
+            <button tabindex="-1" class="ct-dp-btn-next  ct-dp-btn" (click)="goNext()" [disabled]="cal.mode == CalendarMode.Month">></button>
         </div>
         <ct-calendar></ct-calendar>
     </div>

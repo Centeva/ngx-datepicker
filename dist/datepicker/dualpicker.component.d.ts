@@ -7,15 +7,10 @@ export declare enum GlobalMode {
     From = 1,
     Hidden = 2,
 }
-export declare enum Type {
-    Text = 0,
-    DoubleText = 1,
-}
 export declare class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
     private myElement;
     private renderer;
     CalendarMode: typeof CalendarMode;
-    Type: typeof Type;
     GlobalMode: typeof GlobalMode;
     dateTo: moment.Moment;
     dateFrom: moment.Moment;
@@ -23,8 +18,6 @@ export declare class DualPickerComponent implements AfterViewInit, OnDestroy, On
     dateFromString: string;
     cal1: CalendarComponent;
     cal2: CalendarComponent;
-    private iType;
-    type: Type;
     globalMode: GlobalMode;
     constructor(myElement: ElementRef, renderer: Renderer);
     changeGlobalMode(mode: GlobalMode): void;

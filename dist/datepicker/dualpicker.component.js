@@ -18,18 +18,12 @@ var calendarMode_1 = require('../common/calendarMode');
     GlobalMode[GlobalMode["Hidden"] = 2] = "Hidden";
 })(exports.GlobalMode || (exports.GlobalMode = {}));
 var GlobalMode = exports.GlobalMode;
-(function (Type) {
-    Type[Type["Text"] = 0] = "Text";
-    Type[Type["DoubleText"] = 1] = "DoubleText";
-})(exports.Type || (exports.Type = {}));
-var Type = exports.Type;
 var DualPickerComponent = (function () {
     function DualPickerComponent(myElement, renderer) {
         var _this = this;
         this.myElement = myElement;
         this.renderer = renderer;
         this.CalendarMode = calendarMode_1.CalendarMode;
-        this.Type = Type;
         this.GlobalMode = GlobalMode;
         this.globalMode = GlobalMode.From;
         this.dateClickListener = function (date) {
@@ -117,13 +111,6 @@ var DualPickerComponent = (function () {
         this.changeMode(calendarMode_1.CalendarMode.Calendar, this.cal2);
     };
     DualPickerComponent.prototype.ngOnInit = function () {
-        var iType = this.iType.toLowerCase();
-        if (iType === "text") {
-            this.type = Type.Text;
-        }
-        else if (iType === "doubletext") {
-            this.type = Type.DoubleText;
-        }
         this.cal1.date = moment(new Date());
         this.cal2.date = moment(this.cal2.date);
         this.cal2.date.add({ month: 1 });
@@ -170,10 +157,6 @@ var DualPickerComponent = (function () {
         core_1.ViewChild('cal2', calendar_component_1.CalendarComponent), 
         __metadata('design:type', calendar_component_1.CalendarComponent)
     ], DualPickerComponent.prototype, "cal2", void 0);
-    __decorate([
-        core_1.Input("type"), 
-        __metadata('design:type', String)
-    ], DualPickerComponent.prototype, "iType", void 0);
     DualPickerComponent = __decorate([
         core_1.Component({
             moduleId: module.id,

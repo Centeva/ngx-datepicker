@@ -2,7 +2,6 @@
     <input 
         class="ct-dp-input" 
         type="text" 
-        *ngIf="type == Type.Text" 
         (focus)="changeGlobalMode(GlobalMode.From)"
         (keydown)="blur($event)" 
         [ngModel]="dateFromString"
@@ -11,7 +10,6 @@
  --><input 
         class="ct-dp-input" 
         type="text" 
-        *ngIf="type == Type.Text" 
         (focus)="changeGlobalMode(GlobalMode.To)"
         (keydown)="blur($event)"          
         [ngModel]="dateToString"

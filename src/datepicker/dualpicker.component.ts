@@ -7,11 +7,6 @@ export enum GlobalMode {
     To, From, Hidden
 }
 
-export enum Type {
-    Text,
-    DoubleText
-}
-
 @Component({
     moduleId: module.id,
     selector: 'ct-dualpicker',
@@ -23,7 +18,6 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
 
 
     public CalendarMode = CalendarMode;
-    public Type = Type;
     public GlobalMode = GlobalMode;
 
     public dateTo: moment.Moment;
@@ -33,8 +27,6 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
 
     @ViewChild('cal1', CalendarComponent) public cal1: CalendarComponent;
     @ViewChild('cal2', CalendarComponent) public cal2: CalendarComponent;
-    @Input("type") private iType: string;
-    public type: Type;
     public globalMode: GlobalMode = GlobalMode.From;
 
     constructor(private myElement: ElementRef, private renderer: Renderer) {
@@ -122,13 +114,6 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
     }
 
     ngOnInit() {
-        let iType = this.iType.toLowerCase();
-        if (iType === "text") {
-            this.type = Type.Text
-        } else if (iType === "doubletext") {
-            this.type = Type.DoubleText
-        }
-
         this.cal1.date = moment(new Date());
         this.cal2.date = moment(this.cal2.date);
         this.cal2.date.add({ month: 1 });
