@@ -27,9 +27,11 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
     return this.dateValue;
   }
   set date(val) {
-    this.dateString = val.format("MM/DD/YYYY");
-    this.dateValue = val;
-    this.dateChange.emit(val);
+    if (val instanceof moment && val.isValid()) {
+      this.dateString = val.format("MM/DD/YYYY");
+      this.dateValue = val;
+      this.dateChange.emit(val);
+    }
   }
   public dateString: string;
 
@@ -94,7 +96,11 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this.cal.date = moment(this.date);
+    if (this.date instanceof moment && this.date.isValid()) {
+      this.cal.date = moment(this.date);
+    } else {
+      this.cal.date = moment();
+    }
     this.cal.subscribeToChangeMonth(this.monthChangeListener);
     this.cal.subscribeToChangeYear(this.yearChangeListener);
   }

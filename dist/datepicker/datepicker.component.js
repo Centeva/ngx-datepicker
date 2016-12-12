@@ -44,9 +44,11 @@ var DatePickerComponent = (function () {
             return this.dateValue;
         },
         set: function (val) {
-            this.dateString = val.format("MM/DD/YYYY");
-            this.dateValue = val;
-            this.dateChange.emit(val);
+            if (val instanceof moment && val.isValid()) {
+                this.dateString = val.format("MM/DD/YYYY");
+                this.dateValue = val;
+                this.dateChange.emit(val);
+            }
         },
         enumerable: true,
         configurable: true
@@ -101,7 +103,12 @@ var DatePickerComponent = (function () {
         }
     };
     DatePickerComponent.prototype.ngOnInit = function () {
-        this.cal.date = moment(this.date);
+        if (this.date instanceof moment && this.date.isValid()) {
+            this.cal.date = moment(this.date);
+        }
+        else {
+            this.cal.date = moment();
+        }
         this.cal.subscribeToChangeMonth(this.monthChangeListener);
         this.cal.subscribeToChangeYear(this.yearChangeListener);
     };
