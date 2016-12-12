@@ -25,7 +25,7 @@ var DatePickerComponent = (function () {
         this.CalendarMode = calendarMode_1.CalendarMode;
         this.DatePickerMode = DatePickerMode;
         this.dateChange = new core_1.EventEmitter();
-        this.mode = DatePickerMode.Hidden;
+        this.mode = DatePickerMode.Visible;
         this.dateClickListener = function (date) {
             var d = moment(date);
             return function () {

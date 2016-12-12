@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, ElementRef, Renderer, ViewEncapsulation, Input } from '@angular/core';
 import * as moment from 'moment';
 import { CalendarComponent } from '../calendar/calendar.component';
+import * as $ from 'jquery';
 
 @Component({
     moduleId: module.id,
@@ -21,6 +22,57 @@ export class CalendarGridComponent implements OnInit, OnDestroy {
     }
 
     renderCalendar(cal: CalendarComponent, clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment) {
+        let d = moment(cal.date);
+        d.date(1); //reset date.
+
+        let header = $("<div class='ct-dp-cal-header'></div>");
+        for (var i = 0; i < 7; i++) {
+            d.day(i);
+
+            let el = $("<div></div>");
+            el.text(d.format("dd"));
+            el.attr("ct-cal-dp-day", i.toString());
+            el.addClass("ct-dp-cal-day"); 
+
+            header.append(el);
+        }
+
+        d.date(1); //reset date.
+        
+        let body = $("<div class='ct-dp-cal-body'></div>");
+        for (var i = 0; i < d.day(); i++) {
+            let el = $("<div></div>");
+
+            el.attr("ct-dp-cal-day", i.toString());
+            el.addClass("ct-dp-cal-day");
+
+            body.append(el);
+        }
+
+        while (d.month() === cal.date.month()) {
+            let el = $("<button></button>");
+            el.text((d.date()).toString())
+            el.attr("ct-dp-cal-day", d.date().toString());
+            el.attr("tabIndex", "-1");
+            el.addClass("ct-dp-cal-day");
+
+            if ((dateTo && d.isSame(dateTo, "day")) || (dateFrom && d.isSame(dateFrom, "day"))) {
+                el.addClass("active");
+            }
+            if (dateFrom && dateTo && d.isBetween(dateFrom, dateTo)) {
+                el.addClass("between");
+            }
+            el.click(clickCallback(d));
+            d.date(d.date() + 1);
+
+            body.append(el);
+        }
+        $(this.myElement.nativeElement).empty();
+        header.appendTo(this.myElement.nativeElement);
+        body.appendTo(this.myElement.nativeElement);
+    }
+
+    renderCalendar2(cal: CalendarComponent, clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment) {
         let d = moment(cal.date);
         d.date(1); //reset date.
 

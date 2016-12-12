@@ -36,7 +36,7 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
   public dateString: string;
 
   @ViewChild(CalendarComponent) public cal: CalendarComponent;
-  public mode: DatePickerMode = DatePickerMode.Hidden;
+  public mode: DatePickerMode = DatePickerMode.Visible;
 
   constructor(private myElement: ElementRef, private renderer: Renderer) {
 

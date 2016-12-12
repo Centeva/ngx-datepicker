@@ -9,4 +9,5 @@ export declare class CalendarGridComponent implements OnInit, OnDestroy {
     ngOnInit(): void;
     ngOnDestroy(): void;
     renderCalendar(cal: CalendarComponent, clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment): void;
+    renderCalendar2(cal: CalendarComponent, clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment): void;
 }

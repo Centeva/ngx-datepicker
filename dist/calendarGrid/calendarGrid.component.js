@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var moment = require('moment');
+var $ = require('jquery');
 var CalendarGridComponent = (function () {
     function CalendarGridComponent(myElement, renderer) {
         this.myElement = myElement;
@@ -20,6 +21,46 @@ var CalendarGridComponent = (function () {
     CalendarGridComponent.prototype.ngOnDestroy = function () {
     };
     CalendarGridComponent.prototype.renderCalendar = function (cal, clickCallback, dateTo, dateFrom) {
+        var d = moment(cal.date);
+        d.date(1);
+        var header = $("<div class='ct-dp-cal-header'></div>");
+        for (var i = 0; i < 7; i++) {
+            d.day(i);
+            var el = $("<div></div>");
+            el.text(d.format("dd"));
+            el.attr("ct-cal-dp-day", i.toString());
+            el.addClass("ct-dp-cal-day");
+            header.append(el);
+        }
+        d.date(1);
+        var body = $("<div class='ct-dp-cal-body'></div>");
+        for (var i = 0; i < d.day(); i++) {
+            var el = $("<div></div>");
+            el.attr("ct-dp-cal-day", i.toString());
+            el.addClass("ct-dp-cal-day");
+            body.append(el);
+        }
+        while (d.month() === cal.date.month()) {
+            var el = $("<button></button>");
+            el.text((d.date()).toString());
+            el.attr("ct-dp-cal-day", d.date().toString());
+            el.attr("tabIndex", "-1");
+            el.addClass("ct-dp-cal-day");
+            if ((dateTo && d.isSame(dateTo, "day")) || (dateFrom && d.isSame(dateFrom, "day"))) {
+                el.addClass("active");
+            }
+            if (dateFrom && dateTo && d.isBetween(dateFrom, dateTo)) {
+                el.addClass("between");
+            }
+            el.click(clickCallback(d));
+            d.date(d.date() + 1);
+            body.append(el);
+        }
+        $(this.myElement.nativeElement).empty();
+        header.appendTo(this.myElement.nativeElement);
+        body.appendTo(this.myElement.nativeElement);
+    };
+    CalendarGridComponent.prototype.renderCalendar2 = function (cal, clickCallback, dateTo, dateFrom) {
         var d = moment(cal.date);
         d.date(1);
         this.renderer.selectRootElement(this.myElement.nativeElement);

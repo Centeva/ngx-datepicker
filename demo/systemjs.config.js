@@ -25,7 +25,7 @@
 			'rxjs': 'node_modules/rxjs',
 			'lodash': 'node_modules/lodash/lodash.js',
 			'moment': 'node_modules/moment/min/moment.min.js',
-			'$': 'node_modules/jquery/dist/jquery.js',
+			'jquery': 'node_modules/jquery/dist/jquery.js',
 
 			// testing libraries
 			'systemjs': 'node_modules/systemjs',

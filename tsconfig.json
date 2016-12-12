@@ -9,11 +9,10 @@
     "sourceMap": true,
     "declaration": true,
     "outDir": "dist"
-    
   },
 	"exclude": [
 		"node_modules",
 		"demo",
-        "dist"
+    "dist"
 	]
 }
