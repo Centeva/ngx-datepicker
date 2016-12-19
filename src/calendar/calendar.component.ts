@@ -4,7 +4,6 @@ import { CalendarMode } from '../common/calendar-mode';
 import { CalendarGridComponent } from '../calendar-grid/calendar-grid.component';
 
 @Component({
-    moduleId: module.id,
     selector: 'ct-calendar',
     templateUrl: 'calendar.component.html',
     styleUrls: ['calendar.component.css'],

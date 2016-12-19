@@ -8,7 +8,6 @@ export enum DatePickerMode {
 }
 
 @Component({
-  moduleId: module.id,
   selector: 'ct-datepicker',
   templateUrl: 'datepicker.component.html',
   styleUrls: ['datepicker.component.css', '../common/common.css']

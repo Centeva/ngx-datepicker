@@ -3,26 +3,38 @@ import * as moment from 'moment';
 import { CalendarComponent } from '../calendar/calendar.component';
 import { CalendarMode } from '../common/calendar-mode';
 
+/** 
+ * Defines the mode of the picker
+ */
 export enum DualPickerMode {
-    To, From, Hidden
+    /** Allows selection of the to date. */
+    To, 
+    /** Allows selection of the from date. */
+    From, 
+    /** Makes the picker hidden, default state. */
+    Hidden
 }
 
 @Component({
-    moduleId: module.id,
     selector: 'ct-dualpicker',
     templateUrl: 'dualpicker.component.html',
     styleUrls: ['dualpicker.component.css', '../common/common.css']
 })
 export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
 
-
+    //Enum definitions for access in view
     public CalendarMode = CalendarMode;
     public DualPickerMode = DualPickerMode;
 
+    /** Date from (binding value) */
     private dateFromValue: moment.Moment;
+    /** Date to (binding value) */
     private dateToValue: moment.Moment;
+    /** Emitter for change (from)*/
     @Output() dateFromChange = new EventEmitter();
+    /** Emitter for change (to) */
     @Output() dateToChange = new EventEmitter();
+    /** Input definition for (from) */
     @Input()
     get dateFrom() {
         return this.dateFromValue;
@@ -32,6 +44,7 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
         this.dateFromValue = val;
         this.dateFromChange.emit(val);
     }
+    /** Input definition for (to) */
     @Input()
     get dateTo() {
         return this.dateToValue;
@@ -41,17 +54,25 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
         this.dateToValue = val;
         this.dateToChange.emit(val);
     }
+    /** String representation of from */
     public dateFromString: string;
+    /** String representation of to */
     public dateToString: string;
 
+    /** Cal1 view child component, use to control rendering */
     @ViewChild('cal1', CalendarComponent) public cal1: CalendarComponent;
+    /** Cal2 view child component, use to control rendering */    
     @ViewChild('cal2', CalendarComponent) public cal2: CalendarComponent;
+    /** Mode */
     public mode: DualPickerMode = DualPickerMode.Hidden;
 
     constructor() {
 
     }
 
+    /**
+     * Changes the global mode of the picker (not the mode of the calendar)
+     */
     public changeGlobalMode(mode: DualPickerMode) {
         this.mode = mode;
         switch (this.mode) {

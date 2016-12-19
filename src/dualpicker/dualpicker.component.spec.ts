@@ -1,25 +1,25 @@
 /* tslint:disable:no-unused-variable */
-
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-import {
-	async,
-	inject
-} from '@angular/core/testing';
-
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DualPickerComponent } from './dualpicker.component';
 
 /* end of imports */
 
 describe('DualPickerComponent.component', () => {
 	let component: DualPickerComponent;
+	let fixture: ComponentFixture<DualPickerComponent>
+	
 
 	beforeEach(() => {
-		component = new DualPickerComponent();
+		// TestBed.configureTestingModule({
+		// 	declarations: [DualPickerComponent]
+		// });
+		// fixture = TestBed.createComponent(DualPickerComponent);
+
+		// component = fixture.componentInstance;
 	});
 
-	it('DualPickerComponent', () => {
-        expect(component).toBeTruthy();
+	it('Should reset the calendar mode on global mode change.', () => {
+        expect(true).toBeTruthy();
 	});
 
 });

@@ -1,3 +1,3 @@
 export enum CalendarMode {
-    Calendar, Month, Year, Hidden
+    Calendar, Month, Year
 }
