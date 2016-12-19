@@ -7,7 +7,7 @@ import * as $ from 'jquery';
     moduleId: module.id,
     selector: 'ct-calendar-grid',
     template: '',
-    styleUrls: ['calendarGrid.component.css'],
+    styleUrls: ['calendar-grid.component.css'],
     encapsulation: ViewEncapsulation.None
 })
 export class CalendarGridComponent implements OnInit, OnDestroy {

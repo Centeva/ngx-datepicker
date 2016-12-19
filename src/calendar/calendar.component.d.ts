@@ -1,8 +1,7 @@
-/// <reference types="core-js" />
 import { OnInit, OnDestroy } from '@angular/core';
 import * as moment from 'moment';
-import { CalendarMode } from '../common/calendarMode';
-import { CalendarGridComponent } from '../calendarGrid/calendarGrid.component';
+import { CalendarMode } from '../common/calendar-mode';
+import { CalendarGridComponent } from '../calendar-grid/calendar-grid.component';
 export declare class CalendarComponent implements OnInit, OnDestroy {
     private static numYearsShown;
     private static halfNumYearsShown;

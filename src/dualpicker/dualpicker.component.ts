@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, OnDestroy, ElementRef, OnInit, Renderer, ViewEncapsulation, Input, ViewChild, QueryList, Output, EventEmitter } from '@angular/core';
 import * as moment from 'moment';
 import { CalendarComponent } from '../calendar/calendar.component';
-import { CalendarMode } from '../common/calendarMode';
+import { CalendarMode } from '../common/calendar-mode';
 
 export enum DualPickerMode {
     To, From, Hidden
@@ -11,8 +11,7 @@ export enum DualPickerMode {
     moduleId: module.id,
     selector: 'ct-dualpicker',
     templateUrl: 'dualpicker.component.html',
-    styleUrls: ['dualpicker.component.css', '../common/common.css'],
-    encapsulation: ViewEncapsulation.None
+    styleUrls: ['dualpicker.component.css', '../common/common.css']
 })
 export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
 
@@ -49,7 +48,7 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
     @ViewChild('cal2', CalendarComponent) public cal2: CalendarComponent;
     public mode: DualPickerMode = DualPickerMode.Hidden;
 
-    constructor(private myElement: ElementRef, private renderer: Renderer) {
+    constructor() {
 
     }
 

@@ -1,7 +1,7 @@
 import { AfterViewInit, OnDestroy, ElementRef, OnInit, Renderer, EventEmitter } from '@angular/core';
 import * as moment from 'moment';
 import { CalendarComponent } from '../calendar/calendar.component';
-import { CalendarMode } from '../common/calendarMode';
+import { CalendarMode } from '../common/calendar-mode';
 export declare enum DatePickerMode {
     Visible = 0,
     Hidden = 1,

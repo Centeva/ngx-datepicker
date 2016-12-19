@@ -1,4 +1,3 @@
-/// <reference types="core-js" />
 import { OnInit, OnDestroy, ElementRef, Renderer } from '@angular/core';
 import * as moment from 'moment';
 import { CalendarComponent } from '../calendar/calendar.component';

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ElementRef, Renderer, ViewEncapsulation, Input, ViewChild } from '@angular/core';
 import * as moment from 'moment';
-import { CalendarMode } from '../common/calendarMode';
-import { CalendarGridComponent } from '../calendarGrid/calendarGrid.component';
+import { CalendarMode } from '../common/calendar-mode';
+import { CalendarGridComponent } from '../calendar-grid/calendar-grid.component';
 
 @Component({
     moduleId: module.id,

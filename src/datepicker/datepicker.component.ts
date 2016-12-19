@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, OnDestroy, ElementRef, OnInit, Renderer, ViewEncapsulation, Input, ViewChild, QueryList, Output, EventEmitter } from '@angular/core';
 import * as moment from 'moment';
 import { CalendarComponent } from '../calendar/calendar.component';
-import { CalendarMode } from '../common/calendarMode';
+import { CalendarMode } from '../common/calendar-mode';
 
 export enum DatePickerMode {
   Visible, Hidden
@@ -11,8 +11,7 @@ export enum DatePickerMode {
   moduleId: module.id,
   selector: 'ct-datepicker',
   templateUrl: 'datepicker.component.html',
-  styleUrls: ['datepicker.component.css', '../common/common.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['datepicker.component.css', '../common/common.css']
 })
 export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
 
@@ -36,7 +35,7 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
   public dateString: string;
 
   @ViewChild(CalendarComponent) public cal: CalendarComponent;
-  public mode: DatePickerMode = DatePickerMode.Visible;
+  public mode: DatePickerMode = DatePickerMode.Hidden;
 
   constructor(private myElement: ElementRef, private renderer: Renderer) {
 

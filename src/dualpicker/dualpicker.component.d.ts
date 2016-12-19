@@ -1,15 +1,13 @@
-import { AfterViewInit, OnDestroy, ElementRef, OnInit, Renderer, EventEmitter } from '@angular/core';
+import { AfterViewInit, OnDestroy, OnInit, EventEmitter } from '@angular/core';
 import * as moment from 'moment';
 import { CalendarComponent } from '../calendar/calendar.component';
-import { CalendarMode } from '../common/calendarMode';
+import { CalendarMode } from '../common/calendar-mode';
 export declare enum DualPickerMode {
     To = 0,
     From = 1,
     Hidden = 2,
 }
 export declare class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
-    private myElement;
-    private renderer;
     CalendarMode: typeof CalendarMode;
     DualPickerMode: typeof DualPickerMode;
     private dateFromValue;
@@ -23,7 +21,7 @@ export declare class DualPickerComponent implements AfterViewInit, OnDestroy, On
     cal1: CalendarComponent;
     cal2: CalendarComponent;
     mode: DualPickerMode;
-    constructor(myElement: ElementRef, renderer: Renderer);
+    constructor();
     changeGlobalMode(mode: DualPickerMode): void;
     onDateFromStringChange(val: any): void;
     onDateToStringChange(val: any): void;
