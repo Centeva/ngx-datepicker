@@ -20,8 +20,12 @@ export class CalendarGridComponent implements OnInit, OnDestroy {
 
     }
 
-    renderCalendar(cal: CalendarComponent, clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment) {
-        let d = moment(cal.date);
+
+    /**
+     * Renders a calendar based on the date, selecting the proper from/to if visible.
+     */
+    renderCalendar(date: moment.Moment, clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment) {
+        let d = moment(date);
         d.date(1); //reset date.
 
         let header = $("<div class='ct-dp-cal-header'></div>");
@@ -48,7 +52,7 @@ export class CalendarGridComponent implements OnInit, OnDestroy {
             body.append(el);
         }
 
-        while (d.month() === cal.date.month()) {
+        while (d.month() === date.month()) {
             let el = $("<button></button>");
             el.text((d.date()).toString())
             el.attr("ct-dp-cal-day", d.date().toString());
@@ -71,7 +75,10 @@ export class CalendarGridComponent implements OnInit, OnDestroy {
         body.appendTo(this.myElement.nativeElement);
     }
 
-    renderCalendar2(cal: CalendarComponent, clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment) {
+    /**
+     * Deprecated until support of renderer is more stable.
+     */
+    renderCalendarRenderer(cal: CalendarComponent, clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment) {
         let d = moment(cal.date);
         d.date(1); //reset date.
 
