@@ -4,7 +4,6 @@ import { CalendarComponent } from '../calendar/calendar.component';
 import * as $ from 'jquery';
 
 @Component({
-    moduleId: module.id,
     selector: 'ct-calendar-grid',
     template: '',
     styleUrls: ['calendar-grid.component.css'],

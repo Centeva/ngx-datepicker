@@ -24,7 +24,12 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        include: helpers.root('src'),
+        exclude: [helpers.root('demo', 'app'), helpers.root('src')],
+        loader: null
+      },
+      {
+        test: /\.css$/,
+        include: [helpers.root('demo', 'app'), helpers.root('src')],
         loader: 'raw'
       }
     ]

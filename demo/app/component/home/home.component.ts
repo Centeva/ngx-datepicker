@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as moment from 'moment';
 
 @Component({
-  moduleId: module.id,
   selector: 'home',
   templateUrl: 'home.component.html',
   styleUrls: ['home.component.css']

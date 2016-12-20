@@ -4,6 +4,7 @@ module.exports = function (grunt) {
     var webpackConfig = require("./webpack.config.js");
     var webpackDevConfig = require("./config/webpack.dev.js");
     require('load-grunt-tasks')(grunt);
+    grunt.loadNpmTasks("grunt-webpack");
 
     // Project configuration.
     grunt.initConfig({
@@ -116,7 +117,7 @@ module.exports = function (grunt) {
     grunt.registerTask('rebuild', ['clean:preDev', 'build']);
     grunt.registerTask('w', ['build', 'watch']);
     grunt.registerTask('test', ['build', 'karma:unit']);
-    grunt.registerTask('serve', ['connect', 'webpack-dev-server', 'w']);
+    grunt.registerTask('serve', ['connect', 'w']);
     grunt.registerTask('dist', [
         'clean:preDist',
         'ts:lib',

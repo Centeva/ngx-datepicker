@@ -5,13 +5,13 @@ var helpers = require('./helpers');
 
 module.exports = {
   entry: {
-    'polyfills': './src/polyfills',
-    'vendor': './src/vendor',
-    'app': './demo/main'
+    'polyfills': './src/polyfills.ts',
+    'vendor': './src/vendor.ts',
+    'app': './demo/main.ts'
   },
 
   resolve: {
-    extensions: ['','.ts', '.js']
+    extensions: ['', '.ts', '.js', '.css']
   },
 
   module: {
@@ -30,7 +30,12 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        include: helpers.root('src', 'demo/app'),
+        exclude: [helpers.root('demo', 'app'), helpers.root('src')],
+        loader: ExtractTextPlugin.extract('style', 'raw')
+      },
+      {
+        test: /\.css$/,
+        include: [helpers.root('demo', 'app'), helpers.root('src')],
         loader: 'raw'
       }
     ]
@@ -40,6 +45,7 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       name: ['app', 'vendor', 'polyfills']
     }),
+
     new HtmlWebpackPlugin({
       template: 'demo/index.html'
     })

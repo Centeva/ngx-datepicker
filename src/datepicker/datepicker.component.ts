@@ -10,7 +10,8 @@ export enum DatePickerMode {
 @Component({
   selector: 'ct-datepicker',
   templateUrl: 'datepicker.component.html',
-  styleUrls: ['datepicker.component.css', '../common/common.css']
+  styleUrls: ['datepicker.component.css', '../common/common.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
 
