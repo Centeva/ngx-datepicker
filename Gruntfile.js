@@ -13,7 +13,7 @@ module.exports = function (grunt) {
             default: ['dist/*'],
         },
         karma: {
-            options: { configFile: './config/karma.conf.js' },
+            options: { configFile: './karma.conf.js' },
             default: {},
             phantom: { browsers: ['PhantomJS'] },
             teamcity: { reporters: ['teamcity'], browsers: ['PhantomJS'] }
