@@ -6,7 +6,7 @@ import { CalendarGridComponent } from '../calendar-grid/calendar-grid.component'
 @Component({
     selector: 'ct-calendar',
     templateUrl: 'calendar.component.html',
-    styleUrls: ['calendar.component.css'],
+    styleUrls: ['calendar.component.less'],
     encapsulation: ViewEncapsulation.None
 })
 export class CalendarComponent implements OnInit, OnDestroy {

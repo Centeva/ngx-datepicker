@@ -6,7 +6,7 @@ import * as $ from 'jquery';
 @Component({
     selector: 'ct-calendar-grid',
     template: '',
-    styleUrls: ['calendar-grid.component.css'],
+    styleUrls: ['calendar-grid.component.less'],
     encapsulation: ViewEncapsulation.None
 })
 export class CalendarGridComponent implements OnInit, OnDestroy {

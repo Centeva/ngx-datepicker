@@ -30,9 +30,9 @@ describe('CalendarGridComponent.component', () => {
 	});
 
 	it('should show the correct selected dates and between values', () =>{
-		let date = moment("2017/01/01");
-		let dateFrom = moment("2017/01/05");
-		let dateTo = moment("2017/01/10");
+		let date = moment("2017-01-01");
+		let dateFrom = moment("2017-01-05");
+		let dateTo = moment("2017-01-10");
 
 		component.renderCalendar(date, () => {}, dateTo, dateFrom);
 

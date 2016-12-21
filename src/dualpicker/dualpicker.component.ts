@@ -18,7 +18,7 @@ export enum DualPickerMode {
 @Component({
     selector: 'ct-dualpicker',
     templateUrl: 'dualpicker.component.html',
-    styleUrls: ['dualpicker.component.css', '../common/common.css'],
+    styleUrls: ['dualpicker.component.less', '../common/common.less'],
     encapsulation: ViewEncapsulation.None
 })
 export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {

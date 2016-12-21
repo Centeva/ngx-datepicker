@@ -4,7 +4,7 @@ import * as moment from 'moment';
 @Component({
   selector: 'home',
   templateUrl: 'home.component.html',
-  styleUrls: ['home.component.css']
+  styleUrls: ['home.component.less']
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
