@@ -10,18 +10,25 @@ import { CalendarGridComponent } from '../calendar-grid/calendar-grid.component'
     encapsulation: ViewEncapsulation.None
 })
 export class CalendarComponent implements OnInit, OnDestroy {
+    /** Determines how many year buttons are shown. */
     private static numYearsShown = 9;
+    /** convenience variable for generating years */
     private static halfNumYearsShown = Math.floor(CalendarComponent.numYearsShown / 2);
-
+    /** Accessor to the mode for html */
     public CalendarMode = CalendarMode;
     public mode: CalendarMode = CalendarMode.Calendar;
+    /** Date object representing the month/year shown on this calendar */
     public date: moment.Moment;
-
+    /** Array of months to show when selecting a new month */
     private months: string[] = [];
+    /** Array of years to show when selecting a new year */
     private years: number[] = [];
+    get yearData(): number[] {return this.years};
+    /** Listeners for month change */
     private monthListeners: Function[] = [];
+    /** Listeners for year change */
     private yearListeners: Function[] = [];
-
+    /** Grid view child component (actually shows the number grid) */
     @ViewChild(CalendarGridComponent) public grid: CalendarGridComponent;
 
     constructor() {
