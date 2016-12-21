@@ -1,4 +1,5 @@
 'use strict';
+var webpackMerge = require('webpack-merge');
 
 module.exports = function (grunt) {
     var webpackDevConfig = require("./config/webpack.dev.js");
@@ -20,9 +21,8 @@ module.exports = function (grunt) {
 
         },
         webpack: {
-            options: webpackDevConfig,
             dev: webpackDevConfig,
-            devw: { keepalive: true, watch: true },
+            devw: webpackMerge(webpackDevConfig, { keepalive: true, watch: true }),
             dist: webpackProdConfig
         },
         "webpack-dev-server": {
