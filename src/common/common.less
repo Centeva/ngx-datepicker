@@ -17,11 +17,9 @@
     z-index: @z-index + 1;
 
     .ct-dp-from-focus &.ct-dp-input-from {
-        background-color: lightskyblue;
     }
     
     .ct-dp-to-focus &.ct-dp-input-to {
-        background-color: lightskyblue;
     }
 }
 
@@ -40,13 +38,35 @@
     &.ct-dp-dualpicker {
         width: 2 * @full-width;
     }
-    border-left: 1px solid @gray;
-    border-right: 1px solid @gray;
-    border-bottom: 1px solid @gray;
+    border: 1px solid @gray;
     box-sizing: content-box;
     position: absolute;
     z-index: @z-index + 1;
     background-color: white;
+    margin-top: @padding;
+
+    &:after, &:before {
+	bottom: 100%;
+	left: 10%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+    }
+    &:after {
+        border-color: rgba(136, 183, 213, 0);
+        border-bottom-color: white;
+        border-width: 5px;
+        margin-left: -5px;
+    }
+    &:before {
+        border-color: rgba(194, 225, 245, 0);
+        border-bottom-color: @gray;
+        border-width: 6px;
+        margin-left: -6px;
+    }
 }
 
 .ct-dp-header {
@@ -60,6 +80,10 @@
     &:after {
         &:extend(.clearfix);
     }
+}
+
+.ct-dp-cal-inactive {
+    visibility: hidden;
 }
 
 .ct-dp-cal-header {
@@ -82,60 +106,66 @@
 }
 
 
-.ct-dp-months {
-    width: @cal-width;
-    float: left;    
-    &:after {
-        &:extend(.clearfix);
-    }
-}
-
-.ct-dp-month {
-    width: @month-width;
-    float: left;
-    text-align: center;
-}
-
+.ct-dp-months, 
 .ct-dp-years {
-    width: @cal-width;
+    width: @full-width;
     float: left;    
+    padding: @padding;
     &:after {
         &:extend(.clearfix);
     }
 }
 
+.ct-dp-month,
 .ct-dp-year {
-    width: @month-width;
+    width: 33.33%;
     float: left;
     text-align: center;
 }
 
 .ct-dp-btn {
-    margin-right: -1px;
-    border-top: none;
-    border-right: 1px solid @gray;    
-    border-bottom: none;
-    border-left: none;
     padding: 4px;
     background-color: white;
-
+    border: none;
     &:hover {
         background-color: lighten(@gray, 10%);
     }
+    &[disabled]:hover {
+        background-color: white;
+    }
+    &[disabled]{
+        color: white;
+    }
 }
 
-.ct-dp-btn-prev, .ct-dp-btn-next {
-    width: 30px;
+.ct-dp-picker {
+    .ct-dp-btn-prev, .ct-dp-btn-next {
+        width: 10%;
+    }
+
+    .ct-dp-btn-month {
+        width: 50%;
+        font-weight: 500;
+    }
+
+    .ct-dp-btn-year {
+        width: 30%;
+        font-weight: 500;
+    }
 }
 
-.ct-dp-btn-month {
-    width: 100px;
-    font-weight: 500;
-}
+.ct-dp-picker.ct-dp-dualpicker {
+    .ct-dp-btn-prev, .ct-dp-btn-next {
+        width: 5%;
+    }
 
-.ct-dp-btn-year {
-    width: 50px;
-    font-weight: 500;
+    .ct-dp-btn-month {
+        width: 25%;
+    }
+
+    .ct-dp-btn-year {
+        width: 15%;
+    }
 }
 
 
@@ -153,4 +183,12 @@
 .no-button {
     background: transparent;
     border: none !important;
+}
+
+.pull-right {
+    float:right;
+}
+
+.hidden {
+    display: none !important;
 }

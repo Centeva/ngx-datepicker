@@ -11,7 +11,7 @@ import { CalendarGridComponent } from '../calendar-grid/calendar-grid.component'
 })
 export class CalendarComponent implements OnInit, OnDestroy {
     /** Determines how many year buttons are shown. */
-    private static numYearsShown = 9;
+    private static numYearsShown = 15;
     /** convenience variable for generating years */
     private static halfNumYearsShown = Math.floor(CalendarComponent.numYearsShown / 2);
     /** Accessor to the mode for html */

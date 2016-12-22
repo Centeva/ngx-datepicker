@@ -34,14 +34,13 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
   }
   public dateString: string;
 
-  @Input() disabled: boolean = false;
+  @Input("ctDisabled") disabled: boolean = false;
   @Input() inputClass: any;
   
   @ViewChild(CalendarComponent) public cal: CalendarComponent;
-  public mode: DatePickerMode = DatePickerMode.Hidden;
+  public mode: DatePickerMode = DatePickerMode.Visible;
 
   constructor(private myElement: ElementRef, private renderer: Renderer) {
-
   }
 
   public onDateStringChange(val) {

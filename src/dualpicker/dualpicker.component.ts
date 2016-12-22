@@ -55,7 +55,7 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
         this.dateToValue = val;
         this.dateToChange.emit(val);
     }
-    @Input() disabled: boolean = false;
+    @Input("ctDisabled") disabled: boolean = false;
     @Input() inputClass: any;
 
     /** String representation of from */
@@ -68,7 +68,7 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
     /** Cal2 view child component, use to control rendering */    
     @ViewChild('cal2', CalendarComponent) public cal2: CalendarComponent;
     /** Mode */
-    public mode: DualPickerMode = DualPickerMode.Hidden;
+    public mode: DualPickerMode = DualPickerMode.To;
 
     constructor() {
 
@@ -78,6 +78,7 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
      * Changes the global mode of the picker (not the mode of the calendar)
      */
     public changeGlobalMode(mode: DualPickerMode) {
+        console.log(mode);
         this.mode = mode;
         switch (this.mode) {
             case DualPickerMode.To:

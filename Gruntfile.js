@@ -39,7 +39,7 @@ module.exports = function (grunt) {
         'webpack:dev'
     ]);
     grunt.registerTask('watch', ['clean', 'webpack:devw']);
-    grunt.registerTask('test',  ['build', 'karma:unit']);
+    grunt.registerTask('test',  ['build', 'karma:default']);
     grunt.registerTask('serve', ['clean', 'webpack-dev-server:start']);
     grunt.registerTask('dist', [
         'clean',
