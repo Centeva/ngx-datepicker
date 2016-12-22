@@ -1,1 +1,1 @@
-import './datepicker.module.ts'
+export {DatePickerModule} from './datepicker.module';

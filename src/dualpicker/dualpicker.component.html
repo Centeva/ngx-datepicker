@@ -23,13 +23,13 @@
     </div>
     <div class="ct-dp-picker ct-dp-dualpicker" [ngClass]="{'hidden': mode == DualPickerMode.Hidden}">
         <div class="ct-dp-header">
-            <button tabindex="-1" class="ct-dp-btn-prev  ct-dp-btn" (click)="goPrev()" [disabled]="cal1.mode == CalendarMode.Month || cal2.mode == CalendarMode.Month"><</button>
+            <button tabindex="-1" class="ct-dp-btn-prev  ct-dp-btn" (click)="goPrev()" [disabled]="cal1.mode == CalendarMode.Month || cal2.mode == CalendarMode.Month">&lt;</button>
             <button tabindex="-1" class="ct-dp-btn-month ct-dp-btn" (click)="changeMode(CalendarMode.Month, cal1)">{{cal1.date.format("MMMM")}}</button>
             <button tabindex="-1" class="ct-dp-btn-year  ct-dp-btn" (click)="changeMode(CalendarMode.Year, cal1)">{{cal1.date.format("YYYY")}}</button>
             <span class="pull-right">
                 <button tabindex="-1" class="ct-dp-btn-month ct-dp-btn" (click)="changeMode(CalendarMode.Month, cal2)">{{cal2.date.format("MMMM")}}</button>
                 <button tabindex="-1" class="ct-dp-btn-year  ct-dp-btn" (click)="changeMode(CalendarMode.Year, cal2)">{{cal2.date.format("YYYY")}}</button>
-                <button tabindex="-1" class="ct-dp-btn-next  ct-dp-btn" (click)="goNext()" [disabled]="this.cal1.mode == CalendarMode.Month || this.cal2.mode == CalendarMode.Month">></button>
+                <button tabindex="-1" class="ct-dp-btn-next  ct-dp-btn" (click)="goNext()" [disabled]="this.cal1.mode == CalendarMode.Month || this.cal2.mode == CalendarMode.Month">&gt;</button>
             </span>
         </div>
         <ct-calendar #cal1></ct-calendar>
