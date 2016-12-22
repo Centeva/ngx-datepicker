@@ -56,6 +56,8 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
         this.dateToChange.emit(val);
     }
     @Input() disabled: boolean = false;
+    @Input() inputClass: any;
+
     /** String representation of from */
     public dateFromString: string;
     /** String representation of to */

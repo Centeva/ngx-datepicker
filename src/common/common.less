@@ -14,10 +14,13 @@
 
 .ct-dp-input {
     position: relative;
-    width: @full-width;
     z-index: @z-index + 1;
 
-    &.focus {
+    .ct-dp-from-focus &.ct-dp-input-from {
+        background-color: lightskyblue;
+    }
+    
+    .ct-dp-to-focus &.ct-dp-input-to {
         background-color: lightskyblue;
     }
 }

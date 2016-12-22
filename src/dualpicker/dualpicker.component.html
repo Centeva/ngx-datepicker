@@ -1,21 +1,21 @@
-<div class="ct-dp">
+<div class="ct-dp" [ngClass]="{'ct-dp-from-focus': mode == DualPickerMode.From, 'ct-dp-to-focus': mode == DualPickerMode.To}">
     <input 
-        class="ct-dp-input" 
+        class="ct-dp-input ct-dp-input-from" 
         type="text" 
         (focus)="changeGlobalMode(DualPickerMode.From)"
         (keydown)="blur($event)" 
         [ngModel]="dateFromString"
-        [ngClass]="{'focus': mode == DualPickerMode.From}"
+        [ngClass]="inputClass"
         (ngModelChange)="onDateFromStringChange($event)"
         [disabled]="disabled"
     /><!--
  --><input 
-        class="ct-dp-input" 
+        class="ct-dp-input ct-dp-input-to" 
         type="text" 
         (focus)="changeGlobalMode(DualPickerMode.To)"
         (keydown)="blur($event)"          
         [ngModel]="dateToString"
-        [ngClass]="{'focus': mode == DualPickerMode.To}"
+        [ngClass]="inputClass"        
         (ngModelChange)="onDateToStringChange($event)"
         [disabled]="disabled"              
     />

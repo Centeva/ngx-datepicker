@@ -12,6 +12,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
         clean: {
             default: ['dist/*'],
+            dist: ['dist/*', '!dist/app.umd.js']
         },
         karma: {
             options: { configFile: './karma.conf.js' },

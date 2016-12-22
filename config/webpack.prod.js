@@ -9,11 +9,18 @@ const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
 module.exports = webpackMerge(commonConfig, {
   devtool: 'source-map',
 
+  entry: {
+    'polyfills': './src/polyfills.ts',
+    'vendor': './src/vendor.ts',
+    'app': './src/lib.ts'
+  },
+
   output: {
     path: helpers.root('dist'),
     publicPath: '/',
-    filename: '[name].js',
-    chunkFilename: '[id].chunk.js'
+    filename: '[name].umd.js',
+    chunkFilename: '[id].chunk.js',
+    libraryTarget: "umd"
   },
 
   htmlLoader: {
