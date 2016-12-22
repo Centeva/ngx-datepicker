@@ -1,6 +1,6 @@
 {
   "name": "ct-ng2-datepicker",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "module": "index.js",
   "description": "Angular 2 Datepicker for Centeva projects",
   "main": "index.js",
