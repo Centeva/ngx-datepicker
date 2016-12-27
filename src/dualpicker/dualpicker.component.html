@@ -1,40 +1,42 @@
-<div class="ct-dp" [ngClass]="{'ct-dp-from-focus': mode == DualPickerMode.From, 'ct-dp-to-focus': mode == DualPickerMode.To}">
-    <input 
-        class="ct-dp-input ct-dp-input-from" 
-        type="text" 
-        (focus)="changeGlobalMode(DualPickerMode.From)"
-        (keydown)="blur($event)" 
-        [ngModel]="dateFromString"
-        [ngClass]="inputClass"
-        (ngModelChange)="onDateFromStringChange($event)"
-        [disabled]="disabled"
-        tabindex="0"
-    /><!--
- --><input 
-        class="ct-dp-input ct-dp-input-to" 
-        type="text" 
-        (focus)="changeGlobalMode(DualPickerMode.To)"
-        (keydown)="blur($event)"          
-        [ngModel]="dateToString"
-        [ngClass]="inputClass"        
-        (ngModelChange)="onDateToStringChange($event)"
-        [disabled]="disabled"              
-        tabindex="0"
-    />
-    <div class="ct-dp-shadow-box" (click)="changeGlobalMode(DualPickerMode.Hidden)" *ngIf="mode != DualPickerMode.Hidden">
+<input 
+    class="ct-dp-input ct-dp-input-from" 
+    type="text" 
+    (focus)="changeGlobalMode(DualPickerMode.From)"
+    (keydown)="blur($event)" 
+    [ngModel]="dateFromString"
+    [class.active]="mode !== DualPickerMode.Hidden"
+    [ngClass]="inputClass"
+    (ngModelChange)="onDateFromStringChange($event)"
+    [disabled]="disabled"
+    tabindex="0"
+    autocomplete="off"
+/><!--
+--><input 
+    class="ct-dp-input ct-dp-input-to" 
+    type="text" 
+    (focus)="changeGlobalMode(DualPickerMode.To)"
+    (keydown)="blur($event)"          
+    [ngModel]="dateToString"
+    [class.active]="mode !== DualPickerMode.Hidden"
+    [ngClass]="inputClass"        
+    (ngModelChange)="onDateToStringChange($event)"
+    [disabled]="disabled"              
+    tabindex="0"
+    autocomplete="off"
+/>
+<div class="ct-dp-shadow-box" (click)="changeGlobalMode(DualPickerMode.Hidden)" *ngIf="mode != DualPickerMode.Hidden">
+</div>
+<div class="ct-dp-picker ct-dp-dualpicker" [ngClass]="{'hidden': mode == DualPickerMode.Hidden}">
+    <div class="ct-dp-header"><!--
+        --><button tabindex="-1" class="ct-dp-btn-prev  ct-dp-btn" (click)="goPrev()" [disabled]="cal1.mode == CalendarMode.Month || cal2.mode == CalendarMode.Month">&lt;</button><!--
+        --><button tabindex="-1" class="ct-dp-btn-month ct-dp-btn" (click)="changeMode(CalendarMode.Month, cal1)">{{cal1.date.format("MMMM")}}</button><!--
+        --><button tabindex="-1" class="ct-dp-btn-year  ct-dp-btn" (click)="changeMode(CalendarMode.Year, cal1)">{{cal1.date.format("YYYY")}}</button><!--
+        --><button tabindex="-1" class="ct-dp-btn-next  ct-dp-btn" [disabled]="true"></button><!--
+        --><button tabindex="-1" class="ct-dp-btn-prev  ct-dp-btn" [disabled]="true"></button><!--
+        --><button tabindex="-1" class="ct-dp-btn-month ct-dp-btn" (click)="changeMode(CalendarMode.Month, cal2)">{{cal2.date.format("MMMM")}}</button><!--
+        --><button tabindex="-1" class="ct-dp-btn-year  ct-dp-btn" (click)="changeMode(CalendarMode.Year, cal2)">{{cal2.date.format("YYYY")}}</button><!--
+        --><button tabindex="-1" class="ct-dp-btn-next  ct-dp-btn" (click)="goNext()" [disabled]="this.cal1.mode == CalendarMode.Month || this.cal2.mode == CalendarMode.Month">&gt;</button>
     </div>
-    <div class="ct-dp-picker ct-dp-dualpicker" [ngClass]="{'hidden': mode == DualPickerMode.Hidden}">
-        <div class="ct-dp-header"><!--
-            --><button tabindex="-1" class="ct-dp-btn-prev  ct-dp-btn" (click)="goPrev()" [disabled]="cal1.mode == CalendarMode.Month || cal2.mode == CalendarMode.Month">&lt;</button><!--
-            --><button tabindex="-1" class="ct-dp-btn-month ct-dp-btn" (click)="changeMode(CalendarMode.Month, cal1)">{{cal1.date.format("MMMM")}}</button><!--
-            --><button tabindex="-1" class="ct-dp-btn-year  ct-dp-btn" (click)="changeMode(CalendarMode.Year, cal1)">{{cal1.date.format("YYYY")}}</button><!--
-            --><button tabindex="-1" class="ct-dp-btn-next  ct-dp-btn" [disabled]="true"></button><!--
-            --><button tabindex="-1" class="ct-dp-btn-prev  ct-dp-btn" [disabled]="true"></button><!--
-            --><button tabindex="-1" class="ct-dp-btn-month ct-dp-btn" (click)="changeMode(CalendarMode.Month, cal2)">{{cal2.date.format("MMMM")}}</button><!--
-            --><button tabindex="-1" class="ct-dp-btn-year  ct-dp-btn" (click)="changeMode(CalendarMode.Year, cal2)">{{cal2.date.format("YYYY")}}</button><!--
-            --><button tabindex="-1" class="ct-dp-btn-next  ct-dp-btn" (click)="goNext()" [disabled]="this.cal1.mode == CalendarMode.Month || this.cal2.mode == CalendarMode.Month">&gt;</button>
-        </div>
-        <ct-calendar #cal1 [ngClass]="{'ct-dp-cal-inactive': cal2.mode != CalendarMode.Calendar}"></ct-calendar>
-        <ct-calendar #cal2 [ngClass]="{'ct-dp-cal-inactive': cal1.mode != CalendarMode.Calendar}"></ct-calendar>
-    </div>
+    <ct-calendar #cal1 [ngClass]="{'ct-dp-cal-inactive': cal2.mode != CalendarMode.Calendar}"></ct-calendar>
+    <ct-calendar #cal2 [ngClass]="{'ct-dp-cal-inactive': cal1.mode != CalendarMode.Calendar}"></ct-calendar>
 </div>

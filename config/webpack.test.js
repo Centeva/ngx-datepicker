@@ -25,7 +25,7 @@ module.exports = {
       {
         test: /\.less$/,
         exclude: [helpers.root('demo', 'app'), helpers.root('src')],
-        loader: null
+        loader: 'null'
       },
       {
         test: /\.less$/,

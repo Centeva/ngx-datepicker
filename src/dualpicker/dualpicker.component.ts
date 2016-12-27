@@ -68,7 +68,7 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
     /** Cal2 view child component, use to control rendering */    
     @ViewChild('cal2', CalendarComponent) public cal2: CalendarComponent;
     /** Mode */
-    public mode: DualPickerMode = DualPickerMode.To;
+    public mode: DualPickerMode = DualPickerMode.Hidden;
 
     constructor() {
 

@@ -38,7 +38,7 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
   @Input() inputClass: any;
   
   @ViewChild(CalendarComponent) public cal: CalendarComponent;
-  public mode: DatePickerMode = DatePickerMode.Visible;
+  public mode: DatePickerMode = DatePickerMode.Hidden;
 
   constructor(private myElement: ElementRef, private renderer: Renderer) {
   }
@@ -46,12 +46,14 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
   public onDateStringChange(val) {
     this.dateString = val;
     let m = moment(new Date(val));
+    this.dateValue.set(m.toObject());    
+    this.dateChange.emit(this.dateValue);
     if (m.isValid()) {
-      this.dateValue.set(m.toObject());
       this.cal.date = this.dateValue;
-      this.dateChange.emit(this.dateValue);
-      this.renderCalendar();
+    } else {
+      this.cal.date = moment();
     }
+    this.renderCalendar();    
   }
 
   public changeGlobalMode(mode: DatePickerMode) {
