@@ -1,5 +1,6 @@
-import { Component, AfterViewInit, OnDestroy, ElementRef, OnInit, Renderer, ViewEncapsulation, Input, ViewChild, QueryList, Output, EventEmitter } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, OnInit, Renderer, ViewEncapsulation, Input, ViewChild, QueryList, Output, EventEmitter, ElementRef } from '@angular/core';
 import * as moment from 'moment';
+import * as $ from 'jquery';
 import { CalendarComponent } from '../calendar/calendar.component';
 import { CalendarMode } from '../common/calendar-mode';
 
@@ -70,7 +71,7 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
     /** Mode */
     public mode: DualPickerMode = DualPickerMode.Hidden;
 
-    constructor() {
+    constructor(private myElement:ElementRef) {
 
     }
 
@@ -82,11 +83,16 @@ export class DualPickerComponent implements AfterViewInit, OnDestroy, OnInit {
         this.mode = mode;
         switch (this.mode) {
             case DualPickerMode.To:
+                let l = $(this.myElement.nativeElement).find(".ct-dp-input-to").position().left;
+                $(this.myElement.nativeElement).find(".ct-dp-caret").css({"left":l});
+                break;
             case DualPickerMode.From:
-                this.changeMode(CalendarMode.Calendar, this.cal1);
-                this.changeMode(CalendarMode.Calendar, this.cal2);
+                let lfrom = $(this.myElement.nativeElement).find(".ct-dp-input-from").position().left;
+                $(this.myElement.nativeElement).find(".ct-dp-caret").css({"left":lfrom});
                 break;
         }
+        this.changeMode(CalendarMode.Calendar, this.cal1);
+        this.changeMode(CalendarMode.Calendar, this.cal2);
     }
 
     public onDateFromStringChange(val) {

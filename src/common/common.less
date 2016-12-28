@@ -5,17 +5,11 @@
 @padding: 5px;
 @full-width: @cal-width + (2 * @padding);
 @z-index: 100;
-@gray: lighten(black, 75%);
+@gray: lighten(black, 50%);
 
 .ct-dp-input.active {
     position: relative;
     z-index: @z-index + 1;
-
-    .ct-dp-from-focus &.ct-dp-input-from {
-    }
-    
-    .ct-dp-to-focus &.ct-dp-input-to {
-    }
 }
 
 .ct-dp-shadow-box {
@@ -38,31 +32,35 @@
     position: absolute;
     z-index: @z-index + 1;
     background-color: white;
-    margin-top: @padding;
+    margin-top: 14px;
+    transition: 0.5s;
+    &.ct-dp-picker-to {
+        margin-left: 15px;
+    }     
+}
 
-    &:after, &:before {
+.ct-dp-caret-2, .ct-dp-caret-1 {
 	bottom: 100%;
-	left: 10%;
+    left: 10%;
 	border: solid transparent;
-	content: " ";
 	height: 0;
 	width: 0;
 	position: absolute;
 	pointer-events: none;
+    transition: 0.5s;
     }
-    &:after {
+    .ct-dp-caret-2 {
         border-color: rgba(136, 183, 213, 0);
         border-bottom-color: white;
-        border-width: 5px;
-        margin-left: -5px;
+        border-width: 14px;
+        margin-left: -14px;
     }
-    &:before {
+    .ct-dp-caret-1 {
         border-color: rgba(194, 225, 245, 0);
         border-bottom-color: @gray;
-        border-width: 6px;
-        margin-left: -6px;
+        border-width: 16px;
+        margin-left: -16px;
     }
-}
 
 .ct-dp-header {
     border-bottom: 1px solid @gray;

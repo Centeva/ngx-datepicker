@@ -13,7 +13,9 @@
 />
 <div class="ct-dp-shadow-box" (click)="changeGlobalMode(DatePickerMode.Hidden)" *ngIf="mode != DatePickerMode.Hidden">
 </div>
-<div class="ct-dp-picker" [class.hidden]="mode == DatePickerMode.Hidden">
+<div class="ct-dp-picker" [class.hidden]="mode == DatePickerMode.Hidden" caret-left="10%">
+    <div class="ct-dp-caret-1"></div>
+    <div class="ct-dp-caret-2"></div>
     <div class="ct-dp-header"><!--
         --><button tabindex="-1" class="ct-dp-btn-prev  ct-dp-btn" (click)="goPrev()" [disabled]="cal.mode == CalendarMode.Month">&lt;</button><!--
         --><button tabindex="-1" class="ct-dp-btn-month ct-dp-btn" (click)="changeMode(CalendarMode.Month)">{{cal.date.format("MMMM")}}</button><!--
