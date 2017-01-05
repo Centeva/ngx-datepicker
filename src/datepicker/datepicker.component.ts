@@ -1,21 +1,20 @@
-import { Component, AfterViewInit, OnDestroy, ElementRef, OnInit, Renderer, ViewEncapsulation, Input, ViewChild, QueryList, Output, EventEmitter } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, ContentChild, ElementRef, OnInit, Renderer, ViewEncapsulation, Input, ViewChild, QueryList, Output, EventEmitter } from '@angular/core';
 import * as moment from 'moment';
 import { CalendarComponent } from '../calendar/calendar.component';
-import { CalendarMode } from '../common/calendarMode';
+import { CalendarMode } from '../common/calendar-mode';
+import * as $ from 'jquery';
 
 export enum DatePickerMode {
   Visible, Hidden
 }
 
 @Component({
-  moduleId: module.id,
-  selector: 'ct-datepicker',
+  selector: 'ct-date-picker',
   templateUrl: 'datepicker.component.html',
-  styleUrls: ['datepicker.component.css', '../common/common.css'],
+  styleUrls: ['datepicker.component.less', '../common/common.less'],
   encapsulation: ViewEncapsulation.None
 })
 export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
-
 
   public CalendarMode = CalendarMode;
   public DatePickerMode = DatePickerMode;
@@ -27,28 +26,41 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
     return this.dateValue;
   }
   set date(val) {
-    this.dateString = val.format("MM/DD/YYYY");
-    this.dateValue = val;
-    this.dateChange.emit(val);
+    if (val instanceof moment && val.isValid()) {
+      this.input.nativeElement.value = val.format("MM/DD/YYYY");
+      this.dateValue = val;
+      this.dateChange.emit(val);
+    }
   }
-  public dateString: string;
+
+  @Input("ctDisabled") disabled: boolean = false;
+  @Input() inputClass: any;
+
+  @ContentChild('date') input: ElementRef;
 
   @ViewChild(CalendarComponent) public cal: CalendarComponent;
   public mode: DatePickerMode = DatePickerMode.Hidden;
 
-  constructor(private myElement: ElementRef, private renderer: Renderer) {
+  shadowZIndex: number = 100;
+  zIndexVal: number = 101;
+  @Input('zIndex') set zIndex(val: number) {
+    this.shadowZIndex = val;
+    this.zIndexVal = val + 1.0;
+  }
 
+  constructor(private myElement: ElementRef, private renderer: Renderer) {
   }
 
   public onDateStringChange(val) {
-    this.dateString = val;
     let m = moment(new Date(val));
+    this.dateValue.set(m.toObject());
+    this.dateChange.emit(this.dateValue);
     if (m.isValid()) {
-      this.dateValue.set(m.toObject());
       this.cal.date = this.dateValue;
-      this.dateChange.emit(this.dateValue);
-      this.renderCalendar();
+    } else {
+      this.cal.date = moment();
     }
+    this.renderCalendar();
   }
 
   public changeGlobalMode(mode: DatePickerMode) {
@@ -56,7 +68,10 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
     switch (this.mode) {
       case DatePickerMode.Visible:
         this.changeMode(CalendarMode.Calendar);
+        $(this.myElement.nativeElement).addClass("ct-dp-active");
         break;
+      case DatePickerMode.Hidden:
+        $(this.myElement.nativeElement).removeClass("ct-dp-active");
     }
   }
 
@@ -94,13 +109,22 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this.cal.date = moment(this.date);
+    if (this.date instanceof moment && this.date.isValid()) {
+      this.cal.date = moment(this.date);
+    } else {
+      this.cal.date = moment();
+    }
     this.cal.subscribeToChangeMonth(this.monthChangeListener);
     this.cal.subscribeToChangeYear(this.yearChangeListener);
   }
 
   ngAfterViewInit() {
     this.renderCalendar();
+
+        this.input.nativeElement.style['z-index'] = this.zIndexVal;
+        this.input.nativeElement.addEventListener('focus', () => { this.changeGlobalMode(DatePickerMode.Visible) });
+        this.input.nativeElement.addEventListener('blur', (event) => { this.blur(event) });
+        this.input.nativeElement.addEventListener('keyup', (event) => { this.onDateStringChange(this.input.nativeElement.value) });
   }
 
   ngOnDestroy() {

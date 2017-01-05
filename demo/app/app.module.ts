@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { appRouterProviders } from './app.routes';
-import { DatePickerModule } from '../../dist/datepicker.module';
+import { DatePickerModule } from '../../src/datepicker.module';
 
 @NgModule({
 	declarations: [

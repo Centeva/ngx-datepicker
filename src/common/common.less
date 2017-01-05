@@ -4,21 +4,12 @@
 @month-width: @cal-width / 3;
 @padding: 5px;
 @full-width: @cal-width + (2 * @padding);
-@z-index: 100;
-@gray: lighten(black, 75%);
+@gray: lighten(black, 50%);
 
-.ct-dp {
-    position: relative;
-    display: inline-block;
-}
 
-.ct-dp-input {
-    position: relative;
-    width: @full-width;
-    z-index: @z-index + 1;
-
-    &.focus {
-        background-color: lightskyblue;
+.ct-dp-active {
+    input {
+        position: relative;
     }
 }
 
@@ -29,7 +20,6 @@
     bottom: 0;
     left: 0;
     background-color: transparent;
-    z-index: @z-index;
 }
 
 .ct-dp-picker {
@@ -37,14 +27,39 @@
     &.ct-dp-dualpicker {
         width: 2 * @full-width;
     }
-    border-left: 1px solid @gray;
-    border-right: 1px solid @gray;
-    border-bottom: 1px solid @gray;
+    border: 1px solid @gray;
     box-sizing: content-box;
     position: absolute;
-    z-index: @z-index + 1;
     background-color: white;
+    margin-top: 14px;
+    transition: 0.5s;
+    &.ct-dp-picker-to {
+        margin-left: 15px;
+    }     
 }
+
+.ct-dp-caret-2, .ct-dp-caret-1 {
+	bottom: 100%;
+    left: 10%;
+	border: solid transparent;
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+    transition: 0.5s;
+    }
+    .ct-dp-caret-2 {
+        border-color: rgba(136, 183, 213, 0);
+        border-bottom-color: white;
+        border-width: 14px;
+        margin-left: -14px;
+    }
+    .ct-dp-caret-1 {
+        border-color: rgba(194, 225, 245, 0);
+        border-bottom-color: @gray;
+        border-width: 16px;
+        margin-left: -16px;
+    }
 
 .ct-dp-header {
     border-bottom: 1px solid @gray;
@@ -59,6 +74,10 @@
     }
 }
 
+.ct-dp-cal-inactive {
+    visibility: hidden;
+}
+
 .ct-dp-cal-header {
     color: @gray;
 }
@@ -71,68 +90,76 @@
     &:extend(.no-button);
 }
 
-.ct-dp-months {
-    width: @cal-width;
-    float: left;    
-    &:after {
-        &:extend(.clearfix);
-    }
-}
-
-.ct-dp-month {
-    width: @month-width;
-    float: left;
-    text-align: center;
-}
-
-.ct-dp-years {
-    width: @cal-width;
-    float: left;    
-    &:after {
-        &:extend(.clearfix);
-    }
-}
-
-.ct-dp-year {
-    width: @month-width;
-    float: left;
-    text-align: center;
-}
-
-.ct-dp-btn {
-    margin-right: -1px;
-    border-top: none;
-    border-right: 1px solid @gray;    
-    border-bottom: none;
-    border-left: none;
-    padding: 4px;
-    background-color: white;
-
-    &:hover {
-        background-color: lighten(@gray, 10%);
-    }
-}
-
-.ct-dp-btn-prev, .ct-dp-btn-next {
-    width: 30px;
-}
-
-.ct-dp-btn-month {
-    width: 100px;
-    font-weight: 500;
-}
-
-.ct-dp-btn-year {
-    width: 50px;
-    font-weight: 500;
-}
-
 .ct-dp-cal-day.active {
     background-color: lightblue;
 }
 .ct-dp-cal-day.between {
     background-color: lightgray;
 }
+
+
+.ct-dp-months, 
+.ct-dp-years {
+    width: @full-width;
+    float: left;    
+    padding: @padding;
+    &:after {
+        &:extend(.clearfix);
+    }
+}
+
+.ct-dp-month,
+.ct-dp-year {
+    width: 33.33%;
+    float: left;
+    text-align: center;
+}
+
+.ct-dp-btn {
+    padding: 4px;
+    background-color: white;
+    border: none;
+    &:hover {
+        background-color: lighten(@gray, 10%);
+    }
+    &[disabled]:hover {
+        background-color: white;
+    }
+    &[disabled]{
+        color: white;
+    }
+}
+
+.ct-dp-picker {
+    .ct-dp-btn-prev, .ct-dp-btn-next {
+        width: 10%;
+    }
+
+    .ct-dp-btn-month {
+        width: 50%;
+        font-weight: 500;
+    }
+
+    .ct-dp-btn-year {
+        width: 30%;
+        font-weight: 500;
+    }
+}
+
+.ct-dp-picker.ct-dp-dualpicker {
+    .ct-dp-btn-prev, .ct-dp-btn-next {
+        width: 5%;
+    }
+
+    .ct-dp-btn-month {
+        width: 25%;
+    }
+
+    .ct-dp-btn-year {
+        width: 15%;
+    }
+}
+
 
 
 //Utilities
@@ -148,4 +175,12 @@
 .no-button {
     background: transparent;
     border: none !important;
+}
+
+.pull-right {
+    float:right;
+}
+
+.hidden {
+    display: none !important;
 }

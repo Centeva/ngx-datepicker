@@ -1,19 +1,16 @@
 {
   "compilerOptions": {
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
-    "removeComments": true,
     "sourceMap": true,
-    "declaration": true,
-    "outDir": "dist"
-    
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": ["es2015", "dom"],
+    //"noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true
   },
 	"exclude": [
-		"node_modules",
-		"demo",
-        "dist"
+		"node_modules"
 	]
 }
