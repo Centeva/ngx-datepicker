@@ -1,4 +1,4 @@
-import { Directive, Component, AfterViewInit, ComponentFactoryResolver, ComponentFactory, ViewContainerRef, OnDestroy, ElementRef, OnInit, Renderer, ViewEncapsulation, Input, ViewChild, QueryList, Output, EventEmitter } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, ElementRef, OnInit, Renderer, ViewEncapsulation, Input, ViewChild, QueryList, Output, EventEmitter } from '@angular/core';
 import * as moment from 'moment';
 import { CalendarComponent } from '../calendar/calendar.component';
 import { CalendarMode } from '../common/calendar-mode';
@@ -8,23 +8,52 @@ export enum DatePickerMode {
 }
 
 @Component({
-  selector: 'ct-datepicker-inner',
+  selector: 'ct-datepicker',
   templateUrl: 'datepicker.component.html',
   styleUrls: ['datepicker.component.less', '../common/common.less'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
-export class DatePickerInnerComponent {
+export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit {
+
+
   public CalendarMode = CalendarMode;
   public DatePickerMode = DatePickerMode;
 
-  public parent: DatePickerComponent;
+  @Output() dateChange = new EventEmitter();
+  private dateValue: moment.Moment;
+  @Input()
+  get date() {
+    return this.dateValue;
+  }
+  set date(val) {
+    if (val instanceof moment && val.isValid()) {
+      this.dateString = val.format("MM/DD/YYYY");
+      this.dateValue = val;
+      this.dateChange.emit(val);
+    }
+  }
+  public dateString: string;
+
   @Input("ctDisabled") disabled: boolean = false;
   @Input() inputClass: any;
-
+  
   @ViewChild(CalendarComponent) public cal: CalendarComponent;
   public mode: DatePickerMode = DatePickerMode.Hidden;
 
   constructor(private myElement: ElementRef, private renderer: Renderer) {
+  }
+
+  public onDateStringChange(val) {
+    this.dateString = val;
+    let m = moment(new Date(val));
+    this.dateValue.set(m.toObject());    
+    this.dateChange.emit(this.dateValue);
+    if (m.isValid()) {
+      this.cal.date = this.dateValue;
+    } else {
+      this.cal.date = moment();
+    }
+    this.renderCalendar();    
   }
 
   public changeGlobalMode(mode: DatePickerMode) {
@@ -70,8 +99,8 @@ export class DatePickerInnerComponent {
   }
 
   ngOnInit() {
-    if (this.parent.date instanceof moment && this.parent.date.isValid()) {
-      this.cal.date = moment(this.parent.date);
+    if (this.date instanceof moment && this.date.isValid()) {
+      this.cal.date = moment(this.date);
     } else {
       this.cal.date = moment();
     }
@@ -88,7 +117,7 @@ export class DatePickerInnerComponent {
   }
 
   renderCalendar() {
-    this.cal.renderCalendar(this.dateClickListener, this.parent.date, this.parent.date);
+    this.cal.renderCalendar(this.dateClickListener, this.date, this.date);
   }
 
   dateClickListener = (date: moment.Moment) => {
@@ -109,61 +138,11 @@ export class DatePickerInnerComponent {
   setDate(date: moment.Moment) {
     switch (this.mode) {
       case DatePickerMode.Visible:
-        this.parent.dateChange.emit(date);
-        this.parent.dateValue = date;
+        this.date = date;
         this.changeGlobalMode(DatePickerMode.Hidden);
         break;
     }
     this.renderCalendar();
-  }
-
-  
-  public onDateStringChange(val) {
-     let m = moment(new Date(val));
-     this.parent.dateValue.set(m.toObject());
-     this.parent.dateChange.emit(this.parent.dateValue);
-     if (m.isValid()) {
-       this.cal.date = this.parent.dateValue;
-     } else {
-       this.cal.date = moment();
-     }
-     this.renderCalendar();
-  }
-}
-
-@Component({
-  selector: 'input[ctDatepicker]',
-  template: '',
-  entryComponents: [DatePickerInnerComponent]
-})
-export class DatePickerComponent implements OnInit {
-  @Output() dateChange = new EventEmitter();
-  dateValue: moment.Moment;
-  @Input()
-  get date() {
-    return this.dateValue;
-  }
-  set date(val) {
-    if (val instanceof moment && val.isValid()) {
-      this.element.nativeElement.value = val.format("MM/DD/YYYY");
-      this.dateValue = val;
-      this.dateChange.emit(val);
-    }
-  }
-  private datePickerInnerComponent: DatePickerInnerComponent;
-
-  constructor(private element: ElementRef,
-    private viewContainer: ViewContainerRef, private componentFactoryResolver: ComponentFactoryResolver) {
-    element.nativeElement.addEventListener('focus', (event) => { this.datePickerInnerComponent.changeGlobalMode(DatePickerMode.Visible); });
-    element.nativeElement.addEventListener('keydown', (event) => { this.datePickerInnerComponent.blur(event) });
-    element.nativeElement.addEventListener('keyup', (event) => { this.datePickerInnerComponent.onDateStringChange(element.nativeElement.value)});
-  }
-
-  ngOnInit() {
-    let pickerComponentFactory = this.componentFactoryResolver.resolveComponentFactory(DatePickerInnerComponent);
-    let ref = this.viewContainer.createComponent(pickerComponentFactory);
-    this.datePickerInnerComponent = ref.instance;
-    this.datePickerInnerComponent.parent = this;
   }
 
 }
