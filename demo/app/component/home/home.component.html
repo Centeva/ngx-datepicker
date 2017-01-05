@@ -18,7 +18,9 @@
             a.
             <div>
                 <form class="form-inline">
-                    <input ctDatepicker class="form-control" [(date)]="date1"/>
+                    <ct-date-picker [(date)]="date1" zIndex="100">
+                        <input #date class="form-control" />
+                    </ct-date-picker>
                     <!--<ct-datepicker [(date)]="date1" ctDisabled="false" inputClass="form-control"></ct-datepicker>-->
                     {{date1 | json}} Sed nec sagittis lectus. Morbi accumsan vehicula sagittis. Phasellus et accumsan nisi, aliquam fermentum
                     sapien. Proin iaculis lobortis fringilla. Nulla massa nisi, pellentesque a ex a, efficitur mattis quam.
@@ -26,7 +28,11 @@
                     Fusce a urna nisi. In hac habitasse platea dictumst. Integer volutpat, metus eget condimentum placerat,
                     erat dolor porta justo, in dictum felis metus sed odio.
                     <div>
-                    <ct-dualpicker [(dateFrom)]="date2" [(dateTo)]="date3" ctDisabled="false" inputClass="form-control"></ct-dualpicker>
+                        <ct-dual-picker [(dateFrom)]="date2" [(dateTo)]="date3" zIndex="100">
+                            <input #dateFrom class="form-control" />
+                            <input #dateTo class="form-control" />
+                            <!--<ct-dualpicker [(dateFrom)]="date2" [(dateTo)]="date3" ctDisabled="false" inputClass="form-control"></ct-dualpicker>-->
+                        </ct-dual-picker>
                     </div>
                 </form>
             </div>

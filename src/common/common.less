@@ -4,12 +4,13 @@
 @month-width: @cal-width / 3;
 @padding: 5px;
 @full-width: @cal-width + (2 * @padding);
-@z-index: 100;
 @gray: lighten(black, 50%);
 
-.ct-dp-input.active {
-    position: relative;
-    z-index: @z-index + 1;
+
+.ct-dp-active {
+    input {
+        position: relative;
+    }
 }
 
 .ct-dp-shadow-box {
@@ -19,7 +20,6 @@
     bottom: 0;
     left: 0;
     background-color: transparent;
-    z-index: @z-index;
 }
 
 .ct-dp-picker {
@@ -30,7 +30,6 @@
     border: 1px solid @gray;
     box-sizing: content-box;
     position: absolute;
-    z-index: @z-index + 1;
     background-color: white;
     margin-top: 14px;
     transition: 0.5s;

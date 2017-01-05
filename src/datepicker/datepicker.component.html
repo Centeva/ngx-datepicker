@@ -1,19 +1,7 @@
-<!--<input 
-    class="ct-dp-input" 
-    type="text" 
-    (focus)="changeGlobalMode(DatePickerMode.Visible)"
-    (keydown)="blur($event)" 
-    [ngModel]="dateString"
-    (ngModelChange)="onDateStringChange($event)"
-    [disabled]="disabled"
-    [class.active]="mode !== DatePickerMode.Hidden"
-    [ngClass]="inputClass"
-    tabindex="0"
-    autocomplete="off"
-/>-->
-<div class="ct-dp-shadow-box" (click)="changeGlobalMode(DatePickerMode.Hidden)" *ngIf="mode != DatePickerMode.Hidden">
+<ng-content></ng-content>
+<div class="ct-dp-shadow-box" (click)="changeGlobalMode(DatePickerMode.Hidden)" *ngIf="mode != DatePickerMode.Hidden" [style.z-index]="shadowZIndex">
 </div>
-<div class="ct-dp-picker" [class.hidden]="mode == DatePickerMode.Hidden" caret-left="10%">
+<div class="ct-dp-picker" [class.hidden]="mode == DatePickerMode.Hidden" [style.z-index]="zIndexVal">
     <div class="ct-dp-caret-1"></div>
     <div class="ct-dp-caret-2"></div>
     <div class="ct-dp-header"><!--
