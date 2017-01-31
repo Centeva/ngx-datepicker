@@ -39,7 +39,8 @@ Because the datepicker returns a moment date, not a string.
 
 
 ## Release Notes
- - 2.0.0 -- Removed unused api parameters.
+ - 2.0.0 -- Removed unused api parameters. Added basic validation for reactive forms.
+ - 1.0.2 -- Notice about new repo. 
  - 1.0.1 -- Unspecified bug fixes (sorry, just starting to do this right)
  - 1.0.0 -- Initial Release
 
