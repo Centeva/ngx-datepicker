@@ -8,6 +8,7 @@ import { CalendarComponent } from '../calendar/calendar.component';
 import { CalendarMode } from '../common/calendar-mode';
 import * as $ from 'jquery';
 import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
+import { DatePickerBase } from '../common/datepicker-base';
 
 export enum DatePickerMode {
   Visible, Hidden
@@ -23,15 +24,10 @@ export enum DatePickerMode {
     { provide: NG_VALIDATORS, useExisting: forwardRef(() => DatePickerComponent), multi: true }
   ]
 })
-export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit, ControlValueAccessor, OnChanges {
+export class DatePickerComponent extends DatePickerBase implements AfterViewInit, OnDestroy, OnInit, ControlValueAccessor, OnChanges {
   /** Enum Accessors for HTML */
   public CalendarMode = CalendarMode;
   public DatePickerMode = DatePickerMode;
-
-  /** Validation Functions */
-  propagateChange: any = () => { };
-  propagateTouched: any = () => { };
-  validateFn: any = () => { };
 
   @Output() dateChange = new EventEmitter();
   private dateValue: moment.Moment;
@@ -53,35 +49,8 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit, Co
   @ViewChild(CalendarComponent) public cal: CalendarComponent;
   public mode: DatePickerMode = DatePickerMode.Hidden;
 
-  shadowZIndex: number = 100;
-  zIndexVal: number = 101;
-  @Input('zIndex') set zIndex(val: number) {
-    this.shadowZIndex = val;
-    this.zIndexVal = val + 1.0;
-  }
-
-  minDateVal: moment.Moment = null;
-  maxDateVal: moment.Moment = null;
-  @Input('minDate') set minDate(val: any) {
-    let d = moment(val);
-    if (d.isValid()) {
-      this.minDateVal = moment(val);
-    }
-    else {
-      this.minDateVal = null;
-    }
-  }
-  @Input('maxDate') set maxDate(val: any) {
-    let d = moment(val);
-    if (d.isValid()) {
-      this.maxDateVal = moment(val);
-    }
-    else {
-      this.maxDateVal = null;
-    }
-  }
-
   constructor(private myElement: ElementRef, private renderer: Renderer) {
+    super();
   }
 
   public onDateStringChange(val) {
@@ -217,14 +186,6 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit, Co
     }
   }
 
-  registerOnChange(fn) {
-    this.propagateChange = fn;
-  }
-
-  registerOnTouched(fn) {
-    this.propagateTouched = fn;
-  }
-
   validate(c: FormControl) {
     if (!(c.value instanceof moment) || !c.value.isValid()) {
       return "Invalid Date";
@@ -233,8 +194,8 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit, Co
       return "Date cannot be before " + this.minDateVal.format("mm/DD/yyyy");
     }
     if (this.maxDateVal && this.maxDateVal.isBefore(c.value)) {
-        return "Date cannot be after " + this.maxDateVal.format("mm/DD/yyyy");
-      }
+      return "Date cannot be after " + this.maxDateVal.format("mm/DD/yyyy");
+    }
     return null;
   }
 }

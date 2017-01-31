@@ -8,6 +8,7 @@ import * as $ from 'jquery';
 import { CalendarComponent } from '../calendar/calendar.component';
 import { CalendarMode } from '../common/calendar-mode';
 import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
+import { DatePickerBase } from '../common/datepicker-base';
 
 /** 
  * Defines the mode of the picker
@@ -31,15 +32,10 @@ export enum DualPickerMode {
         { provide: NG_VALIDATORS, useExisting: forwardRef(() => DualPickerComponent), multi: true }
     ]
 })
-export class DualPickerComponent implements ControlValueAccessor, OnChanges {
+export class DualPickerComponent extends DatePickerBase implements ControlValueAccessor, OnChanges {
     //Enum definitions for access in view
     public CalendarMode = CalendarMode;
     public DualPickerMode = DualPickerMode;
-
-    /** Validation Functions */
-    propagateChange: any = () => { };
-    propagateTouched: any = () => { };
-    validateFn: any = () => { };
 
     /** Date from (binding value) */
     private dateFromValue: moment.Moment;
@@ -76,34 +72,6 @@ export class DualPickerComponent implements ControlValueAccessor, OnChanges {
         this.propagateChange({ dateFrom: this.dateFrom, dateTo: this.dateTo });                
     }
 
-    shadowZIndex: number = 100;
-    zIndexVal: number = 101;
-    @Input('zIndex') set zIndex(val: number) {
-        this.shadowZIndex = val;
-        this.zIndexVal = val + 1.0;
-    }
-
-    minDateVal: moment.Moment = null;
-    maxDateVal: moment.Moment = null;
-    @Input('minDate') set minDate(val: any) {
-        let d = moment(val);
-        if (d.isValid()) {
-            this.minDateVal = moment(val);
-        }
-        else {
-            this.minDateVal = null;
-        }
-    }
-    @Input('maxDate') set maxDate(val: any) {
-        let d = moment(val);
-        if (d.isValid()) {
-            this.maxDateVal = moment(val);
-        }
-        else {
-            this.maxDateVal = null;
-        }
-    }
-
     /** Cal1 view child component, use to control rendering */
     @ContentChild('dateTo', CalendarComponent) public inputTo: ElementRef;
     /** Cal2 view child component, use to control rendering */
@@ -117,7 +85,7 @@ export class DualPickerComponent implements ControlValueAccessor, OnChanges {
     public mode: DualPickerMode = DualPickerMode.Hidden;
 
     constructor(private myElement: ElementRef) {
-
+        super();
     }
 
     /**
@@ -291,14 +259,10 @@ export class DualPickerComponent implements ControlValueAccessor, OnChanges {
     }
 
     writeValue(value) {
-    }
-
-    registerOnChange(fn) {
-        this.propagateChange = fn;
-    }
-
-    registerOnTouched(fn) {
-        this.propagateTouched = fn;
+        if (value) {
+            this.dateTo = value.dateTo;
+            this.dateFrom = value.dateFrom;
+        }
     }
 
     validate(c: FormControl) {
