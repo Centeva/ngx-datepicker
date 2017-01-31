@@ -74,8 +74,6 @@ export class DualPickerComponent implements ControlValueAccessor, OnChanges {
             this.dateToChange.emit(val);
         }
     }
-    @Input("ctDisabled") disabled: boolean = false;
-    @Input() inputClass: any;
 
     shadowZIndex: number = 100;
     zIndexVal: number = 101;

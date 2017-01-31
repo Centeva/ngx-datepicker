@@ -39,5 +39,10 @@ Because the datepicker returns a moment date, not a string.
 
 
 ## Release Notes
+ - 2.0.0 -- Removed unused api parameters.
  - 1.0.1 -- Unspecified bug fixes (sorry, just starting to do this right)
  - 1.0.0 -- Initial Release
+
+ ## Migration Notes
+ * From 1.x to 2.x
+ ..* Remove references to ctDisabled and inputClass from the datepickers. Instead apply those directly to the transcluded input.
