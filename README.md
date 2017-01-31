@@ -25,6 +25,40 @@ Usage Example
 npm install --save ct-ng2-datepicker    
 ```
 
+## Usage
+### Single datepicker
+```
+<ct-date-picker [(date)]="date1" zIndex="100" formControlName="singlePicker">
+    <input #date class="form-control" />
+</ct-date-picker>
+```
+Wrap a input field in the <ct-date-picker> element. Mark the input field with #date
+
+#### Single datepicker parameters
+ * date - date model
+ * dateChanged - Event emitter for notification of date changes
+ * zIndex - Allows specification of a custom z-index for the picker.
+ * minDate - Minimum allowed date.
+ * maxDate - Maximum allowed date.
+
+### Dual Date Picker
+```
+<ct-dual-picker [(dateFrom)]="date2" [(dateTo)]="date3" zIndex="100" formControlName="dualPicker">
+    <input #dateFrom class="form-control" />
+    <input #dateTo class="form-control" />
+ </ct-dual-picker>
+```
+Wrap two input fields in the <ct-dual-picker> element. Mark each input #dateFrom and #dateTo respectively.
+
+#### Dual datepicker parameters
+ * dateFrom - date model
+ * dateTo - date model
+ * dateChanged - Event emitter for notification of date changes
+ * zIndex - Allows specification of a custom z-index for the picker.
+ * minDate - Minimum allowed date.
+ * maxDate - Maximum allowed date.
+
+
 ## Requirements
 - Angular 2+ (common, core, forms)
 - jQuery 3+ (see note below)

@@ -10,9 +10,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class HomeComponent implements OnInit, OnDestroy {
 
   form:FormGroup;
-  date1: moment.Moment = moment("2012-05-16");
-  date2: moment.Moment = moment("2016-11-25");
-  date3: moment.Moment = moment("2016-12-25");
+  date1: moment.Moment = undefined;
+  date2: moment.Moment = undefined;
+  date3: moment.Moment = undefined;
 
   constructor(private fb: FormBuilder) {
 

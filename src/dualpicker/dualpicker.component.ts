@@ -59,8 +59,8 @@ export class DualPickerComponent implements ControlValueAccessor, OnChanges {
             this.inputFrom.nativeElement.value = val.format("MM/DD/YYYY");
             this.dateFromValue = val;
             this.dateFromChange.emit(val);
-            this.propagateChange({dateFrom: this.dateFrom, dateTo: this.dateTo});
         }
+        this.propagateChange({ dateFrom: this.dateFrom, dateTo: this.dateTo });        
     }
     /** Input definition for (to) */
     @Input()
@@ -73,6 +73,7 @@ export class DualPickerComponent implements ControlValueAccessor, OnChanges {
             this.dateToValue = val;
             this.dateToChange.emit(val);
         }
+        this.propagateChange({ dateFrom: this.dateFrom, dateTo: this.dateTo });                
     }
 
     shadowZIndex: number = 100;
@@ -80,6 +81,27 @@ export class DualPickerComponent implements ControlValueAccessor, OnChanges {
     @Input('zIndex') set zIndex(val: number) {
         this.shadowZIndex = val;
         this.zIndexVal = val + 1.0;
+    }
+
+    minDateVal: moment.Moment = null;
+    maxDateVal: moment.Moment = null;
+    @Input('minDate') set minDate(val: any) {
+        let d = moment(val);
+        if (d.isValid()) {
+            this.minDateVal = moment(val);
+        }
+        else {
+            this.minDateVal = null;
+        }
+    }
+    @Input('maxDate') set maxDate(val: any) {
+        let d = moment(val);
+        if (d.isValid()) {
+            this.maxDateVal = moment(val);
+        }
+        else {
+            this.maxDateVal = null;
+        }
     }
 
     /** Cal1 view child component, use to control rendering */
@@ -117,11 +139,13 @@ export class DualPickerComponent implements ControlValueAccessor, OnChanges {
         this.mode = mode;
         switch (this.mode) {
             case DualPickerMode.To:
+                this.checkDate();
                 let l = $(this.inputTo.nativeElement).position().left;
                 $(this.myElement.nativeElement).find(".ct-dp-caret").css({ "left": l });
                 $(this.myElement.nativeElement).addClass("ct-dp-active");
                 break;
             case DualPickerMode.From:
+                this.checkDate();
                 let lfrom = $(this.inputFrom.nativeElement).position().left;
                 $(this.myElement.nativeElement).find(".ct-dp-caret").css({ "left": lfrom });
                 $(this.myElement.nativeElement).addClass("ct-dp-active");
@@ -229,6 +253,10 @@ export class DualPickerComponent implements ControlValueAccessor, OnChanges {
         this.changeMode(CalendarMode.Calendar, this.cal2);
     }
 
+    private touched() {
+        this.propagateTouched({ dateFrom: this.dateFrom, dateTo: this.dateTo });
+    }
+
     ngOnInit() {
         this.cal1.date = moment(this.dateFrom);
         this.shiftCal2();
@@ -274,12 +302,37 @@ export class DualPickerComponent implements ControlValueAccessor, OnChanges {
     }
 
     validate(c: FormControl) {
+        if (!(c.value.dateFrom instanceof moment) || !c.value.dateFrom.isValid()) {
+            return "Invalid Date";
+        }
+        if (this.minDateVal && this.minDateVal.isAfter(c.value.dateFrom)) {
+            return "Date cannot be before " + this.minDateVal.format("mm/DD/yyyy");
+        }
+        if (this.maxDateVal && this.maxDateVal.isBefore(c.value.dateFrom)) {
+            return "Date cannot be after " + this.maxDateVal.format("mm/DD/yyyy");
+        }
+        if (!(c.value.dateTo instanceof moment) || !c.value.dateTo.isValid()) {
+            return "Invalid Date";
+        }
+        if (this.minDateVal && this.minDateVal.isAfter(c.value.dateTo)) {
+            return "Date cannot be before " + this.minDateVal.format("mm/DD/yyyy");
+        }
+        if (this.maxDateVal && this.maxDateVal.isBefore(c.value.dateTo)) {
+            return "Date cannot be after " + this.maxDateVal.format("mm/DD/yyyy");
+        }
         return null;
     }
 
+    private checkDate() {
+        if (!(this.dateFrom instanceof moment) || !this.dateFrom.isValid()) {
+            this.dateFrom = moment();
+            this.touched();
+        }
+    }
+
     renderCalendar() {
-        this.cal1.renderCalendar(this.dateClickListener, this.dateTo, this.dateFrom);
-        this.cal2.renderCalendar(this.dateClickListener, this.dateTo, this.dateFrom);
+        this.cal1.renderCalendar(this.dateClickListener, this.dateTo, this.dateFrom, this.minDateVal, this.maxDateVal);
+        this.cal2.renderCalendar(this.dateClickListener, this.dateTo, this.dateFrom, this.minDateVal, this.maxDateVal);
     }
 
     dateClickListener = (date: moment.Moment) => {
@@ -302,7 +355,7 @@ export class DualPickerComponent implements ControlValueAccessor, OnChanges {
                 this.changeGlobalMode(DualPickerMode.Hidden, true);
                 break;
         }
-        this.propagateTouched({dateFrom: this.dateFrom, dateTo: this.dateTo});
+        this.touched();
         this.renderCalendar();
     }
 

@@ -44,8 +44,8 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit, Co
       this.input.nativeElement.value = val.format("MM/DD/YYYY");
       this.dateValue = val;
       this.dateChange.emit(val);
-      this.propagateChange(val);
     }
+    this.propagateChange(val);
   }
 
   @ContentChild('date') input: ElementRef;
@@ -60,6 +60,27 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit, Co
     this.zIndexVal = val + 1.0;
   }
 
+  minDateVal: moment.Moment = null;
+  maxDateVal: moment.Moment = null;
+  @Input('minDate') set minDate(val: any) {
+    let d = moment(val);
+    if (d.isValid()) {
+      this.minDateVal = moment(val);
+    }
+    else {
+      this.minDateVal = null;
+    }
+  }
+  @Input('maxDate') set maxDate(val: any) {
+    let d = moment(val);
+    if (d.isValid()) {
+      this.maxDateVal = moment(val);
+    }
+    else {
+      this.maxDateVal = null;
+    }
+  }
+
   constructor(private myElement: ElementRef, private renderer: Renderer) {
   }
 
@@ -72,6 +93,7 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit, Co
     } else {
       this.cal.date = moment();
     }
+    this.propagateChange(val);
     this.renderCalendar();
   }
 
@@ -79,12 +101,24 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit, Co
     this.mode = mode;
     switch (this.mode) {
       case DatePickerMode.Visible:
+        this.checkDate();
         this.changeMode(CalendarMode.Calendar);
         $(this.myElement.nativeElement).addClass("ct-dp-active");
         break;
       case DatePickerMode.Hidden:
         $(this.myElement.nativeElement).removeClass("ct-dp-active");
     }
+  }
+
+  private checkDate() {
+    if (!(this.date instanceof moment) || !this.date.isValid()) {
+      this.date = moment();
+      this.touched();
+    }
+  }
+
+  private touched() {
+    this.propagateTouched(this.date);
   }
 
   public blur(event) {
@@ -131,6 +165,7 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit, Co
   }
 
   ngOnChanges(inputs) {
+    console.log('ngOnChanges');
   }
 
   ngAfterViewInit() {
@@ -160,7 +195,7 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit, Co
   setDate(date: moment.Moment) {
     switch (this.mode) {
       case DatePickerMode.Visible:
-        this.propagateTouched(date);
+        this.touched();
         this.date = date;
         this.changeGlobalMode(DatePickerMode.Hidden);
         break;
@@ -173,7 +208,7 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit, Co
   }
 
   renderCalendar() {
-    this.cal.renderCalendar(this.dateClickListener, this.date, this.date);
+    this.cal.renderCalendar(this.dateClickListener, this.date, this.date, this.minDateVal, this.maxDateVal);
   }
 
   writeValue(value) {
@@ -191,6 +226,15 @@ export class DatePickerComponent implements AfterViewInit, OnDestroy, OnInit, Co
   }
 
   validate(c: FormControl) {
+    if (!(c.value instanceof moment) || !c.value.isValid()) {
+      return "Invalid Date";
+    }
+    if (this.minDateVal && this.minDateVal.isAfter(c.value)) {
+      return "Date cannot be before " + this.minDateVal.format("mm/DD/yyyy");
+    }
+    if (this.maxDateVal && this.maxDateVal.isBefore(c.value)) {
+        return "Date cannot be after " + this.maxDateVal.format("mm/DD/yyyy");
+      }
     return null;
   }
 }

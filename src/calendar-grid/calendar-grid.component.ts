@@ -24,7 +24,7 @@ export class CalendarGridComponent implements OnInit, OnDestroy {
     /**
      * Renders a calendar based on the date, selecting the proper from/to if visible.
      */
-    renderCalendar(date: moment.Moment, clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment) {
+    renderCalendar(date: moment.Moment, clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment, minDate: moment.Moment, maxDate: moment.Moment) {
         let d = moment(date);
         d.date(1); //reset date.
 
@@ -64,6 +64,9 @@ export class CalendarGridComponent implements OnInit, OnDestroy {
             }
             if (dateFrom && dateTo && d.isBetween(dateFrom, dateTo)) {
                 el.addClass("between");
+            }
+            if (maxDate && minDate && d.isBefore(minDate) || d.isAfter(maxDate)) {
+                el.attr("disabled", "disabled");
             }
             el.click(clickCallback(d));
             d.date(d.date() + 1);
