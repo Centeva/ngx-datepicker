@@ -38,3 +38,6 @@ Because the datepicker returns a moment date, not a string.
 
 
 
+## Release Notes
+ - 1.0.1 -- Unspecified bug fixes (sorry, just starting to do this right)
+ - 1.0.0 -- Initial Release
