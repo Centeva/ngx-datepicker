@@ -1,8 +1,13 @@
-import { Component, AfterViewInit, ContentChild, OnDestroy, OnInit, Renderer, ViewEncapsulation, Input, ViewChild, QueryList, Output, EventEmitter, ElementRef } from '@angular/core';
+import {
+    Component, forwardRef, OnChanges, AfterViewInit,
+    OnDestroy, ContentChild, ElementRef, OnInit, Renderer, ViewEncapsulation,
+    Input, ViewChild, QueryList, Output, EventEmitter
+} from '@angular/core';
 import * as moment from 'moment';
 import * as $ from 'jquery';
 import { CalendarComponent } from '../calendar/calendar.component';
 import { CalendarMode } from '../common/calendar-mode';
+import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 
 /** 
  * Defines the mode of the picker
@@ -20,12 +25,21 @@ export enum DualPickerMode {
     selector: 'ct-dual-picker',
     templateUrl: 'dualpicker.component.html',
     styleUrls: ['dualpicker.component.less', '../common/common.less'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    providers: [
+        { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DualPickerComponent), multi: true },
+        { provide: NG_VALIDATORS, useExisting: forwardRef(() => DualPickerComponent), multi: true }
+    ]
 })
-export class DualPickerComponent {
+export class DualPickerComponent implements ControlValueAccessor, OnChanges {
     //Enum definitions for access in view
     public CalendarMode = CalendarMode;
     public DualPickerMode = DualPickerMode;
+
+    /** Validation Functions */
+    propagateChange: any = () => { };
+    propagateTouched: any = () => { };
+    validateFn: any = () => { };
 
     /** Date from (binding value) */
     private dateFromValue: moment.Moment;
@@ -45,6 +59,7 @@ export class DualPickerComponent {
             this.inputFrom.nativeElement.value = val.format("MM/DD/YYYY");
             this.dateFromValue = val;
             this.dateFromChange.emit(val);
+            this.propagateChange({dateFrom: this.dateFrom, dateTo: this.dateTo});
         }
     }
     /** Input definition for (to) */
@@ -94,7 +109,7 @@ export class DualPickerComponent {
             clearTimeout(this.timerId);
         }
         if (delay) {
-            this.timerId = setTimeout(() => {this.changeGlobalModeFn(mode)}, 400);
+            this.timerId = setTimeout(() => { this.changeGlobalModeFn(mode) }, 400);
         } else {
             this.changeGlobalModeFn(mode);
         }
@@ -242,8 +257,26 @@ export class DualPickerComponent {
         this.inputTo.nativeElement.addEventListener('keyup', (event) => { this.onDateToStringChange(this.inputTo.nativeElement.value) });
     }
 
+    ngOnChanges(inputs) {
+    }
+
     ngOnDestroy() {
 
+    }
+
+    writeValue(value) {
+    }
+
+    registerOnChange(fn) {
+        this.propagateChange = fn;
+    }
+
+    registerOnTouched(fn) {
+        this.propagateTouched = fn;
+    }
+
+    validate(c: FormControl) {
+        return null;
     }
 
     renderCalendar() {
@@ -271,6 +304,7 @@ export class DualPickerComponent {
                 this.changeGlobalMode(DualPickerMode.Hidden, true);
                 break;
         }
+        this.propagateTouched({dateFrom: this.dateFrom, dateTo: this.dateTo});
         this.renderCalendar();
     }
 

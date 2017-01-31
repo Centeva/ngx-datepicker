@@ -4,7 +4,7 @@ import { LocationStrategy, HashLocationStrategy, PathLocationStrategy, PlatformL
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { Routes, RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { appRouterProviders } from './app.routes';
@@ -20,6 +20,7 @@ import { DatePickerModule } from '../../src/datepicker.module';
 		BrowserModule,
 		FormsModule,
 		HttpModule,
+		ReactiveFormsModule,
 		DatePickerModule
 	],
 	bootstrap: [
