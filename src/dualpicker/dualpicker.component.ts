@@ -41,6 +41,8 @@ export class DualPickerComponent extends DatePickerBase implements ControlValueA
     private dateFromValue: moment.Moment;
     /** Date to (binding value) */
     private dateToValue: moment.Moment;
+    /** Today's Date to pass into the second picker **/
+    private today: moment.Moment = moment();
     /** Emitter for change (from)*/
     @Output() dateFromChange = new EventEmitter();
     /** Emitter for change (to) */
@@ -221,7 +223,11 @@ export class DualPickerComponent extends DatePickerBase implements ControlValueA
 
     ngOnInit() {
         this.cal1.date = moment(this.dateFrom);
+        // build what date should be on the second calendar
         this.shiftCal2();
+        // set the todays
+        this.cal1.today = this.today;
+        this.cal2.today = this.today;
 
         this.cal1.subscribeToChangeMonth(this.month1ChangeListener);
         this.cal2.subscribeToChangeMonth(this.month2ChangeListener);

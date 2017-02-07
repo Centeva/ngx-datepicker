@@ -24,7 +24,7 @@ export class CalendarGridComponent implements OnInit, OnDestroy {
     /**
      * Renders a calendar based on the date, selecting the proper from/to if visible.
      */
-    renderCalendar(date: moment.Moment, clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment, minDate: moment.Moment, maxDate: moment.Moment) {
+    renderCalendar(date: moment.Moment, today: moment.Moment, clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment, minDate: moment.Moment, maxDate: moment.Moment) {
         let d = moment(date);
         d.date(1); //reset date.
 
@@ -48,7 +48,6 @@ export class CalendarGridComponent implements OnInit, OnDestroy {
 
             el.attr("ct-dp-cal-day", i.toString());
             el.addClass("ct-dp-cal-day");
-
             body.append(el);
         }
 
@@ -58,6 +57,8 @@ export class CalendarGridComponent implements OnInit, OnDestroy {
             el.attr("ct-dp-cal-day", d.date().toString());
             el.attr("tabIndex", "-1");
             el.addClass("ct-dp-cal-day");
+
+            if (today.date() === d.date() && today.month() === d.month()) { el.addClass("today"); }
 
             if ((dateTo && d.isSame(dateTo, "day")) || (dateFrom && d.isSame(dateFrom, "day"))) {
                 el.addClass("active");

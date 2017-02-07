@@ -18,7 +18,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
     public CalendarMode = CalendarMode;
     public mode: CalendarMode = CalendarMode.Calendar;
     /** Date object representing the month/year shown on this calendar */
-    public date: moment.Moment = moment();
+    public date: moment.Moment;
+    /** Date object representing today.This hsould never change in the rendering of the calendar grid */
+    public today: moment.Moment;
     /** Array of months to show when selecting a new month */
     private months: string[] = [];
     /** Array of years to show when selecting a new year */
@@ -97,7 +99,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
 
     renderCalendar(clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment, minDate: moment.Moment, maxDate: moment.Moment) {
-        this.grid.renderCalendar(this.date, clickCallback, dateTo, dateFrom, minDate, maxDate);
+        this.grid.renderCalendar(this.date, this.today, clickCallback, dateTo, dateFrom, minDate, maxDate);
     }
 
     setMonth(index: number) {
