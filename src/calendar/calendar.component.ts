@@ -18,7 +18,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     public CalendarMode = CalendarMode;
     public mode: CalendarMode = CalendarMode.Calendar;
     /** Date object representing the month/year shown on this calendar */
-    public date: moment.Moment;
+    public date: moment.Moment = moment();
     /** Array of months to show when selecting a new month */
     private months: string[] = [];
     /** Array of years to show when selecting a new year */

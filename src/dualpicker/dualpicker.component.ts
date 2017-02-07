@@ -107,13 +107,11 @@ export class DualPickerComponent extends DatePickerBase implements ControlValueA
         this.mode = mode;
         switch (this.mode) {
             case DualPickerMode.To:
-                this.checkDate();
                 let l = $(this.inputTo.nativeElement).position().left;
                 $(this.myElement.nativeElement).find(".ct-dp-caret").css({ "left": l });
                 $(this.myElement.nativeElement).addClass("ct-dp-active");
                 break;
             case DualPickerMode.From:
-                this.checkDate();
                 let lfrom = $(this.inputFrom.nativeElement).position().left;
                 $(this.myElement.nativeElement).find(".ct-dp-caret").css({ "left": lfrom });
                 $(this.myElement.nativeElement).addClass("ct-dp-active");
@@ -161,9 +159,7 @@ export class DualPickerComponent extends DatePickerBase implements ControlValueA
     }
 
     public blur(event) {
-        if ((event.which || event.keyCode) == 9) {
             this.changeGlobalMode(DualPickerMode.Hidden);
-        }
     }
 
     public changeMode(mode: CalendarMode, cal: CalendarComponent) {
@@ -287,13 +283,6 @@ export class DualPickerComponent extends DatePickerBase implements ControlValueA
         return null;
     }
 
-    private checkDate() {
-        if (!(this.dateFrom instanceof moment) || !this.dateFrom.isValid()) {
-            this.dateFrom = moment();
-            this.touched();
-        }
-    }
-
     renderCalendar() {
         this.cal1.renderCalendar(this.dateClickListener, this.dateTo, this.dateFrom, this.minDateVal, this.maxDateVal);
         this.cal2.renderCalendar(this.dateClickListener, this.dateTo, this.dateFrom, this.minDateVal, this.maxDateVal);
@@ -331,7 +320,7 @@ export class DualPickerComponent extends DatePickerBase implements ControlValueA
     }
 
     private correctDateFrom() {
-        if (this.dateFrom && this.dateTo.isBefore(this.dateFrom)) {
+        if (this.dateFrom && this.dateFrom.isValid() && this.dateTo.isBefore(this.dateFrom)) {
             this.dateFrom = moment(this.dateTo);
             this.dateFrom.subtract({ "day": 1 });
         }
