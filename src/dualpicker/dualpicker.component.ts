@@ -127,7 +127,8 @@ export class DualPickerComponent extends DatePickerBase implements ControlValueA
     public onDateFromStringChange(val) {
         let m = moment(new Date(val));
         if (m.isValid()) {
-            this.dateFromValue.set(m.toObject());
+            if (this.dateFromValue === null) { this.dateFromValue = m; }
+            else { this.dateFromValue.set(m.toObject()); }
             this.correctDateTo();
             this.cal1.date = this.dateFromValue;
             this.shiftCal2();
@@ -139,7 +140,8 @@ export class DualPickerComponent extends DatePickerBase implements ControlValueA
     public onDateToStringChange(val) {
         let m = moment(new Date(val));
         if (m.isValid()) {
-            this.dateToValue.set(m.toObject());
+            if (this.dateToValue === null) { this.dateToValue = m; }
+            else { this.dateToValue.set(m.toObject()); }
             this.correctDateFrom();
             this.cal2.date = this.dateToValue;
             this.shiftCal1();
@@ -156,10 +158,6 @@ export class DualPickerComponent extends DatePickerBase implements ControlValueA
     private shiftCal2() {
         this.cal2.date = moment(this.cal1.date);
         this.cal2.date.add({ "month": 1 });
-    }
-
-    public blur(event) {
-            this.changeGlobalMode(DualPickerMode.Hidden);
     }
 
     public changeMode(mode: CalendarMode, cal: CalendarComponent) {
@@ -239,9 +237,6 @@ export class DualPickerComponent extends DatePickerBase implements ControlValueA
 
         this.inputFrom.nativeElement.addEventListener('focus', () => { this.changeGlobalMode(DualPickerMode.From) });
         this.inputTo.nativeElement.addEventListener('focus', () => { this.changeGlobalMode(DualPickerMode.To) });
-
-        this.inputFrom.nativeElement.addEventListener('blur', (event) => { this.blur(event) });
-        this.inputTo.nativeElement.addEventListener('blur', (event) => { this.blur(event) });
 
         this.inputFrom.nativeElement.addEventListener('keyup', (event) => { this.onDateFromStringChange(this.inputFrom.nativeElement.value) });
         this.inputTo.nativeElement.addEventListener('keyup', (event) => { this.onDateToStringChange(this.inputTo.nativeElement.value) });

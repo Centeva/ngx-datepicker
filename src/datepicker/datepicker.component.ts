@@ -81,11 +81,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   private touched() {
     this.propagateTouched(this.date);
   }
-
-  public blur(event) {
-    this.changeGlobalMode(DatePickerMode.Hidden);
-  }
-
+  
   public changeMode(mode: CalendarMode) {
     this.cal.changeMode(mode);
     switch (mode) {
@@ -132,7 +128,6 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
 
     this.input.nativeElement.style['z-index'] = this.zIndexVal;
     this.input.nativeElement.addEventListener('focus', () => { this.changeGlobalMode(DatePickerMode.Visible) });
-    this.input.nativeElement.addEventListener('blur', (event) => { this.blur(event) });
     this.input.nativeElement.addEventListener('keyup', (event) => { this.onDateStringChange(this.input.nativeElement.value) });
   }
 
