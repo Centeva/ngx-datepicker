@@ -70,7 +70,6 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     this.mode = mode;
     switch (this.mode) {
       case DatePickerMode.Visible:
-        this.checkDate();
         this.changeMode(CalendarMode.Calendar);
         $(this.myElement.nativeElement).addClass("ct-dp-active");
         break;
@@ -79,21 +78,12 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     }
   }
 
-  private checkDate() {
-    if (!(this.date instanceof moment) || !this.date.isValid()) {
-      this.date = moment();
-      this.touched();
-    }
-  }
-
   private touched() {
     this.propagateTouched(this.date);
   }
 
   public blur(event) {
-    if ((event.which || event.keyCode) == 9) {
-      this.changeGlobalMode(DatePickerMode.Hidden);
-    }
+    this.changeGlobalMode(DatePickerMode.Hidden);
   }
 
   public changeMode(mode: CalendarMode) {
