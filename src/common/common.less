@@ -5,7 +5,7 @@
 @padding: 5px;
 @full-width: @cal-width + (2 * @padding);
 @gray: lighten(black, 50%);
-
+@disabled: lighten(black, 75%);
 
 .ct-dp-active {
     input {
@@ -88,6 +88,10 @@
     float: left;
     text-align: center;
     &:extend(.no-button);
+}
+
+.ct-dp-cal-day:disabled {
+    color: @disabled;
 }
 
 .ct-dp-cal-day.active {

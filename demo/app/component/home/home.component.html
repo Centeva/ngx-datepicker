@@ -17,10 +17,13 @@
             eget enim faucibus, suscipit risus quis, rutrum enim. Vivamus imperdiet justo urna, vitae faucibus ante feugiat
             a.
             <div>
-                <form class="form-inline">
-                    <ct-date-picker [(date)]="date1" zIndex="100">
-                        <input #date class="form-control" />
-                    </ct-date-picker>
+                <form class="form-inline" [formGroup]="form">
+                    <div>
+                        <ct-date-picker [(date)]="date1" zIndex="100" formControlName="singlePicker" maxDate="2017/02/15" minDate="2017/01/31">
+                            <input #date class="form-control" />
+                        </ct-date-picker>
+                        {{form.get('singlePicker').touched | json}}
+                    </div>
                     <!--<ct-datepicker [(date)]="date1" ctDisabled="false" inputClass="form-control"></ct-datepicker>-->
                     {{date1 | json}} Sed nec sagittis lectus. Morbi accumsan vehicula sagittis. Phasellus et accumsan nisi, aliquam fermentum
                     sapien. Proin iaculis lobortis fringilla. Nulla massa nisi, pellentesque a ex a, efficitur mattis quam.
@@ -28,13 +31,15 @@
                     Fusce a urna nisi. In hac habitasse platea dictumst. Integer volutpat, metus eget condimentum placerat,
                     erat dolor porta justo, in dictum felis metus sed odio.
                     <div>
-                        <ct-dual-picker [(dateFrom)]="date2" [(dateTo)]="date3" zIndex="100">
+                        <ct-dual-picker [(dateFrom)]="date2" [(dateTo)]="date3" zIndex="100" formControlName="dualPicker" maxDate="2017/02/15" minDate="2017/01/31">
                             <input #dateFrom class="form-control" />
                             <input #dateTo class="form-control" />
-                            <!--<ct-dualpicker [(dateFrom)]="date2" [(dateTo)]="date3" ctDisabled="false" inputClass="form-control"></ct-dualpicker>-->
                         </ct-dual-picker>
+                        {{form.get('dualPicker').touched | json}}
+                        
                     </div>
                 </form>
+                <p *ngIf="!form.valid">Form is invalid!</p>
             </div>
             {{date2 | json}} {{date3 | json}} Morbi lorem urna, feugiat ac placerat quis, lobortis in velit. Nunc sed purus non dolor
             auctor molestie. Morbi placerat et ipsum eu suscipit. Pellentesque aliquet erat suscipit quam varius, at ullamcorper
