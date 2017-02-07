@@ -73,6 +73,14 @@ export class DualPickerComponent extends DatePickerBase implements ControlValueA
         }
         this.propagateChange({ dateFrom: this.dateFrom, dateTo: this.dateTo });                
     }
+    private validDateExpression: RegExp;
+    @Input()
+    get match() {
+        return this.validDateExpression || /^((0?[13578]|10|12)(-|\/)(([1-9])|(0[1-9])|([12])([0-9]?)|(3[01]?))(-|\/)((19)([2-9])(\d{1})|(20)([01])(\d{1})|([8901])(\d{1}))|(0?[2469]|11)(-|\/)(([1-9])|(0[1-9])|([12])([0-9]?)|(3[0]?))(-|\/)((19)([2-9])(\d{1})|(20)([01])(\d{1})|([8901])(\d{1})))$/;
+    }
+    set match(val) {
+        this.validDateExpression = val;
+    }
 
     /** Cal1 view child component, use to control rendering */
     @ContentChild('dateTo', CalendarComponent) public inputTo: ElementRef;
@@ -127,28 +135,32 @@ export class DualPickerComponent extends DatePickerBase implements ControlValueA
     }
 
     public onDateFromStringChange(val) {
-        let m = moment(new Date(val));
-        if (m.isValid()) {
-            if (this.dateFromValue === null) { this.dateFromValue = m; }
-            else { this.dateFromValue.set(m.toObject()); }
-            this.correctDateTo();
-            this.cal1.date = this.dateFromValue;
-            this.shiftCal2();
-            this.dateFromChange.emit(this.dateFromValue);
-            this.renderCalendar();
+        if(this.match.test(val)) {
+            let m = moment(new Date(val));
+            if (m.isValid()) {
+                if (this.dateFromValue === undefined) { this.dateFromValue = m; }
+                else { this.dateFromValue.set(m.toObject()); }
+                this.correctDateTo();
+                this.cal1.date = this.dateFromValue;
+                this.shiftCal2();
+                this.dateFromChange.emit(this.dateFromValue);
+                this.renderCalendar();
+            }
         }
     }
 
     public onDateToStringChange(val) {
-        let m = moment(new Date(val));
-        if (m.isValid()) {
-            if (this.dateToValue === null) { this.dateToValue = m; }
-            else { this.dateToValue.set(m.toObject()); }
-            this.correctDateFrom();
-            this.cal2.date = this.dateToValue;
-            this.shiftCal1();
-            this.dateToChange.emit(this.dateToValue);
-            this.renderCalendar();
+        if(this.match.test(val)) {
+            let m = moment(new Date(val));
+            if (m.isValid()) {
+                if (this.dateToValue === undefined) { this.dateToValue = m; }
+                else { this.dateToValue.set(m.toObject()); }
+                this.correctDateFrom();
+                this.cal2.date = this.dateToValue;
+                this.shiftCal1();
+                this.dateToChange.emit(this.dateToValue);
+                this.renderCalendar();
+            }
         }
     }
 

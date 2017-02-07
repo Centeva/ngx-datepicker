@@ -19,7 +19,7 @@
             <div>
                 <form class="form-inline" [formGroup]="form">
                     <div>
-                        <ct-date-picker [(date)]="date1" zIndex="100" formControlName="singlePicker" maxDate="2017/02/15" minDate="2017/01/31">
+                        <ct-date-picker [(date)]="date1" zIndex="100" formControlName="singlePicker" maxDate="2017/02/15" minDate="2017/01/31" [match]="yearFirstRegex">
                             <input #date class="form-control" />
                         </ct-date-picker>
                         {{form.get('singlePicker').touched | json}}

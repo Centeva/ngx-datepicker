@@ -43,6 +43,14 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     }
     this.propagateChange(val);
   }
+  private validDateExpression: RegExp;
+  @Input()
+  get match() {
+    return this.validDateExpression || /^((0?[13578]|10|12)(-|\/)(([1-9])|(0[1-9])|([12])([0-9]?)|(3[01]?))(-|\/)((19)([2-9])(\d{1})|(20)([01])(\d{1})|([8901])(\d{1}))|(0?[2469]|11)(-|\/)(([1-9])|(0[1-9])|([12])([0-9]?)|(3[0]?))(-|\/)((19)([2-9])(\d{1})|(20)([01])(\d{1})|([8901])(\d{1})))$/;
+  }
+  set match(val) {
+    this.validDateExpression = new RegExp(val);
+  }
 
   @ContentChild('date') input: ElementRef;
 
@@ -54,16 +62,21 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   }
 
   public onDateStringChange(val) {
-    let m = moment(new Date(val));
-    this.dateValue.set(m.toObject());
-    this.dateChange.emit(this.dateValue);
-    if (m.isValid()) {
-      this.cal.date = this.dateValue;
-    } else {
-      this.cal.date = moment();
+    if (this.match.test(val)) {
+      let m = moment(new Date(val));
+
+      if (this.dateValue === undefined) { this.dateValue = m; }
+      else { this.dateValue.set(m.toObject()); }
+
+      this.dateChange.emit(this.dateValue);
+      if (m.isValid()) {
+        this.cal.date = this.dateValue;
+      } else {
+        this.cal.date = moment();
+      }
+      this.propagateChange(val);
+      this.renderCalendar();
     }
-    this.propagateChange(val);
-    this.renderCalendar();
   }
 
   public changeGlobalMode(mode: DatePickerMode) {
@@ -118,10 +131,12 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
 
     this.cal.subscribeToChangeMonth(this.monthChangeListener);
     this.cal.subscribeToChangeYear(this.yearChangeListener);
+    console.log(this.match);
+    console.log(this.validDateExpression);
   }
 
   ngOnChanges(inputs) {
-    console.log('ngOnChanges');
+    // console.log('ngOnChanges');
   }
 
   ngAfterViewInit() {
