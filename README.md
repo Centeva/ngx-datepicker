@@ -1,4 +1,4 @@
-# ct-ngx-datepticker
+# ct-ngx-datepticker [![Build Status](https://travis-ci.org/Centeva/ngx-datepicker.svg?branch=master)](https://travis-ci.org/Centeva/ngx-datepicker)
 
 ## Introduction
 
