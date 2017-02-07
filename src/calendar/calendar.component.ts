@@ -99,7 +99,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
 
     renderCalendar(clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment, minDate: moment.Moment, maxDate: moment.Moment) {
-        this.grid.renderCalendar(this.date, this.today, clickCallback, dateTo, dateFrom, minDate, maxDate);
+        this.grid.renderCalendar(this.date, clickCallback, dateTo, dateFrom, minDate, maxDate);
     }
 
     setMonth(index: number) {

@@ -115,7 +115,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     } else {
       this.cal.date = moment();
     }
-    this.cal.today = this.cal.date;
+
     this.cal.subscribeToChangeMonth(this.monthChangeListener);
     this.cal.subscribeToChangeYear(this.yearChangeListener);
   }

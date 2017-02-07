@@ -225,9 +225,6 @@ export class DualPickerComponent extends DatePickerBase implements ControlValueA
         this.cal1.date = moment(this.dateFrom);
         // build what date should be on the second calendar
         this.shiftCal2();
-        // set the todays
-        this.cal1.today = this.today;
-        this.cal2.today = this.today;
 
         this.cal1.subscribeToChangeMonth(this.month1ChangeListener);
         this.cal2.subscribeToChangeMonth(this.month2ChangeListener);
