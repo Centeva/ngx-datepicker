@@ -36,10 +36,12 @@ Wrap a input field in the <ct-date-picker> element. Mark the input field with #d
 
 #### Single datepicker parameters
  * date - date model
- * dateChanged - Event emitter for notification of date changes
+ * dateChange - Event emitter for notification of date changes
  * zIndex - Allows specification of a custom z-index for the picker.
  * minDate - Minimum allowed date.
  * maxDate - Maximum allowed date.
+ * match - Optional regex for properly parsing typed in dates, e.g. mm/dd/yyyy
+
 
 ### Dual Date Picker
 ```
@@ -53,10 +55,12 @@ Wrap two input fields in the <ct-dual-picker> element. Mark each input #dateFrom
 #### Dual datepicker parameters
  * dateFrom - date model
  * dateTo - date model
- * dateChanged - Event emitter for notification of date changes
+ * dateFromChange - Event emitter for notification of date changes
+ * dateToChange - Event emitter for notification of date changes
  * zIndex - Allows specification of a custom z-index for the picker.
  * minDate - Minimum allowed date.
  * maxDate - Maximum allowed date.
+ * match - Optional regex for properly parsing typed in dates, e.g. mm/dd/yyyy
 
 
 ## Requirements
@@ -73,6 +77,7 @@ Because the datepicker returns a moment date, not a string.
 
 
 ## Release Notes
+ - 2.2.0 -- Added regex matching for date validation
  - 2.1.0 -- Added ability to validate dates on range, and moment.isValid
  - 2.0.0 -- Removed unused api parameters. Added basic validation for reactive forms.
  - 1.0.2 -- Notice about new repo. 
