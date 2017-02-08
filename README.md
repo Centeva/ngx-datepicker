@@ -82,3 +82,6 @@ Because the datepicker returns a moment date, not a string.
  ## Migration Notes
  * From 1.x to 2.x
  ..* Remove references to ctDisabled and inputClass from the datepickers. Instead apply those directly to the transcluded input.
+
+## Known Bug
+- When using an ISO date (yyyy-mm-dd), the day selected on the calendar picker ends uup being localized for your timezone.

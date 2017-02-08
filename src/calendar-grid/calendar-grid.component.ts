@@ -10,6 +10,9 @@ import * as $ from 'jquery';
     encapsulation: ViewEncapsulation.None
 })
 export class CalendarGridComponent implements OnInit, OnDestroy {
+
+    private today: moment.Moment = moment();
+
     constructor(private myElement: ElementRef, private renderer: Renderer) {
     }
 
@@ -48,7 +51,6 @@ export class CalendarGridComponent implements OnInit, OnDestroy {
 
             el.attr("ct-dp-cal-day", i.toString());
             el.addClass("ct-dp-cal-day");
-
             body.append(el);
         }
 
@@ -58,6 +60,8 @@ export class CalendarGridComponent implements OnInit, OnDestroy {
             el.attr("ct-dp-cal-day", d.date().toString());
             el.attr("tabIndex", "-1");
             el.addClass("ct-dp-cal-day");
+
+            if (this.today.date() === d.date() && this.today.month() === d.month()) { el.addClass("today"); }
 
             if ((dateTo && d.isSame(dateTo, "day")) || (dateFrom && d.isSame(dateFrom, "day"))) {
                 el.addClass("active");
