@@ -232,6 +232,12 @@ export class DualPickerComponent extends DatePickerBase implements ControlValueA
     private touched() {
         this.propagateTouched({ dateFrom: this.dateFrom, dateTo: this.dateTo });
     }
+    private closePicker(event) {
+        if(event.which === 9) {
+            this.changeGlobalModeFn(DualPickerMode.Hidden);
+            this.touched();
+        }
+    }
 
     ngOnInit() {
         this.cal1.date = moment(this.dateFrom);
@@ -255,6 +261,8 @@ export class DualPickerComponent extends DatePickerBase implements ControlValueA
 
         this.inputFrom.nativeElement.addEventListener('keyup', (event) => { this.onDateFromStringChange(this.inputFrom.nativeElement.value) });
         this.inputTo.nativeElement.addEventListener('keyup', (event) => { this.onDateToStringChange(this.inputTo.nativeElement.value) });
+
+        this.inputTo.nativeElement.addEventListener('keydown', (event) => { this.closePicker(event); });
     }
 
     ngOnChanges(inputs) {

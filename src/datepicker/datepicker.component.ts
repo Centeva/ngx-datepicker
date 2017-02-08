@@ -74,6 +74,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
       } else {
         this.cal.date = moment();
       }
+      this.touched();
       this.propagateChange(val);
       this.renderCalendar();
     }
@@ -122,6 +123,12 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     }
   }
 
+  private closePicker(event) {
+    if(event.which === 9) {
+      this.changeGlobalMode(DatePickerMode.Hidden);
+    }
+  }
+
   ngOnInit() {
     if (this.date instanceof moment && this.date.isValid()) {
       this.cal.date = moment(this.date);
@@ -139,10 +146,10 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
 
   ngAfterViewInit() {
     this.renderCalendar();
-
     this.input.nativeElement.style['z-index'] = this.zIndexVal;
     this.input.nativeElement.addEventListener('focus', () => { this.changeGlobalMode(DatePickerMode.Visible) });
     this.input.nativeElement.addEventListener('keyup', (event) => { this.onDateStringChange(this.input.nativeElement.value) });
+    this.input.nativeElement.addEventListener('keydown', (event) => { this.closePicker(event); });
   }
 
   dateClickListener = (date: moment.Moment) => {
