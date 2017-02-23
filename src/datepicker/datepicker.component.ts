@@ -74,10 +74,10 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
       } else {
         this.cal.date = moment();
       }
-      this.touched();
+    } else {
       this.propagateChange(val);
-      this.renderCalendar();
     }
+    this.touched();    
   }
 
   public changeGlobalMode(mode: DatePickerMode) {
@@ -95,7 +95,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   private touched() {
     this.propagateTouched(this.date);
   }
-  
+
   public changeMode(mode: CalendarMode) {
     this.cal.changeMode(mode);
     switch (mode) {
@@ -124,7 +124,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   }
 
   private closePicker(event) {
-    if(event.which === 9) {
+    if (event.which === 9) {
       this.changeGlobalMode(DatePickerMode.Hidden);
     }
   }

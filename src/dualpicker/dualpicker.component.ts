@@ -146,7 +146,10 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
                 this.dateFromChange.emit(this.dateFromValue);
                 this.renderCalendar();
             }
+        } else {
+            this.propagateChange(val);
         }
+        this.touched();        
     }
 
     public onDateToStringChange(val) {
@@ -161,7 +164,10 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
                 this.dateToChange.emit(this.dateToValue);
                 this.renderCalendar();
             }
+        } else {
+            this.propagateChange(val);
         }
+        this.touched();
     }
 
     private shiftCal1() {
