@@ -77,6 +77,7 @@ Because the datepicker returns a moment date, not a string.
 
 
 ## Release Notes
+ - 2.2.1 -- Fixed bug with validation on dual date picker.
  - 2.2.0 -- Added regex matching for date validation
  - 2.1.0 -- Added ability to validate dates on range, and moment.isValid
  - 2.0.0 -- Removed unused api parameters. Added basic validation for reactive forms.
