@@ -7,8 +7,6 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
 
 module.exports = webpackMerge({
-  devtool: 'inline-source-map',
-
   entry: {
     'app': './src/lib.ts'
   },
