@@ -32,7 +32,7 @@ export enum DualPickerMode {
         { provide: NG_VALIDATORS, useExisting: forwardRef(() => DualPickerComponent), multi: true }
     ]
 })
-export class DualPickerComponent extends DatePickerBase implements ControlValueAccessor, OnChanges {
+export class DualPickerComponent extends DatePickerBase implements OnChanges {
     //Enum definitions for access in view
     public CalendarMode = CalendarMode;
     public DualPickerMode = DualPickerMode;
@@ -280,6 +280,9 @@ export class DualPickerComponent extends DatePickerBase implements ControlValueA
     }
 
     validate(c: FormControl) {
+        if (c.value == null) {
+            return "Invalid Value";
+        }
         if (!(c.value.dateFrom instanceof moment) || !c.value.dateFrom.isValid()) {
             return "Invalid Date";
         }

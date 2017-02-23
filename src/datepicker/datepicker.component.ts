@@ -24,7 +24,7 @@ export enum DatePickerMode {
     { provide: NG_VALIDATORS, useExisting: forwardRef(() => DatePickerComponent), multi: true }
   ]
 })
-export class DatePickerComponent extends DatePickerBase implements AfterViewInit, OnDestroy, OnInit, ControlValueAccessor, OnChanges {
+export class DatePickerComponent extends DatePickerBase implements AfterViewInit, OnDestroy, OnInit, OnChanges {
   /** Enum Accessors for HTML */
   public CalendarMode = CalendarMode;
   public DatePickerMode = DatePickerMode;

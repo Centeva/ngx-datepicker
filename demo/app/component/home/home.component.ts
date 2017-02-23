@@ -10,9 +10,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class HomeComponent implements OnInit, OnDestroy {
 
   form:FormGroup;
-  date1: moment.Moment = undefined;
-  date2: moment.Moment = undefined;
-  date3: moment.Moment = undefined;
+  date1: moment.Moment = null;
+  date2: moment.Moment = null;
+  date3: moment.Moment = null;
 
   yearFirstRegex = new RegExp(/^(\d{4})(-|\/)(\d{2})(-|\/)(\d{2})$/);
 
