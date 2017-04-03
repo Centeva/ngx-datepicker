@@ -58,7 +58,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
             this.dateFromValue = val;
             this.dateFromChange.emit(val);
         }
-        this.propagateChange({ dateFrom: this.dateFrom, dateTo: this.dateTo });        
+        this.propagateChange({ dateFrom: this.dateFrom, dateTo: this.dateTo });
     }
     /** Input definition for (to) */
     @Input()
@@ -71,7 +71,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
             this.dateToValue = val;
             this.dateToChange.emit(val);
         }
-        this.propagateChange({ dateFrom: this.dateFrom, dateTo: this.dateTo });                
+        this.propagateChange({ dateFrom: this.dateFrom, dateTo: this.dateTo });
     }
     private validDateExpression: RegExp;
     @Input()
@@ -135,11 +135,14 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     }
 
     public onDateFromStringChange(val) {
-        if(this.match.test(val)) {
+        if (this.match.test(val)) {
             let m = moment(new Date(val));
             if (m.isValid()) {
-                if (this.dateFromValue === undefined) { this.dateFromValue = m; }
-                else { this.dateFromValue.set(m.toObject()); }
+                if (this.dateFromValue === undefined || this.dateFromValue === null) {
+                    this.dateFromValue = m;
+                } else {
+                    this.dateFromValue.set(m.toObject());
+                }
                 this.correctDateTo();
                 this.cal1.date = this.dateFromValue;
                 this.shiftCal2();
@@ -149,15 +152,18 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         } else {
             this.propagateChange(val);
         }
-        this.touched();        
+        this.touched();
     }
 
     public onDateToStringChange(val) {
-        if(this.match.test(val)) {
+        if (this.match.test(val)) {
             let m = moment(new Date(val));
             if (m.isValid()) {
-                if (this.dateToValue === undefined) { this.dateToValue = m; }
-                else { this.dateToValue.set(m.toObject()); }
+                if (this.dateToValue === undefined || this.dateToValue === null) {
+                    this.dateToValue = m;
+                } else {
+                    this.dateToValue.set(m.toObject());
+                }
                 this.correctDateFrom();
                 this.cal2.date = this.dateToValue;
                 this.shiftCal1();
@@ -239,7 +245,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         this.propagateTouched({ dateFrom: this.dateFrom, dateTo: this.dateTo });
     }
     private closePicker(event) {
-        if(event.which === 9) {
+        if (event.which === 9) {
             this.changeGlobalModeFn(DualPickerMode.Hidden);
             this.touched();
         }

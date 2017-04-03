@@ -65,7 +65,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     if (this.match.test(val)) {
       let m = moment(new Date(val));
 
-      if (this.dateValue === undefined) { this.dateValue = m; }
+      if (this.dateValue === undefined || this.dateValue === null) { this.dateValue = m; }
       else { this.dateValue.set(m.toObject()); }
 
       this.dateChange.emit(this.dateValue);
