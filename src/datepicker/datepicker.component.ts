@@ -109,6 +109,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
 
   private positionCalendarAbove() {
     let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
+    picker.removeClass("display-below");        
     picker.addClass("display-above");
     picker.css("top", (-picker.height()) + "px");
     picker.css("left", "0px");
@@ -116,6 +117,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
 
   private positionCalendarBelow() {
     let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
+    picker.removeClass("display-above");        
     picker.addClass("display-below");
     picker.css("top", ($(this.input.nativeElement).height()) + "px");
     picker.css("left", "0px"); 
@@ -124,7 +126,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   private hideCalendar() {
     let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");    
     picker.removeClass("display-above");
-    picker.removeClass("display-below");
+    picker.addClass("display-below");
     picker.addClass("hidden");
   }
 

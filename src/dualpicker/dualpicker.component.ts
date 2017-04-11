@@ -151,6 +151,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
         let left = $(element.nativeElement).position().left
         let caret = $(this.myElement.nativeElement).find(".ct-dp-caret");
+        picker.removeClass("display-below");        
         picker.addClass("display-above");
         picker.css("top", (-picker.height()) + "px");
         picker.css("left", "0px");
@@ -162,6 +163,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
         let left = $(element.nativeElement).position().left
         let caret = $(this.myElement.nativeElement).find(".ct-dp-caret");
+        picker.removeClass("display-above");        
         picker.addClass("display-below");
         picker.css("top", ($(element.nativeElement).height()) + "px");
         picker.css("left", "0px");
@@ -171,7 +173,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     private hideCalendar() {
         let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
         picker.removeClass("display-above");
-        picker.removeClass("display-below");
+        picker.addClass("display-below");
         picker.addClass("hidden");
     }
 
