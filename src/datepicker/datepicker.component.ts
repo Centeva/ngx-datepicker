@@ -99,7 +99,8 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
     picker.removeClass("hidden");
     let top = $(this.input.nativeElement).offset().top + $(this.input.nativeElement).outerHeight();
-    if ($(window).height() < top + picker.height()) {
+    let scrollTop = $(window).scrollTop();
+    if ($(window).height() < (top - scrollTop) + picker.height()) {
       this.positionCalendarAbove();
     } else {
       this.positionCalendarBelow();

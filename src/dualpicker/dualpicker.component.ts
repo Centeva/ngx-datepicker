@@ -139,7 +139,8 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
         picker.removeClass("hidden");
         let top = $(element.nativeElement).offset().top + $(element.nativeElement).outerHeight();
-        if ($(window).height() < top + picker.height()) {
+        let scrollTop = $(window).scrollTop();
+        if ($(window).height() < (top - scrollTop) + picker.height()) {
             this.positionCalendarAbove(element);
         } else {
             this.positionCalendarBelow(element);
