@@ -77,7 +77,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     } else {
       this.propagateChange(val);
     }
-    this.touched();    
+    this.touched();
   }
 
   public changeGlobalMode(mode: DatePickerMode) {
@@ -86,10 +86,44 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
       case DatePickerMode.Visible:
         this.changeMode(CalendarMode.Calendar);
         $(this.myElement.nativeElement).addClass("ct-dp-active");
+        this.positionCalendar();
         break;
       case DatePickerMode.Hidden:
+        this.hideCalendar();
         $(this.myElement.nativeElement).removeClass("ct-dp-active");
     }
+  }
+
+  private positionCalendar() {
+    let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
+    picker.removeClass("hidden");
+    let top = $(this.input.nativeElement).offset().top + $(this.input.nativeElement).outerHeight();
+    if ($(window).height() < top + picker.height()) {
+      this.positionCalendarAbove();
+    } else {
+      this.positionCalendarBelow();
+    }
+  }
+
+  private positionCalendarAbove() {
+    let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
+    picker.addClass("display-above");
+    picker.css("top", (-picker.height()) + "px");
+    picker.css("left", "0px");
+  }
+
+  private positionCalendarBelow() {
+    let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
+    picker.addClass("display-below");
+    picker.css("top", ($(this.input.nativeElement).height()) + "px");
+    picker.css("left", "0px"); 
+  }
+
+  private hideCalendar() {
+    let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");    
+    picker.removeClass("display-above");
+    picker.removeClass("display-below");
+    picker.addClass("hidden");
   }
 
   private touched() {

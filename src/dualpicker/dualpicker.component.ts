@@ -83,9 +83,9 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     }
 
     /** Cal1 view child component, use to control rendering */
-    @ContentChild('dateTo', CalendarComponent) public inputTo: ElementRef;
+    @ContentChild('dateTo') public inputTo: ElementRef;
     /** Cal2 view child component, use to control rendering */
-    @ContentChild('dateFrom', CalendarComponent) public inputFrom: ElementRef;
+    @ContentChild('dateFrom') public inputFrom: ElementRef;
 
     /** Cal1 view child component, use to control rendering */
     @ViewChild('cal1', CalendarComponent) public cal1: CalendarComponent;
@@ -117,21 +117,59 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         this.mode = mode;
         switch (this.mode) {
             case DualPickerMode.To:
-                let l = $(this.inputTo.nativeElement).position().left;
-                $(this.myElement.nativeElement).find(".ct-dp-caret").css({ "left": l });
-                $(this.myElement.nativeElement).addClass("ct-dp-active");
+                $(this.myElement.nativeElement).addClass("ct-dp-active");            
+                this.positionCalendar(this.inputTo);
                 break;
             case DualPickerMode.From:
-                let lfrom = $(this.inputFrom.nativeElement).position().left;
-                $(this.myElement.nativeElement).find(".ct-dp-caret").css({ "left": lfrom });
-                $(this.myElement.nativeElement).addClass("ct-dp-active");
+                $(this.myElement.nativeElement).addClass("ct-dp-active");            
+                this.positionCalendar(this.inputFrom);
                 break;
             case DualPickerMode.Hidden:
                 $(this.myElement.nativeElement).removeClass("ct-dp-active");
+                this.hideCalendar();
                 break;
         }
         this.changeMode(CalendarMode.Calendar, this.cal1);
         this.changeMode(CalendarMode.Calendar, this.cal2);
+    }
+
+    private positionCalendar(element: ElementRef) {
+        let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
+        picker.removeClass("hidden");
+        let top = $(element.nativeElement).offset().top + $(element.nativeElement).outerHeight();
+        if ($(window).height() < top + picker.height()) {
+            this.positionCalendarAbove(element);
+        } else {
+            this.positionCalendarBelow(element);
+        }
+    }
+
+    private positionCalendarAbove(element: ElementRef) {
+        let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
+        let left = $(element.nativeElement).position().left
+        let caret = $(this.myElement.nativeElement).find(".ct-dp-caret");
+        picker.addClass("display-above");
+        picker.css("top", (-picker.height()) + "px");
+        picker.css("left", "0px");
+        caret.css({ "left": (left + (picker.width() * .05)) + "px"});
+        console.log(left);
+    }
+
+    private positionCalendarBelow(element: ElementRef) {
+        let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
+        let left = $(element.nativeElement).position().left
+        let caret = $(this.myElement.nativeElement).find(".ct-dp-caret");
+        picker.addClass("display-below");
+        picker.css("top", ($(element.nativeElement).height()) + "px");
+        picker.css("left", "0px");
+        caret.css({ "left": (left + (picker.width() * .05)) + "px"});
+    }
+
+    private hideCalendar() {
+        let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
+        picker.removeClass("display-above");
+        picker.removeClass("display-below");
+        picker.addClass("hidden");
     }
 
     public onDateFromStringChange(val) {

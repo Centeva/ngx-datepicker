@@ -29,7 +29,8 @@ module.exports = function (grunt) {
         "webpack-dev-server": {
             start: {
                 keepAlive: true,
-                webpack: webpackDevConfig
+                webpack: webpackDevConfig,
+                port: 8082
             }
         }
     });
