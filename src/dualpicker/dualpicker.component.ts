@@ -55,10 +55,11 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     set dateFrom(val) {
         if (val instanceof moment && val.isValid()) {
             this.inputFrom.nativeElement.value = val.format("MM/DD/YYYY");
-            this.dateFromValue = val;
+            val = moment(val.format('YYYY-MM-DD')+'T12:00:00.0Z');
+            this.dateFromValue = val
             this.dateFromChange.emit(val);
         }
-        this.propagateChange({ dateFrom: this.dateFrom, dateTo: this.dateTo });
+        this.propagateChange({ dateFrom: val, dateTo: this.dateTo });
     }
     /** Input definition for (to) */
     @Input()
@@ -68,10 +69,11 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     set dateTo(val) {
         if (val instanceof moment && val.isValid()) {
             this.inputTo.nativeElement.value = val.format("MM/DD/YYYY");
+            val = moment(val.format('YYYY-MM-DD')+'T12:00:00.0Z');
             this.dateToValue = val;
             this.dateToChange.emit(val);
         }
-        this.propagateChange({ dateFrom: this.dateFrom, dateTo: this.dateTo });
+        this.propagateChange({ dateFrom: this.dateFrom, dateTo: val });
     }
     private validDateExpression: RegExp;
     @Input()
