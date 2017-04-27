@@ -57,7 +57,10 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
             this.inputFrom.nativeElement.value = val.format("MM/DD/YYYY");
             this.dateFromValue = val;
             this.dateFromChange.emit(val);
-        }
+        }else {
+       this.dateFromValue = undefined;
+       this.inputFrom.nativeElement.value = "";
+    }
         this.propagateChange({ dateFrom: this.dateFrom, dateTo: this.dateTo });
     }
     /** Input definition for (to) */
