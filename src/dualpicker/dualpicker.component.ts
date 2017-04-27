@@ -58,8 +58,11 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
             val = moment(val.format('YYYY-MM-DD')+'T12:00:00.0Z');
             this.dateFromValue = val
             this.dateFromChange.emit(val);
-        }
-        this.propagateChange({ dateFrom: val, dateTo: this.dateTo });
+        }else {
+       this.dateFromValue = undefined;
+       this.inputFrom.nativeElement.value = "";
+       }
+       this.propagateChange({ dateFrom: this.dateFrom, dateTo: this.dateTo });
     }
     /** Input definition for (to) */
     @Input()
