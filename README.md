@@ -22,7 +22,7 @@ Usage Example
 ## Installation
 
 ```
-npm install --save ct-ng2-datepicker    
+npm install --save ct-ngx-datepicker    
 ```
 
 ## Usage

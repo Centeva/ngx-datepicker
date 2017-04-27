@@ -8,6 +8,7 @@
 @disabled: lighten(black, 75%);
 
 .ct-dp-active {
+    position: relative;
     input {
         position: relative;
     }
@@ -22,6 +23,16 @@
     background-color: transparent;
 }
 
+.ct-dp-picker-wrapper {
+    position: absolute;
+    .display-below & {
+        padding-top: 5px;
+    }
+    .display-above & {
+        padding-bottom: 5px;
+    }
+}
+
 .ct-dp-picker {
     width: @full-width;    
     &.ct-dp-dualpicker {
@@ -29,37 +40,58 @@
     }
     border: 1px solid @gray;
     box-sizing: content-box;
-    position: absolute;
+    position: relative;
     background-color: white;
-    margin-top: 14px;
-    transition: 0.5s;
+    transition: margin-left 0.5s;    
     &.ct-dp-picker-to {
         margin-left: 15px;
     }     
+    .display-below & {
+        margin-top: 14px;
+    }
+    .display-above & {
+        margin-bottom: 14px;
+    }
 }
 
+
 .ct-dp-caret-2, .ct-dp-caret-1 {
-	bottom: 100%;
+    .display-above & {
+        top: 100%;
+    }
+    .display-below & {
+	    bottom: 100%;
+    }
     left: 10%;
 	border: solid transparent;
 	height: 0;
 	width: 0;
 	position: absolute;
 	pointer-events: none;
-    transition: 0.5s;
-    }
-    .ct-dp-caret-2 {
-        border-color: rgba(136, 183, 213, 0);
+    transition: left 0.5s;
+}
+.ct-dp-caret-2 {
+    border-color: rgba(136, 183, 213, 0);
+    .display-below & {
         border-bottom-color: white;
-        border-width: 14px;
-        margin-left: -14px;
     }
-    .ct-dp-caret-1 {
-        border-color: rgba(194, 225, 245, 0);
-        border-bottom-color: @gray;
-        border-width: 16px;
-        margin-left: -16px;
+    .display-above & {
+        border-top-color: white;
     }
+    border-width: 14px;
+    margin-left: -14px;
+}
+.ct-dp-caret-1 {
+    border-color: rgba(194, 225, 245, 0);
+    .display-below & {
+    border-bottom-color: @gray;
+    }
+    .display-above & {
+        border-top-color: @gray;
+    }
+    border-width: 16px;
+    margin-left: -16px;
+}
 
 .ct-dp-header {
     border-bottom: 1px solid @gray;
