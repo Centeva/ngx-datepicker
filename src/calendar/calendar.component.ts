@@ -16,7 +16,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     private static halfNumYearsShown = Math.floor(CalendarComponent.numYearsShown / 2);
     /** Accessor to the mode for html */
     public CalendarMode = CalendarMode;
-    public mode: CalendarMode = CalendarMode.Year;
+    public mode: CalendarMode;
     /** Date object representing the month/year shown on this calendar */
     public date: moment.Moment;
     /** Date object representing today.This hsould never change in the rendering of the calendar grid */
