@@ -37,6 +37,18 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     public CalendarMode = CalendarMode;
     public DualPickerMode = DualPickerMode;
 
+    private _globalMode: CalendarMode = CalendarMode.Month;
+    /** Set the starting mode for selecting a date. (eg. Calendar, Month, Year) **/
+    @Input() set globalMode(val: string) { 
+        if (CalendarMode.hasOwnProperty(val)) {
+            switch(CalendarMode[`${val}`]) {
+                case CalendarMode.Calendar:
+                case CalendarMode.Year:
+                this._globalMode = CalendarMode[`${val}`]
+            }
+        }
+    }
+
     /** Date from (binding value) */
     private dateFromValue: moment.Moment;
     /** Date to (binding value) */
@@ -134,8 +146,8 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
                 this.hideCalendar();
                 break;
         }
-        this.changeMode(CalendarMode.Calendar, this.cal1);
-        this.changeMode(CalendarMode.Calendar, this.cal2);
+        this.changeMode(this._globalMode, this.cal1);
+        this.changeMode(this._globalMode, this.cal2);
     }
 
     private positionCalendar(element: ElementRef) {

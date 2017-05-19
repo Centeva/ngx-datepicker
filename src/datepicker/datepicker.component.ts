@@ -29,6 +29,18 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   public CalendarMode = CalendarMode;
   public DatePickerMode = DatePickerMode;
 
+  private _globalMode: CalendarMode = CalendarMode.Calendar;
+  /** Set the starting mode for selecting a date. (eg. Calendar, Month, Year) **/
+  @Input() set globalMode(val: string) { 
+    if (CalendarMode.hasOwnProperty(val)) {
+      switch(CalendarMode[`${val}`]) {
+        case CalendarMode.Calendar:
+        case CalendarMode.Year:
+          this._globalMode = CalendarMode[`${val}`]
+      }
+    }
+  }
+
   @Output() dateChange = new EventEmitter();
   private dateValue: moment.Moment;
   @Input()
@@ -88,7 +100,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     this.mode = mode;
     switch (this.mode) {
       case DatePickerMode.Visible:
-        this.changeMode(CalendarMode.Calendar);
+        this.changeMode(this._globalMode);
         $(this.myElement.nativeElement).addClass("ct-dp-active");
         this.positionCalendar();
         break;
