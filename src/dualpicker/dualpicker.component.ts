@@ -37,7 +37,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     public CalendarMode = CalendarMode;
     public DualPickerMode = DualPickerMode;
 
-    private _globalMode: CalendarMode = CalendarMode.Month;
+    private _globalMode: CalendarMode = CalendarMode.Calendar;
     /** Set the starting mode for selecting a date. (eg. Calendar, Month, Year) **/
     @Input() set globalMode(val: string) { 
         if (CalendarMode.hasOwnProperty(val)) {
