@@ -119,12 +119,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
             fn();
         }
     }
-    disableBtn(item: number, unit: moment.unitOfTime.StartOf) {
+    disableBtn(item: any, unit: moment.unitOfTime.StartOf) {
         let validDate: moment.Moment;
         if (unit === 'year') {
             validDate = moment({year: item, month: 0, day: 1})
         }
-        if (unit === 'month') { // because of how we loop over the months, we have to get the number representation of the string month
+        if (unit === 'month') {
+            // because of how we loop over the months, we have to get the number representation of the string month
             validDate = moment({year: this.date.year(), month: moment().month(item).month(), day: 1})
         }
         return !validDate.isBetween(this.minDate, this.maxDate, unit, '[]')
