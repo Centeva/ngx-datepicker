@@ -40,8 +40,6 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
       }
     }
   }
-
-  @Output() dateChange = new EventEmitter();
   private dateValue: moment.Moment;
   @Input()
   get date() {
@@ -67,7 +65,8 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   set match(val) {
     this.validDateExpression = new RegExp(val);
   }
-
+  @Output() dateChange = new EventEmitter();
+  
   @ContentChild('date') input: ElementRef;
 
   @ViewChild(CalendarComponent) public cal: CalendarComponent;
@@ -188,6 +187,9 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     } else {
       this.cal.date = moment();
     }
+
+    this.cal.minDate = this.minDate;
+    this.cal.maxDate = this.maxDate;
 
     this.cal.subscribeToChangeMonth(this.monthChangeListener);
     this.cal.subscribeToChangeYear(this.yearChangeListener);

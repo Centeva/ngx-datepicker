@@ -3,11 +3,11 @@
 </div>
 <div class="ct-dp-months" [ngClass]="{'hidden': mode != CalendarMode.Month}">
     <template ngFor let-item [ngForOf]="months" [ngForTrackBy]="myTrackBy" let-i="index"><!--
-        --><button tabindex="-1" class="ct-dp-btn ct-dp-month" (click)="setMonth(i)">{{item}}</button>
+        --><button tabindex="-1" class="ct-dp-btn ct-dp-month" [disabled]="disableBtn(item, 'month')" (click)="setMonth(i)">{{item}}</button>
     </template>
 </div>
 <div class="ct-dp-years" [ngClass]="{'hidden': mode != CalendarMode.Year}">
     <template ngFor let-item [ngForOf]="years" [ngForTrackBy]="myTrackBy" let-i="index"><!--
-        --><button tabindex="-1" class="ct-dp-btn ct-dp-year" (click)="setYear(item)">{{item}}</button>
+        --><button tabindex="-1" class="ct-dp-btn ct-dp-year" [disabled]="disableBtn(item, 'year')" (click)="setYear(item)">{{item}}</button>
     </template>
 </div>
