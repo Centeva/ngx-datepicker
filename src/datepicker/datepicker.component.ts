@@ -29,7 +29,17 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   public CalendarMode = CalendarMode;
   public DatePickerMode = DatePickerMode;
 
-  @Output() dateChange = new EventEmitter();
+  private _globalMode: CalendarMode = CalendarMode.Calendar;
+  /** Set the starting mode for selecting a date. (eg. Calendar, Month, Year) **/
+  @Input() set globalMode(val: string) { 
+    if (CalendarMode.hasOwnProperty(val)) {
+      switch(CalendarMode[`${val}`]) {
+        case CalendarMode.Calendar:
+        case CalendarMode.Year:
+          this._globalMode = CalendarMode[`${val}`]
+      }
+    }
+  }
   private dateValue: moment.Moment;
   @Input()
   get date() {
@@ -55,7 +65,8 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   set match(val) {
     this.validDateExpression = new RegExp(val);
   }
-
+  @Output() dateChange = new EventEmitter();
+  
   @ContentChild('date') input: ElementRef;
 
   @ViewChild(CalendarComponent) public cal: CalendarComponent;
@@ -88,7 +99,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     this.mode = mode;
     switch (this.mode) {
       case DatePickerMode.Visible:
-        this.changeMode(CalendarMode.Calendar);
+        this.changeMode(this._globalMode);
         $(this.myElement.nativeElement).addClass("ct-dp-active");
         this.positionCalendar();
         break;
@@ -176,6 +187,9 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     } else {
       this.cal.date = moment();
     }
+
+    this.cal.minDate = this.minDate;
+    this.cal.maxDate = this.maxDate;
 
     this.cal.subscribeToChangeMonth(this.monthChangeListener);
     this.cal.subscribeToChangeYear(this.yearChangeListener);

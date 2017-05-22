@@ -41,6 +41,7 @@ Wrap a input field in the <ct-date-picker> element. Mark the input field with #d
  * minDate - Minimum allowed date.
  * maxDate - Maximum allowed date.
  * match - Optional regex for properly parsing typed in dates, e.g. mm/dd/yyyy
+ * globalMode - Sets the starting mode for selecting a date, e.g. Calendar, Year. If no value is specified, Calendar mode is implied.
 
 
 ### Dual Date Picker
@@ -61,7 +62,7 @@ Wrap two input fields in the <ct-dual-picker> element. Mark each input #dateFrom
  * minDate - Minimum allowed date.
  * maxDate - Maximum allowed date.
  * match - Optional regex for properly parsing typed in dates, e.g. mm/dd/yyyy
-
+ * globalMode - Sets the starting mode for selecting a date, e.g. Calendar, Year. If no value is specified, Calendar mode is implied.
 
 ## Requirements
 - Angular 2+ (common, core, forms)

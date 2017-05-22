@@ -16,10 +16,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
     private static halfNumYearsShown = Math.floor(CalendarComponent.numYearsShown / 2);
     /** Accessor to the mode for html */
     public CalendarMode = CalendarMode;
-    public mode: CalendarMode = CalendarMode.Calendar;
+    public mode: CalendarMode;
     /** Date object representing the month/year shown on this calendar */
     public date: moment.Moment;
-    /** Date object representing today.This hsould never change in the rendering of the calendar grid */
+    /** Date object representing today.This should never change in the rendering of the calendar grid */
     public today: moment.Moment;
     /** Array of months to show when selecting a new month */
     private months: string[] = [];
@@ -32,6 +32,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
     private yearListeners: Function[] = [];
     /** Grid view child component (actually shows the number grid) */
     @ViewChild(CalendarGridComponent) public grid: CalendarGridComponent;
+    /** The minimum date allowed to select */
+    public minDate: moment.Moment;
+    /** The maximum date allowed to select */
+    public maxDate: moment.Moment;    
 
     constructor() {
         this.generateMonthData();
@@ -114,5 +118,15 @@ export class CalendarComponent implements OnInit, OnDestroy {
         for (let fn of this.yearListeners) {
             fn();
         }
+    }
+    disableBtn(item: number, unit: moment.unitOfTime.StartOf) {
+        let validDate: moment.Moment;
+        if (unit === 'year') {
+            validDate = moment({year: item, month: 0, day: 1})
+        }
+        if (unit === 'month') { // because of how we loop over the months, we have to get the number representation of the string month
+            validDate = moment({year: this.date.year(), month: moment().month(item).month(), day: 1})
+        }
+        return !validDate.isBetween(this.minDate, this.maxDate, unit, '[]')
     }
 }
