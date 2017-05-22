@@ -78,6 +78,7 @@ Because the datepicker returns a moment date, not a string.
 
 
 ## Release Notes
+ - 2.4.0 -- Add ability to specify calendar default mode (globalMode), e.g. month/year.
  - 2.2.3 -- Remove sourcemap from dist build.
  - 2.2.2 -- Fixed bug where dates weren't invalid when cleared
  - 2.2.1 -- Fixed bug with validation on dual date picker.
