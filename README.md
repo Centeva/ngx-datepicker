@@ -78,6 +78,7 @@ Because the datepicker returns a moment date, not a string.
 
 
 ## Release Notes
+ - 2.5.0 -- Ability to specify a minDate without a maxDate for validation
  - 2.4.0 -- Add ability to specify calendar default mode (globalMode), e.g. month/year.
  - 2.2.3 -- Remove sourcemap from dist build.
  - 2.2.2 -- Fixed bug where dates weren't invalid when cleared
