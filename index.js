@@ -1,1 +1,1 @@
-export {DatePickerModule} from './src/datepicker.module';
+export {DatePickerModule} from './dist/ctng.umd.js';
