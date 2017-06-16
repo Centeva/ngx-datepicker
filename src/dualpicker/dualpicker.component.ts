@@ -39,12 +39,12 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
 
     private _globalMode: CalendarMode = CalendarMode.Calendar;
     /** Set the starting mode for selecting a date. (eg. Calendar, Month, Year) **/
-    @Input() set globalMode(val: string) { 
+    @Input() set globalMode(val: string) {
         if (CalendarMode.hasOwnProperty(val)) {
-            switch(CalendarMode[`${val}`]) {
+            switch (CalendarMode[`${val}`]) {
                 case CalendarMode.Calendar:
                 case CalendarMode.Year:
-                this._globalMode = CalendarMode[`${val}`]
+                    this._globalMode = CalendarMode[`${val}`]
             }
         }
     }
@@ -65,16 +65,19 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         return this.dateFromValue;
     }
     set dateFrom(val) {
+        if (this.isSameDay(this.dateFromValue, val)) {
+            return; // No need to do anything.
+        }
         if (val instanceof moment && val.isValid()) {
             this.inputFrom.nativeElement.value = val.format("MM/DD/YYYY");
-            val = moment(val.format('YYYY-MM-DD')+'T12:00:00.0Z');
+            val = moment(val.format('YYYY-MM-DD') + 'T12:00:00.0Z');
             this.dateFromValue = val
             this.dateFromChange.emit(val);
-        }else {
-       this.dateFromValue = undefined;
-       this.inputFrom.nativeElement.value = "";
-       }
-       this.propagateChange({ dateFrom: this.dateFrom, dateTo: this.dateTo });
+        } else {
+            this.dateFromValue = undefined;
+            this.inputFrom.nativeElement.value = "";
+        }
+        this.propagateChange({ dateFrom: this.dateFrom, dateTo: this.dateTo });
     }
     /** Input definition for (to) */
     @Input()
@@ -82,11 +85,17 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         return this.dateToValue;
     }
     set dateTo(val) {
+        if (this.isSameDay(this.dateToValue, val)) {
+            return; // No need to do anything.
+        }
         if (val instanceof moment && val.isValid()) {
             this.inputTo.nativeElement.value = val.format("MM/DD/YYYY");
-            val = moment(val.format('YYYY-MM-DD')+'T12:00:00.0Z');
+            val = moment(val.format('YYYY-MM-DD') + 'T12:00:00.0Z');
             this.dateToValue = val;
             this.dateToChange.emit(val);
+        } else {
+            this.dateToValue = undefined;
+            this.inputTo.nativeElement.value = "";
         }
         this.propagateChange({ dateFrom: this.dateFrom, dateTo: val });
     }
@@ -134,11 +143,11 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         this.mode = mode;
         switch (this.mode) {
             case DualPickerMode.To:
-                $(this.myElement.nativeElement).addClass("ct-dp-active");            
+                $(this.myElement.nativeElement).addClass("ct-dp-active");
                 this.positionCalendar(this.inputTo);
                 break;
             case DualPickerMode.From:
-                $(this.myElement.nativeElement).addClass("ct-dp-active");            
+                $(this.myElement.nativeElement).addClass("ct-dp-active");
                 this.positionCalendar(this.inputFrom);
                 break;
             case DualPickerMode.Hidden:
@@ -166,11 +175,11 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
         let left = $(element.nativeElement).position().left
         let caret = $(this.myElement.nativeElement).find(".ct-dp-caret");
-        picker.removeClass("display-below");        
+        picker.removeClass("display-below");
         picker.addClass("display-above");
         picker.css("top", (-picker.height()) + "px");
         picker.css("left", "0px");
-        caret.css({ "left": (left + (picker.width() * .05)) + "px"});
+        caret.css({ "left": (left + (picker.width() * .05)) + "px" });
         console.log(left);
     }
 
@@ -178,11 +187,11 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
         let left = $(element.nativeElement).position().left
         let caret = $(this.myElement.nativeElement).find(".ct-dp-caret");
-        picker.removeClass("display-above");        
+        picker.removeClass("display-above");
         picker.addClass("display-below");
         picker.css("top", ($(element.nativeElement).height()) + "px");
         picker.css("left", "0px");
-        caret.css({ "left": (left + (picker.width() * .05)) + "px"});
+        caret.css({ "left": (left + (picker.width() * .05)) + "px" });
     }
 
     private hideCalendar() {
