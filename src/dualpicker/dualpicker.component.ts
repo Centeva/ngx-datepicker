@@ -9,8 +9,9 @@ import { CalendarComponent } from '../calendar/calendar.component';
 import { CalendarMode } from '../common/calendar-mode';
 import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { DatePickerBase } from '../common/datepicker-base';
+import { DatePickerConfig } from "../datepicker.config";
 
-/** 
+/**
  * Defines the mode of the picker
  */
 export enum DualPickerMode {
@@ -70,7 +71,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         }
         if (val instanceof moment && val.isValid()) {
             this.inputFrom.nativeElement.value = val.format("MM/DD/YYYY");
-            val = moment(val.format('YYYY-MM-DD') + 'T12:00:00.0Z');
+            val = moment(val.format('YYYY-MM-DD') + this.config.defaultMomentTime);
             this.dateFromValue = val
             this.dateFromChange.emit(val);
         } else {
@@ -90,7 +91,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         }
         if (val instanceof moment && val.isValid()) {
             this.inputTo.nativeElement.value = val.format("MM/DD/YYYY");
-            val = moment(val.format('YYYY-MM-DD') + 'T12:00:00.0Z');
+            val = moment(val.format('YYYY-MM-DD') + this.config.defaultMomentTime);
             this.dateToValue = val;
             this.dateToChange.emit(val);
         } else {
@@ -120,7 +121,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     /** Mode */
     public mode: DualPickerMode = DualPickerMode.Hidden;
 
-    constructor(private myElement: ElementRef) {
+    constructor(private myElement: ElementRef, private config: DatePickerConfig) {
         super();
     }
 
