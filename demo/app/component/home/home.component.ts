@@ -10,7 +10,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class HomeComponent implements OnInit, OnDestroy {
 
   form:FormGroup;
-  date1: moment.Moment = null;
+  date1: moment.Moment = moment("2017-06-16");
   date2: moment.Moment = null;
   date3: moment.Moment = null;
 
@@ -25,6 +25,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       singlePicker: this.date1,
       dualPicker: {dateTo: this.date3, dateFrom: this.date2}
     });
+  }
+
+  log(text:string) {
+    console.log(text);
   }
 
   ngOnDestroy() {
