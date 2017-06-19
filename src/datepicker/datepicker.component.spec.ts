@@ -8,8 +8,13 @@ import { CalendarComponent } from '../calendar/calendar.component';
 import { CalendarGridComponent } from '../calendar-grid/calendar-grid.component';
 import * as moment from 'moment';
 import * as $ from 'jquery';
+import { DatePickerConfig } from "../datepicker.config";
 
 /* end of imports */
+
+class MyDatePickerConfig extends DatePickerConfig {
+
+}
 
 describe('CalendarGridComponent.component', () => {
 	let component: DatePickerComponent;
@@ -20,7 +25,8 @@ describe('CalendarGridComponent.component', () => {
 	beforeEach(() => {
 		TestBed.configureTestingModule({
 			declarations: [CalendarComponent, CalendarGridComponent, DatePickerComponent],
-            imports: [FormsModule]
+            imports: [FormsModule],
+			providers:[{ provide: DatePickerConfig, useValue: new MyDatePickerConfig()}]
 		});
 		fixture = TestBed.createComponent(DatePickerComponent);
 

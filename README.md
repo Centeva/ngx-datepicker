@@ -5,6 +5,22 @@
 A single and dual date picker, written for angular 2+ projects.
 
 ## Code Samples
+Setup
+```
+import { DatePickerUtil, DatePickerConfig } from 'ct-ngx-datepicker';
+
+...
+
+class MyDatePickerConfig extends DatePickerConfig {
+	
+}
+
+...
+
+DatePickerUtil.forRoot(new MyDatePickerConfig())
+```
+
+Config is optional, more details to come on what options are configurable. 
 
 Usage Example 
 ```

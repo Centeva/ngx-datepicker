@@ -9,6 +9,7 @@ import { CalendarMode } from '../common/calendar-mode';
 import * as $ from 'jquery';
 import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { DatePickerBase } from '../common/datepicker-base';
+import { DatePickerConfig } from "../datepicker.config";
 
 export enum DatePickerMode {
   Visible, Hidden
@@ -31,9 +32,9 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
 
   private _globalMode: CalendarMode = CalendarMode.Calendar;
   /** Set the starting mode for selecting a date. (eg. Calendar, Month, Year) **/
-  @Input() set globalMode(val: string) { 
+  @Input() set globalMode(val: string) {
     if (CalendarMode.hasOwnProperty(val)) {
-      switch(CalendarMode[`${val}`]) {
+      switch (CalendarMode[`${val}`]) {
         case CalendarMode.Calendar:
         case CalendarMode.Year:
           this._globalMode = CalendarMode[`${val}`]
@@ -51,10 +52,10 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     }
     if (val instanceof moment && val.isValid()) {
       this.input.nativeElement.value = val.format("MM/DD/YYYY");
-      val = moment(val.format('YYYY-MM-DD')+'T12:00:00.0Z');
+      val = moment(val.format('YYYY-MM-DD') + this.config.defaultMomentTime);
       this.dateValue = val;
       this.dateChange.emit(val);
-    }else {
+    } else {
       this.dateValue = undefined;
       this.input.nativeElement.value = "";
     }
@@ -69,13 +70,13 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     this.validDateExpression = new RegExp(val);
   }
   @Output() dateChange = new EventEmitter();
-  
+
   @ContentChild('date') input: ElementRef;
 
   @ViewChild(CalendarComponent) public cal: CalendarComponent;
   public mode: DatePickerMode = DatePickerMode.Hidden;
 
-  constructor(private myElement: ElementRef, private renderer: Renderer) {
+  constructor(private myElement: ElementRef, private renderer: Renderer, private config: DatePickerConfig) {
     super();
   }
 
@@ -126,7 +127,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
 
   private positionCalendarAbove() {
     let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
-    picker.removeClass("display-below");        
+    picker.removeClass("display-below");
     picker.addClass("display-above");
     picker.css("top", (-picker.height()) + "px");
     picker.css("left", "0px");
@@ -134,14 +135,14 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
 
   private positionCalendarBelow() {
     let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
-    picker.removeClass("display-above");        
+    picker.removeClass("display-above");
     picker.addClass("display-below");
     picker.css("top", ($(this.input.nativeElement).height()) + "px");
-    picker.css("left", "0px"); 
+    picker.css("left", "0px");
   }
 
   private hideCalendar() {
-    let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");    
+    let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
     picker.removeClass("display-above");
     picker.addClass("display-below");
     picker.addClass("hidden");
