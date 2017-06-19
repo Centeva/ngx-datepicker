@@ -47,8 +47,8 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     return this.dateValue;
   }
   set date(val) {
-    if (this.isSameDay(this.dateValue, val)) {
-      return; // No need to do anything.
+    if (this.isSameDate(val, this.dateValue)) {
+      return;
     }
     if (val instanceof moment && val.isValid()) {
       this.input.nativeElement.value = val.format("MM/DD/YYYY");

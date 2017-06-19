@@ -27,8 +27,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  log(text:string) {
-    console.log(text);
+  onChange(src: string) {
+    console.log(src);
   }
 
   ngOnDestroy() {
