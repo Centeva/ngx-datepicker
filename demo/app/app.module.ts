@@ -8,11 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { appRouterProviders } from './app.routes';
-import { DatePickerUtil, DatePickerConfig } from '../../src/datepicker.module';
-
-class MyDatePickerConfig extends DatePickerConfig {
-	
-}
+import { DatePickerModule } from '../../src/datepicker.module';
 
 @NgModule({
 	declarations: [
@@ -25,7 +21,7 @@ class MyDatePickerConfig extends DatePickerConfig {
 		FormsModule,
 		HttpModule,
 		ReactiveFormsModule,
-		DatePickerUtil.forRoot(new MyDatePickerConfig())
+		DatePickerModule
 	],
 	bootstrap: [
 		AppComponent
