@@ -46,6 +46,9 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     return this.dateValue;
   }
   set date(val) {
+    if (this.isSameDate(val, this.dateValue)) {
+      return;
+    }
     if (val instanceof moment && val.isValid()) {
       this.input.nativeElement.value = val.format("MM/DD/YYYY");
       val = moment(val.format('YYYY-MM-DD')+'T12:00:00.0Z');

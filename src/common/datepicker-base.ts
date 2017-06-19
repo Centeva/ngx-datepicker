@@ -55,4 +55,11 @@ export abstract class DatePickerBase implements ControlValueAccessor {
   }
 
   public abstract writeValue(value: any);
+
+  public isSameDate(date1: moment.Moment, date2: moment.Moment) {
+    if (date1 instanceof moment && date2 instanceof moment) {
+      return date1.isSame(date2, 'day');
+    }
+    return false;
+  }
 }

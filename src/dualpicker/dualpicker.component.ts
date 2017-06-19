@@ -65,6 +65,9 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         return this.dateFromValue;
     }
     set dateFrom(val) {
+        if (this.isSameDate(val, this.dateFromValue)) {
+            return;
+        }
         if (val instanceof moment && val.isValid()) {
             this.inputFrom.nativeElement.value = val.format("MM/DD/YYYY");
             val = moment(val.format('YYYY-MM-DD')+'T12:00:00.0Z');
@@ -82,6 +85,9 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         return this.dateToValue;
     }
     set dateTo(val) {
+        if (this.isSameDate(val, this.dateToValue)) {
+            return;
+        }
         if (val instanceof moment && val.isValid()) {
             this.inputTo.nativeElement.value = val.format("MM/DD/YYYY");
             val = moment(val.format('YYYY-MM-DD')+'T12:00:00.0Z');
