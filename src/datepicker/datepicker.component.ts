@@ -138,7 +138,6 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     picker.removeClass("display-above");
     picker.addClass("display-below");
     // picker.css("top", ($(this.input.nativeElement).outerHeight()) + "px");
-    // picker.css("top", "0px");
     picker.css("left", "0px");
   }
 
