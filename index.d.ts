@@ -1,1 +1,2 @@
-export * from './src/datepicker.module';
+export {DatePickerModule, DatePickerConfig, DatePickerUtil} from './src/datepicker.module';
+

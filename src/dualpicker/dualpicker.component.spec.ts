@@ -1,25 +1,40 @@
 /* tslint:disable:no-unused-variable */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DualPickerComponent } from './dualpicker.component';
+import { DebugElement } from "@angular/core";
+import { CalendarGridComponent } from "../calendar-grid/calendar-grid.component";
+import { CalendarComponent } from "../calendar/calendar.component";
+import { FormsModule } from "@angular/forms";
+import { DatePickerConfig } from "../datepicker.config";
 
 /* end of imports */
+
+class MyDatePickerConfig extends DatePickerConfig {
+
+}
 
 describe('DualPickerComponent.component', () => {
 	let component: DualPickerComponent;
 	let fixture: ComponentFixture<DualPickerComponent>
 	
+	let debugElement: DebugElement;
+	let nativeElement: Element;
 
 	beforeEach(() => {
-		// TestBed.configureTestingModule({
-		// 	declarations: [DualPickerComponent]
-		// });
-		// fixture = TestBed.createComponent(DualPickerComponent);
+		TestBed.configureTestingModule({
+			declarations: [CalendarComponent, CalendarGridComponent, DualPickerComponent],
+            imports: [FormsModule],
+			providers:[{ provide: DatePickerConfig, useValue: new MyDatePickerConfig()}]
+		});
+		fixture = TestBed.createComponent(DualPickerComponent);
 
-		// component = fixture.componentInstance;
+		component = fixture.componentInstance;
+		debugElement = fixture.debugElement;
+		nativeElement = debugElement.nativeElement;
 	});
 
-	it('Should reset the calendar mode on global mode change.', () => {
-        expect(true).toBeTruthy();
+	it('should initialize correctly', () => {
+		expect(component).toBeTruthy();
 	});
 
 });

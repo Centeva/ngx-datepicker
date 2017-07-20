@@ -5,6 +5,22 @@
 A single and dual date picker, written for angular 2+ projects.
 
 ## Code Samples
+Setup
+```
+import { DatePickerUtil, DatePickerConfig } from 'ct-ngx-datepicker';
+
+...
+
+class MyDatePickerConfig extends DatePickerConfig {
+	
+}
+
+...
+
+DatePickerUtil.forRoot(new MyDatePickerConfig())
+```
+
+Config is optional, more details to come on what options are configurable. 
 
 Usage Example 
 ```
@@ -78,6 +94,10 @@ Because the datepicker returns a moment date, not a string.
 
 
 ## Release Notes
+ - 3.1.1 -- Fix ViewChild syntax in dualpicker.
+ - 3.1.0 -- Fix bug when today was not in the validation range, the user could not select a date. Also update some styling for the carat below.
+ - 3.0.3 -- Fix bug with changeDate being called more than once
+ - 3.0.0-3.0.2 -- Don't ask
  - 2.5.0 -- Ability to specify a minDate without a maxDate for validation
  - 2.4.0 -- Add ability to specify calendar default mode (globalMode), e.g. month/year.
  - 2.2.3 -- Remove sourcemap from dist build.

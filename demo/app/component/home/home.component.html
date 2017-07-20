@@ -22,7 +22,7 @@
                     <form class="form-inline" [formGroup]="form">
                         <div>
                             <label>Single Date</label>
-                            <ct-date-picker [(date)]="date1" zIndex="100" formControlName="singlePicker" maxDate="2018/02/15" minDate="2017/01/31" [match]="yearFirstRegex">
+                            <ct-date-picker [(date)]="date1" zIndex="100" formControlName="singlePicker" maxDate="2018-02-15" minDate="2017-01-31" [match]="yearFirstRegex" (dateChange)="onChange('singlePicker')">
                                 <input #date class="form-control" />
                             </ct-date-picker>
                             {{form.get('singlePicker').touched | json}}
@@ -30,7 +30,7 @@
                         {{date1 | json}}
                         <div>
                             <label>Dual Date</label>
-                            <ct-dual-picker [(dateFrom)]="date2" [(dateTo)]="date3" zIndex="100" formControlName="dualPicker" maxDate="2017/02/15" minDate="2017/01/31">
+                            <ct-dual-picker [(dateFrom)]="date2" [(dateTo)]="date3" zIndex="100" formControlName="dualPicker" maxDate="2017-02-15" minDate="2017-01-31"  (dateFromChange)="onChange('FromPicker')"  (dateToChange)="onChange('ToPicker')">
                                 <input #dateFrom class="form-control" />
                                 <input #dateTo class="form-control" />
                             </ct-dual-picker>
@@ -61,7 +61,7 @@
                     <form class="form-inline" #f="ngForm">
                         <div>
                             <label>Single Date</label>
-                            <ct-date-picker [(date)]="date1" zIndex="100" maxDate="2017/02/15" minDate="2017/01/31" [match]="yearFirstRegex" name="sd" #sd="ngModel" ngModel>
+                            <ct-date-picker [(date)]="date1" zIndex="100" maxDate="2017-02-15" minDate="2017-01-31" [match]="yearFirstRegex" name="sd" #sd="ngModel" ngModel>
                                 <input #date class="form-control" />
                             </ct-date-picker>
                         </div>
@@ -69,7 +69,7 @@
                         {{sd.valid | json}}
                         <div>
                             <label>Dual Date</label>
-                            <ct-dual-picker [(dateFrom)]="date2" [(dateTo)]="date3" zIndex="100" maxDate="2017/02/15" minDate="2017/01/31" name="dd" #dd="ngModel" ngModel>
+                            <ct-dual-picker [(dateFrom)]="date2" [(dateTo)]="date3" zIndex="100" maxDate="2017-02-15" minDate="2017-01-31" name="dd" #dd="ngModel" ngModel>
                                 <input #dateFrom class="form-control" />
                                 <input #dateTo class="form-control" />
                             </ct-dual-picker>
