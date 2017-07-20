@@ -34,7 +34,7 @@ describe('CalendarGridComponent.component', () => {
 		let dateFrom = moment("2017-01-05");
 		let dateTo = moment("2017-01-10");
 
-		component.renderCalendar(date, () => {}, dateTo, dateFrom, null, null);
+//		component.renderCalendar(date, () => {}, dateTo, dateFrom, null, null);
 
 		//From
 		let elFrom = $(nativeElement).find("[ct-dp-cal-day=5]");
