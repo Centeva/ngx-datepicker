@@ -1,6 +1,6 @@
 {
   "name": "ct-ngx-datepicker",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "module": "index.js",
   "description": "Angular 2 Datepicker for Centeva projects",
   "main": "dist/ctng.umd.js",

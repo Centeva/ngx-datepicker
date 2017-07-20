@@ -94,6 +94,7 @@ Because the datepicker returns a moment date, not a string.
 
 
 ## Release Notes
+ - 3.1.1 -- Fix ViewChild syntax in dualpicker.
  - 3.1.0 -- Fix bug when today was not in the validation range, the user could not select a date. Also update some styling for the carat below.
  - 3.0.3 -- Fix bug with changeDate being called more than once
  - 3.0.0-3.0.2 -- Don't ask
