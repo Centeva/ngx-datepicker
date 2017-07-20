@@ -44,7 +44,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   private dateValue: moment.Moment;
   @Input()
   get date() {
-    return this.dateValue;
+    return this.dateValue || this.minDate;
   }
   set date(val) {
     if (this.isSameDate(val, this.dateValue)) {
@@ -115,7 +115,6 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
 
   private positionCalendar() {
     let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
-    picker.removeClass("hidden");
     let top = $(this.input.nativeElement).offset().top + $(this.input.nativeElement).outerHeight();
     let scrollTop = $(window).scrollTop();
     if ($(window).height() < (top - scrollTop) + picker.height()) {
@@ -123,6 +122,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     } else {
       this.positionCalendarBelow();
     }
+    picker.removeClass("hidden");
   }
 
   private positionCalendarAbove() {
@@ -137,7 +137,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
     picker.removeClass("display-above");
     picker.addClass("display-below");
-    picker.css("top", ($(this.input.nativeElement).height()) + "px");
+    // picker.css("top", ($(this.input.nativeElement).outerHeight()) + "px");
     picker.css("left", "0px");
   }
 
