@@ -115,9 +115,9 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     @ContentChild('dateFrom') public inputFrom: ElementRef;
 
     /** Cal1 view child component, use to control rendering */
-    @ViewChild('cal1', CalendarComponent) public cal1: CalendarComponent;
+    @ViewChild('cal1') public cal1: CalendarComponent;
     /** Cal2 view child component, use to control rendering */
-    @ViewChild('cal2', CalendarComponent) public cal2: CalendarComponent;
+    @ViewChild('cal2') public cal2: CalendarComponent;
     /** Mode */
     public mode: DualPickerMode = DualPickerMode.Hidden;
 
