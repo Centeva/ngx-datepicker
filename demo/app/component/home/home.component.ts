@@ -10,7 +10,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class HomeComponent implements OnInit, OnDestroy {
 
   form:FormGroup;
-  date1: moment.Moment = moment("2017-06-16");
+  // date1: moment.Moment = moment("2017-06-16");
+  date1: moment.Moment = null;
   date2: moment.Moment = null;
   date3: moment.Moment = null;
 
