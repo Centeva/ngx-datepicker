@@ -63,10 +63,10 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     /** Input definition for (from) */
     @Input()
     get dateFrom() {
-        return this.dateFromValue;
+        return this.dateFromValue || this.minDate;
     }
     set dateFrom(val) {
-        if (this.isSameDate(val, this.dateFromValue)) {
+        if (this.isSameDay(val, this.dateFromValue)) {
             return;
         }
         if (val instanceof moment && val.isValid()) {
@@ -83,10 +83,10 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     /** Input definition for (to) */
     @Input()
     get dateTo() {
-        return this.dateToValue;
+        return this.dateToValue || this.minDate;
     }
     set dateTo(val) {
-        if (this.isSameDate(val, this.dateToValue)) {
+        if (this.isSameDay(val, this.dateToValue)) {
             return;
         }
         if (val instanceof moment && val.isValid()) {
@@ -190,7 +190,6 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         let caret = $(this.myElement.nativeElement).find(".ct-dp-caret");
         picker.removeClass("display-above");
         picker.addClass("display-below");
-        picker.css("top", ($(element.nativeElement).height()) + "px");
         picker.css("left", "0px");
         caret.css({ "left": (left + (picker.width() * .05)) + "px" });
     }
