@@ -25,16 +25,16 @@ export { DatePickerConfig } from "./datepicker.config";
 export class DatePickerModule {
 
 }
-export class DatePickerUtil {
-  static forRoot(config: DatePickerConfig = <DatePickerConfig>{}): ModuleWithProviders {
+// export class DatePickerUtil {
+//   static forRoot(config: DatePickerConfig = <DatePickerConfig>{}): ModuleWithProviders {
 
-    return {
-      ngModule: DatePickerModule,
-      providers: [
-        { provide: DatePickerConfig, useValue: config }
-      ]
-    }
-  }
-}
+//     return {
+//       ngModule: DatePickerModule,
+//       providers: [
+//         { provide: DatePickerConfig, useValue: config }
+//       ]
+//     }
+//   }
+// }
 
-class emptyConfig extends DatePickerConfig { }
+// class emptyConfig extends DatePickerConfig { }
