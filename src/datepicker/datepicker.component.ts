@@ -52,7 +52,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     }
     if (val instanceof moment && val.isValid()) {
       this.input.nativeElement.value = val.format("MM/DD/YYYY");
-      val = moment(val.format('YYYY-MM-DD') + this.config.defaultMomentTime);
+      val = moment(val.format('YYYY-MM-DD'));
       this.dateValue = val;
       this.dateChange.emit(val);
     } else {
