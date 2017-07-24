@@ -92,8 +92,8 @@ I have already implemented the datepicker using the renderer class to support An
 Because the datepicker returns a moment date, not a string.
 
 
-
 ## Release Notes
+ - 3.0.0 - 3.2.0 -- Merge fix for changeDate being called more than once. Merge fix for the date getter using the minDate if no date value is supplied.
  - 2.5.3 -- Update ViewChild syntax. Also fix extra padding, which moved the picker off the input box.
  - 2.5.0 -- Ability to specify a minDate without a maxDate for validation
  - 2.4.0 -- Add ability to specify calendar default mode (globalMode), e.g. month/year.

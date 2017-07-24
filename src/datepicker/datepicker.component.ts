@@ -47,7 +47,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     return this.dateValue || this.minDate;
   }
   set date(val) {
-    if (this.isSameDate(val, this.dateValue)) {
+    if (this.isSameDay(val, this.dateValue)) {
       return;
     }
     if (val instanceof moment && val.isValid()) {

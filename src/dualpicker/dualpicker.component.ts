@@ -66,7 +66,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         return this.dateFromValue;
     }
     set dateFrom(val) {
-        if (this.isSameDate(val, this.dateFromValue)) {
+        if (this.isSameDay(val, this.dateFromValue)) {
             return;
         }
         if (val instanceof moment && val.isValid()) {
@@ -86,7 +86,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         return this.dateToValue;
     }
     set dateTo(val) {
-        if (this.isSameDate(val, this.dateToValue)) {
+        if (this.isSameDay(val, this.dateToValue)) {
             return;
         }
         if (val instanceof moment && val.isValid()) {
