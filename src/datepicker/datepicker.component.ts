@@ -9,7 +9,6 @@ import { CalendarMode } from '../common/calendar-mode';
 import * as $ from 'jquery';
 import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { DatePickerBase } from '../common/datepicker-base';
-import { DatePickerConfig } from "../datepicker.config";
 
 export enum DatePickerMode {
   Visible, Hidden
@@ -76,7 +75,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   @ViewChild('cal') public cal: CalendarComponent;
   public mode: DatePickerMode = DatePickerMode.Hidden;
 
-  constructor(private myElement: ElementRef, private renderer: Renderer, private config: DatePickerConfig) {
+  constructor(private myElement: ElementRef, private renderer: Renderer) {
     super();
   }
 

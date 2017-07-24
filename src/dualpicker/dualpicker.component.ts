@@ -9,7 +9,6 @@ import { CalendarComponent } from '../calendar/calendar.component';
 import { CalendarMode } from '../common/calendar-mode';
 import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { DatePickerBase } from '../common/datepicker-base';
-import { DatePickerConfig } from "../datepicker.config";
 
 /**
  * Defines the mode of the picker
@@ -121,7 +120,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     /** Mode */
     public mode: DualPickerMode = DualPickerMode.Hidden;
 
-    constructor(private myElement: ElementRef, private config: DatePickerConfig) {
+    constructor(private myElement: ElementRef) {
         super();
     }
 
