@@ -63,7 +63,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     /** Input definition for (from) */
     @Input()
     get dateFrom() {
-        return this.dateFromValue;
+        return this.dateFromValue || this.minDate;
     }
     set dateFrom(val) {
         if (this.isSameDay(val, this.dateFromValue)) {
@@ -83,7 +83,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     /** Input definition for (to) */
     @Input()
     get dateTo() {
-        return this.dateToValue;
+        return this.dateToValue || this.minDate;
     }
     set dateTo(val) {
         if (this.isSameDay(val, this.dateToValue)) {
