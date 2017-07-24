@@ -11,7 +11,7 @@
             --><button tabindex="-1" class="ct-dp-btn-year  ct-dp-btn" (click)="changeMode(CalendarMode.Year)">{{cal.date.format("YYYY")}}</button><!--
             --><button tabindex="-1" class="ct-dp-btn-next  ct-dp-btn" (click)="goNext()" [disabled]="cal.mode == CalendarMode.Month">&gt;</button>
         </div>
-        <ct-calendar></ct-calendar>
+        <ct-calendar #cal></ct-calendar>
         <div class="clearfix"></div>
     </div>
 </div>

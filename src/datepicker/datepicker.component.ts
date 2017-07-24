@@ -73,7 +73,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
 
   @ContentChild('date') input: ElementRef;
 
-  @ViewChild(CalendarComponent) public cal: CalendarComponent;
+  @ViewChild('cal') public cal: CalendarComponent;
   public mode: DatePickerMode = DatePickerMode.Hidden;
 
   constructor(private myElement: ElementRef, private renderer: Renderer, private config: DatePickerConfig) {
@@ -137,7 +137,6 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
     picker.removeClass("display-above");
     picker.addClass("display-below");
-    // picker.css("top", ($(this.input.nativeElement).outerHeight()) + "px");
     picker.css("left", "0px");
   }
 

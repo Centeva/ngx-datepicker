@@ -190,7 +190,6 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         let caret = $(this.myElement.nativeElement).find(".ct-dp-caret");
         picker.removeClass("display-above");
         picker.addClass("display-below");
-        picker.css("top", ($(element.nativeElement).height()) + "px");
         picker.css("left", "0px");
         caret.css({ "left": (left + (picker.width() * .05)) + "px" });
     }
