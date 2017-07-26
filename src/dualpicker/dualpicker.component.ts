@@ -181,6 +181,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         picker.removeClass("display-above");
         picker.addClass("display-below");
         picker.css("left", "0px");
+        picker.css("top", "");        
         caret.css({ "left": (left + (picker.width() * .05)) + "px" });
     }
 

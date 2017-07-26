@@ -122,6 +122,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
     picker.removeClass("display-above");
     picker.addClass("display-below");
+    picker.css("top", "");        
     picker.css("left", "0px");
   }
 
