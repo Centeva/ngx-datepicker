@@ -43,7 +43,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   private dateValue: moment.Moment;
   @Input()
   get date() {
-    return this.dateValue || this.minDate;
+    return this.dateValue;
   }
   set date(val) {
     if (this.isSameDay(val, this.dateValue)) {
@@ -60,14 +60,6 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     }
     this.propagateChange(val);
   }
-  private validDateExpression: RegExp;
-  @Input()
-  get match() {
-    return this.validDateExpression || /^((0?[13578]|10|12)(-|\/)(([1-9])|(0[1-9])|([12])([0-9]?)|(3[01]?))(-|\/)((19)([2-9])(\d{1})|(20)([01])(\d{1})|([8901])(\d{1}))|(0?[2469]|11)(-|\/)(([1-9])|(0[1-9])|([12])([0-9]?)|(3[0]?))(-|\/)((19)([2-9])(\d{1})|(20)([01])(\d{1})|([8901])(\d{1})))$/;
-  }
-  set match(val) {
-    this.validDateExpression = new RegExp(val);
-  }
   @Output() dateChange = new EventEmitter();
 
   @ContentChild('date') input: ElementRef;
@@ -80,20 +72,14 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   }
 
   public onDateStringChange(val) {
-    if (this.match.test(val)) {
-      let m = moment(new Date(val));
-
+    let m = moment(new Date(val));
+    if (m.isValid()) {
       if (this.dateValue === undefined || this.dateValue === null) { this.dateValue = m; }
       else { this.dateValue.set(m.toObject()); }
 
       this.dateChange.emit(this.dateValue);
-      if (m.isValid()) {
-        this.cal.date = this.dateValue;
-      } else {
-        this.cal.date = moment();
-      }
-    } else {
-      this.propagateChange(val);
+      this.cal.date = this.dateValue;
+      this.renderCalendar();
     }
     this.touched();
   }
@@ -114,6 +100,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
 
   private positionCalendar() {
     let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
+    picker.removeClass("invisible");
     let top = $(this.input.nativeElement).offset().top + $(this.input.nativeElement).outerHeight();
     let scrollTop = $(window).scrollTop();
     if ($(window).height() < (top - scrollTop) + picker.height()) {
@@ -121,7 +108,6 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     } else {
       this.positionCalendarBelow();
     }
-    picker.removeClass("hidden");
   }
 
   private positionCalendarAbove() {
@@ -143,7 +129,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
     picker.removeClass("display-above");
     picker.addClass("display-below");
-    picker.addClass("hidden");
+    picker.addClass("invisible");
   }
 
   private touched() {
@@ -184,17 +170,12 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   }
 
   ngOnInit() {
-    if (this.date instanceof moment && this.date.isValid()) {
-      this.cal.date = moment(this.date);
-    } else {
-      this.cal.date = moment();
-    }
-
-    this.cal.minDate = this.minDate;
-    this.cal.maxDate = this.maxDate;
+    this.cal.initCalendar(this.date, this.minDate, this.maxDate);
 
     this.cal.subscribeToChangeMonth(this.monthChangeListener);
     this.cal.subscribeToChangeYear(this.yearChangeListener);
+    
+    this.renderCalendar();
   }
 
   ngOnChanges(inputs) {
@@ -240,7 +221,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   }
 
   renderCalendar() {
-    this.cal.renderCalendar(this.dateClickListener, this.date, this.date, this.minDateVal, this.maxDateVal);
+    this.cal.renderCalendar(this.dateClickListener, this.date, this.date);
   }
 
   writeValue(value) {
@@ -260,5 +241,12 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
       return "Date cannot be after " + this.maxDateVal.format("mm/DD/yyyy");
     }
     return null;
+  }
+
+  updateMinDate(minDate: moment.Moment) {
+    this.cal.minDate = minDate;
+  }
+  updateMaxDate(maxDate: moment.Moment) {
+    this.cal.maxDate = maxDate;
   }
 }

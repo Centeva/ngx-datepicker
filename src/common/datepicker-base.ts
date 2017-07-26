@@ -35,6 +35,7 @@ export abstract class DatePickerBase implements ControlValueAccessor {
     else {
       this.minDateVal = null;
     }
+    this.updateMinDate(this.minDateVal);
   } get minDate() { return this.minDateVal }
   @Input('maxDate') set maxDate(val: any) {
     let d = moment(val);
@@ -44,6 +45,7 @@ export abstract class DatePickerBase implements ControlValueAccessor {
     else {
       this.maxDateVal = null;
     }
+    this.updateMaxDate(this.maxDateVal);    
   } get maxDate() { return this.maxDateVal }
 
   public registerOnChange(fn) {
@@ -62,4 +64,6 @@ export abstract class DatePickerBase implements ControlValueAccessor {
   }
 
   public abstract writeValue(value: any);
+  abstract updateMinDate(minDate: moment.Moment);
+  abstract updateMaxDate(maxDate: moment.Moment);
 }

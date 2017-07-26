@@ -1,7 +1,7 @@
 <ng-content></ng-content>
 <div class="ct-dp-shadow-box" (click)="changeGlobalMode(DualPickerMode.Hidden)" *ngIf="mode != DualPickerMode.Hidden" [style.z-index]="shadowZIndex">
 </div>
-<div class="ct-dp-picker-wrapper hidden display-below" [style.z-index]="zIndexVal">
+<div class="ct-dp-picker-wrapper invisible display-below" [style.z-index]="zIndexVal">
     <div class="ct-dp-picker ct-dp-dualpicker" [class.ct-dp-picker-to]="mode == DualPickerMode.To">
         <div class="ct-dp-caret ct-dp-caret-1"></div>
         <div class="ct-dp-caret ct-dp-caret-2"></div>
