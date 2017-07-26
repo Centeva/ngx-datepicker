@@ -41,7 +41,7 @@ export class CalendarComponent implements OnDestroy {
         this.generateMonthData();
     }
 
-    initCalendar(date: moment.Moment, minDate: moment.Moment, maxDate: moment.Moment) {
+    initCalendar(date: moment.Moment, minDate: moment.Moment = this.minDate, maxDate: moment.Moment = this.maxDate) {
         if (date instanceof moment && date.isValid()) {
             this.date = moment(this.date);
         } else {
