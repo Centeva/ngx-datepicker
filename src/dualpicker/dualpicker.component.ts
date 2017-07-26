@@ -62,7 +62,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     /** Input definition for (from) */
     @Input()
     get dateFrom() {
-        return this.dateFromValue || this.minDate;
+        return this.dateFromValue;
     }
     set dateFrom(val) {
         if (this.isSameDay(val, this.dateFromValue)) {
@@ -82,7 +82,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     /** Input definition for (to) */
     @Input()
     get dateTo() {
-        return this.dateToValue || this.minDate;
+        return this.dateToValue;
     }
     set dateTo(val) {
         if (this.isSameDay(val, this.dateToValue)) {
@@ -98,14 +98,6 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
             this.inputTo.nativeElement.value = "";
         }
         this.propagateChange({ dateFrom: this.dateFrom, dateTo: val });
-    }
-    private validDateExpression: RegExp;
-    @Input()
-    get match() {
-        return this.validDateExpression || /^((0?[13578]|10|12)(-|\/)(([1-9])|(0[1-9])|([12])([0-9]?)|(3[01]?))(-|\/)((19)([2-9])(\d{1})|(20)([01])(\d{1})|([8901])(\d{1}))|(0?[2469]|11)(-|\/)(([1-9])|(0[1-9])|([12])([0-9]?)|(3[0]?))(-|\/)((19)([2-9])(\d{1})|(20)([01])(\d{1})|([8901])(\d{1})))$/;
-    }
-    set match(val) {
-        this.validDateExpression = val;
     }
 
     /** Cal1 view child component, use to control rendering */
@@ -161,7 +153,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
 
     private positionCalendar(element: ElementRef) {
         let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
-        picker.removeClass("hidden");
+        picker.removeClass("invisible");
         let top = $(element.nativeElement).offset().top + $(element.nativeElement).outerHeight();
         let scrollTop = $(window).scrollTop();
         if ($(window).height() < (top - scrollTop) + picker.height()) {
@@ -180,7 +172,6 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         picker.css("top", (-picker.height()) + "px");
         picker.css("left", "0px");
         caret.css({ "left": (left + (picker.width() * .05)) + "px" });
-        console.log(left);
     }
 
     private positionCalendarBelow(element: ElementRef) {
@@ -197,11 +188,10 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
         picker.removeClass("display-above");
         picker.addClass("display-below");
-        picker.addClass("hidden");
+        picker.addClass("invisible");
     }
 
     public onDateFromStringChange(val) {
-        if (this.match.test(val)) {
             let m = moment(new Date(val));
             if (m.isValid()) {
                 if (this.dateFromValue === undefined || this.dateFromValue === null) {
@@ -215,14 +205,10 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
                 this.dateFromChange.emit(this.dateFromValue);
                 this.renderCalendar();
             }
-        } else {
-            this.propagateChange(val);
-        }
         this.touched();
     }
 
     public onDateToStringChange(val) {
-        if (this.match.test(val)) {
             let m = moment(new Date(val));
             if (m.isValid()) {
                 if (this.dateToValue === undefined || this.dateToValue === null) {
@@ -236,9 +222,6 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
                 this.dateToChange.emit(this.dateToValue);
                 this.renderCalendar();
             }
-        } else {
-            this.propagateChange(val);
-        }
         this.touched();
     }
 
@@ -318,7 +301,8 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     }
 
     ngOnInit() {
-        this.cal1.date = moment(this.dateFrom);
+        this.cal1.initCalendar(this.dateFrom, this.minDate, this.maxDate);
+        this.cal2.initCalendar(this.dateFrom, this.minDate, this.maxDate);
         // build what date should be on the second calendar
         this.shiftCal2();
 
@@ -326,6 +310,9 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         this.cal2.subscribeToChangeMonth(this.month2ChangeListener);
         this.cal1.subscribeToChangeYear(this.year1ChangeListener);
         this.cal2.subscribeToChangeYear(this.year2ChangeListener);
+
+        this.changeMode(this._globalMode, this.cal1);
+        this.changeMode(this._globalMode, this.cal2);
     }
 
     ngAfterViewInit() {
@@ -383,8 +370,8 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     }
 
     renderCalendar() {
-        this.cal1.renderCalendar(this.dateClickListener, this.dateTo, this.dateFrom, this.minDateVal, this.maxDateVal);
-        this.cal2.renderCalendar(this.dateClickListener, this.dateTo, this.dateFrom, this.minDateVal, this.maxDateVal);
+        this.cal1.renderCalendar(this.dateClickListener, this.dateTo, this.dateFrom);
+        this.cal2.renderCalendar(this.dateClickListener, this.dateTo, this.dateFrom);
     }
 
     dateClickListener = (date: moment.Moment) => {
@@ -423,5 +410,14 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
             this.dateFrom = moment(this.dateTo);
             this.dateFrom.subtract({ "day": 1 });
         }
+    }
+
+    updateMinDate(minDate: moment.Moment) {
+        this.cal1.minDate = minDate;
+        this.cal2.minDate = minDate;
+    }
+    updateMaxDate(maxDate: moment.Moment) {
+        this.cal1.maxDate = maxDate;
+        this.cal2.maxDate = maxDate;
     }
 }
