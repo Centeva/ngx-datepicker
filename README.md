@@ -93,7 +93,6 @@ Because the datepicker returns a moment date, not a string.
 
 
 ## Release Notes
- - 4.0.2 - 4.0.3 -- Update the calendar when the minDate / maxDate changes.
  - 4.0.1 -- Include a UMD, because forgetting it breaks the whole thing.
  - 4.0.0 -- Bug fixes for: Positioning of the picker and the min/max windowing if today is outside. Removed the match regex option.
  - 3.2.1 - 3.2.2 -- Remove DatePickerConfig for now, until it's ready for prime time.

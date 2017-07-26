@@ -84,13 +84,13 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Non-inline Form</div>
                 <div class="panel-body">
-                    <form class="form" [formGroup]="nonInlineForm">
+                    <form class="form" [formGroup]="form">
                         <div class="form-group">
                             <label>Single Date</label>
                             <ct-date-picker [(date)]="date1" zIndex="100" formControlName="singlePicker" maxDate="2018-02-15" minDate="2017-01-31" (dateChange)="onChange('singlePicker')">
                                 <input #date class="form-control" />
                             </ct-date-picker>
-                            {{nonInlineForm.get('singlePicker').touched | json}}
+                            {{form.get('singlePicker').touched | json}}
                         </div>
                         {{date1 | json}}
                         <div class="form-group">
@@ -99,33 +99,11 @@
                                 <input #dateFrom class="form-control" />
                                 <input #dateTo class="form-control" />
                             </ct-dual-picker>
-                            {{nonInlineForm.get('dualPicker').touched | json}}
+                            {{form.get('dualPicker').touched | json}}
                         </div>
                         {{date2 | json}} {{date3 | json}}
                     </form>
-                    <p *ngIf="!nonInlineForm.valid">Form is invalid!</p>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">Dynamic Min/Max Dates</div>
-                <div class="panel-body">
-                    <form class="form" [formGroup]="dynamicDateForm">
-                        <div class="form-group">
-                            <label> Choose a Min Date </label>
-                            <select formControlName="selectedMinDate" name="selectedMinDate" (change)="updateMaxDate(dynamicDateForm.get('selectedMinDate'))">
-                                <option *ngFor="let val of minDateArray" value="{{val}}">{{val}}</option>
-                            </select>
-                            Max Date is: {{selectedMaxDate}}                            
-                        </div>
-                        <div class="form-group">
-                            <label>Single Date</label>
-                            <ct-date-picker [(date)]="date1" zIndex="100" formControlName="singlePicker" [maxDate]="selectedMaxDate" [minDate]="dynamicDateForm.get('selectedMinDate')?.value" (dateChange)="onChange('singlePicker')">
-                                <input #date class="form-control" />
-                            </ct-date-picker>
-                            {{dynamicDateForm.get('singlePicker').touched | json}}
-                        </div>
-                        {{date1 | json}}
-                    </form>
+                    <p *ngIf="!form.valid">Form is invalid!</p>
                 </div>
             </div>
         </div>
