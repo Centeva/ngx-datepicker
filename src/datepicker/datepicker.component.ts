@@ -246,8 +246,11 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
 
   updateMinDate(minDate: moment.Moment) {
     this.cal.minDate = minDate;
+    this.cal.initCalendar(this.date);
+
   }
   updateMaxDate(maxDate: moment.Moment) {
     this.cal.maxDate = maxDate;
+    this.cal.initCalendar(this.date);
   }
 }
