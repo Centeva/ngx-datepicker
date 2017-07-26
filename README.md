@@ -56,7 +56,7 @@ Wrap a input field in the <ct-date-picker> element. Mark the input field with #d
  * zIndex - Allows specification of a custom z-index for the picker.
  * minDate - Minimum allowed date.
  * maxDate - Maximum allowed date.
- * match - Optional regex for properly parsing typed in dates, e.g. mm/dd/yyyy
+ * ~~match - Optional regex for properly parsing typed in dates, e.g. mm/dd/yyyy~~ Removed in version 4.0.0
  * globalMode - Sets the starting mode for selecting a date, e.g. Calendar, Year. If no value is specified, Calendar mode is implied.
 
 
@@ -77,7 +77,7 @@ Wrap two input fields in the <ct-dual-picker> element. Mark each input #dateFrom
  * zIndex - Allows specification of a custom z-index for the picker.
  * minDate - Minimum allowed date.
  * maxDate - Maximum allowed date.
- * match - Optional regex for properly parsing typed in dates, e.g. mm/dd/yyyy
+ * ~~match - Optional regex for properly parsing typed in dates, e.g. mm/dd/yyyy~~ Removed in version 4.0.0
  * globalMode - Sets the starting mode for selecting a date, e.g. Calendar, Year. If no value is specified, Calendar mode is implied.
 
 ## Requirements
@@ -93,6 +93,7 @@ Because the datepicker returns a moment date, not a string.
 
 
 ## Release Notes
+ - 4.0.0 -- Bug fixes for: Positioning of the picker and the min/max windowing if today is outside. Removed the match regex option.
  - 3.2.1 - 3.2.2 -- Remove DatePickerConfig for now, until it's ready for prime time.
  - 3.0.0 - 3.2.0 -- Merge fix for changeDate being called more than once. Merge fix for the date getter using the minDate if no date value is supplied.
  - 2.5.3 -- Update ViewChild syntax. Also fix extra padding, which moved the picker off the input box.
