@@ -93,6 +93,8 @@ Because the datepicker returns a moment date, not a string.
 
 
 ## Release Notes
+ - 4.0.5 - Prevent date correction on dual picker from happening till focus is lost on the input.
+ - 4.0.4 - This version cannot be found.
  - 4.0.2 - 4.0.3 -- Update the calendar when the minDate / maxDate changes.
  - 4.0.1 -- Include a UMD, because forgetting it breaks the whole thing.
  - 4.0.0 -- Bug fixes for: Positioning of the picker and the min/max windowing if today is outside. Removed the match regex option.
@@ -114,6 +116,10 @@ Because the datepicker returns a moment date, not a string.
  ## Migration Notes
  * From 1.x to 2.x
  ..* Remove references to ctDisabled and inputClass from the datepickers. Instead apply those directly to the transcluded input.
+ * From 2.x to 3.x
+ ..* We attempted an overhaul of the config, but then aborted. No migration needed if on > 3.2.0
+ * From 3.x to 4.x 
+ ..* Remove the match binding (if used). 
 
 ## Known Bug
 - When using an ISO date (yyyy-mm-dd), the day selected on the calendar picker ends uup being localized for your timezone.
