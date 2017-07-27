@@ -416,9 +416,15 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     updateMinDate(minDate: moment.Moment) {
         this.cal1.minDate = minDate;
         this.cal2.minDate = minDate;
+
+        this.cal1.initCalendar(this.dateFrom, this.minDate, this.maxDate);
+        this.cal2.initCalendar(this.dateFrom, this.minDate, this.maxDate);
     }
     updateMaxDate(maxDate: moment.Moment) {
         this.cal1.maxDate = maxDate;
         this.cal2.maxDate = maxDate;
+
+        this.cal1.initCalendar(this.dateFrom, this.minDate, this.maxDate);
+        this.cal2.initCalendar(this.dateFrom, this.minDate, this.maxDate);
     }
 }
