@@ -200,7 +200,6 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
                 } else {
                     this.dateFromValue.set(m.toObject());
                 }
-                this.correctDateTo();
                 this.cal1.date = this.dateFromValue;
                 this.shiftCal2();
                 this.dateFromChange.emit(this.dateFromValue);
@@ -217,7 +216,6 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
                 } else {
                     this.dateToValue.set(m.toObject());
                 }
-                this.correctDateFrom();
                 this.cal2.date = this.dateToValue;
                 this.shiftCal1();
                 this.dateToChange.emit(this.dateToValue);
@@ -326,7 +324,9 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         this.inputTo.nativeElement.addEventListener('focus', () => { this.changeGlobalMode(DualPickerMode.To) });
 
         this.inputFrom.nativeElement.addEventListener('keyup', (event) => { this.onDateFromStringChange(this.inputFrom.nativeElement.value) });
+        this.inputFrom.nativeElement.addEventListener('blur', (event) => { this.correctDateTo()});
         this.inputTo.nativeElement.addEventListener('keyup', (event) => { this.onDateToStringChange(this.inputTo.nativeElement.value) });
+        this.inputTo.nativeElement.addEventListener('blur', (event) => { this.correctDateFrom()});
 
         this.inputTo.nativeElement.addEventListener('keydown', (event) => { this.closePicker(event); });
     }
@@ -402,14 +402,12 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     private correctDateTo() {
         if (this.dateTo && this.dateFrom.isAfter(this.dateTo)) {
             this.dateTo = moment(this.dateFrom);
-            this.dateTo.add({ "day": 1 });
         }
     }
 
     private correctDateFrom() {
         if (this.dateFrom && this.dateFrom.isValid() && this.dateTo.isBefore(this.dateFrom)) {
             this.dateFrom = moment(this.dateTo);
-            this.dateFrom.subtract({ "day": 1 });
         }
     }
 
