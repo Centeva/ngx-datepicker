@@ -93,6 +93,7 @@ Because the datepicker returns a moment date, not a string.
 
 
 ## Release Notes
+ - 4.1.0 - Modify positioning on input element to correct location of above positioned date picker.
  - 4.0.5 - Prevent date correction on dual picker from happening till focus is lost on the input.
  - 4.0.4 - This version cannot be found.
  - 4.0.2 - 4.0.3 -- Update the calendar when the minDate / maxDate changes.
