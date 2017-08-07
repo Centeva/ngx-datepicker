@@ -176,7 +176,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     this.cal.subscribeToChangeMonth(this.monthChangeListener);
     this.cal.subscribeToChangeYear(this.yearChangeListener);
     
-    this.renderCalendar();
+    this.changeMode(this._globalMode);
   }
 
   ngOnChanges(inputs) {
