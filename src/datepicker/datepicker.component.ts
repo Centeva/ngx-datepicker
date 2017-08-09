@@ -104,26 +104,28 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     let top = $(this.input.nativeElement).offset().top + $(this.input.nativeElement).outerHeight();
     let scrollTop = $(window).scrollTop();
     if ($(window).height() < (top - scrollTop) + picker.height()) {
-      this.positionCalendarAbove();
+      picker.removeClass("display-below");
+      picker.addClass("display-above");
+      this.positionCalendarAbove(picker);
+      $(window).on("scroll.datepicker", () => this.positionCalendarAbove(picker));
     } else {
-      this.positionCalendarBelow();
+      picker.removeClass("display-above");
+      picker.addClass("display-below");
+      this.positionCalendarBelow(picker);
+      $(window).on("scroll.datepicker", () => this.positionCalendarBelow(picker));
     }
   }
 
-  private positionCalendarAbove() {
-    let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
-    picker.removeClass("display-below");
-    picker.addClass("display-above");
-    picker.css("top", (-picker.height()) + "px");
-    picker.css("left", "0px");
+  private positionCalendarAbove(picker: JQuery) {
+    let offset = $(this.input.nativeElement).offset();
+    picker.css("top", (offset.top - $(window).scrollTop()) - picker.height() + 2);
+    picker.css("left", offset.left - $(window).scrollLeft());
   }
 
-  private positionCalendarBelow() {
-    let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
-    picker.removeClass("display-above");
-    picker.addClass("display-below");
-    picker.css("top", "");        
-    picker.css("left", "0px");
+  private positionCalendarBelow(picker: JQuery) {
+    let offset = $(this.input.nativeElement).offset();
+    picker.css("top", (offset.top - $(window).scrollTop()) + $(this.input.nativeElement).outerHeight() - 2);
+    picker.css("left", offset.left - $(window).scrollLeft());
   }
 
   private hideCalendar() {
@@ -131,6 +133,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     picker.removeClass("display-above");
     picker.addClass("display-below");
     picker.addClass("invisible");
+    $(window).off(".datepicker");
   }
 
   private touched() {
@@ -175,7 +178,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
 
     this.cal.subscribeToChangeMonth(this.monthChangeListener);
     this.cal.subscribeToChangeYear(this.yearChangeListener);
-    
+
     this.changeMode(this._globalMode);
   }
 

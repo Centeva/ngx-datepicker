@@ -93,6 +93,7 @@ Because the datepicker returns a moment date, not a string.
 
 
 ## Release Notes
+ - 4.2.0 - Date picker is now positioned fixed so it can overflow outside of containers with overflow: hidden/auto.
  - 4.1.0 - Modify positioning on input element to correct location of above positioned date picker.
  - 4.0.5 - Prevent date correction on dual picker from happening till focus is lost on the input.
  - 4.0.4 - This version cannot be found.

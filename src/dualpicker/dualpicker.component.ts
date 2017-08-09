@@ -151,38 +151,42 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         this.changeMode(this._globalMode, this.cal2);
     }
 
-    private positionCalendar(element: ElementRef) {
+    private positionCalendar(inputElement: ElementRef) {
         let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
         picker.removeClass("invisible");
-        let top = $(element.nativeElement).offset().top + $(element.nativeElement).outerHeight();
+        let top = $(inputElement.nativeElement).offset().top + $(inputElement.nativeElement).outerHeight();
         let scrollTop = $(window).scrollTop();
         if ($(window).height() < (top - scrollTop) + picker.height()) {
-            this.positionCalendarAbove(element);
+            picker.removeClass("display-below");
+            picker.addClass("display-above");
+            this.positionCalendarAbove(inputElement, this.inputFrom, picker);
+            $(window).on("scroll.datepicker", () => this.positionCalendarAbove(inputElement, this.inputFrom, picker));
         } else {
-            this.positionCalendarBelow(element);
+            picker.removeClass("display-above");
+            picker.addClass("display-below");
+            this.positionCalendarBelow(inputElement, this.inputFrom, picker);
+            $(window).on("scroll.datepicker", () => this.positionCalendarBelow(inputElement, this.inputFrom, picker));
         }
     }
 
-    private positionCalendarAbove(element: ElementRef) {
-        let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
-        let left = $(element.nativeElement).position().left
+    private positionCalendarAbove(inputElement: ElementRef, leftElement: ElementRef, picker: JQuery) {
+        let left = $(inputElement.nativeElement).position().left
         let caret = $(this.myElement.nativeElement).find(".ct-dp-caret");
-        picker.removeClass("display-below");
-        picker.addClass("display-above");
-        picker.css("top", (-picker.height()) + "px");
-        picker.css("left", "0px");
         caret.css({ "left": (left + (picker.width() * .05)) + "px" });
+        
+        let offset = $(leftElement.nativeElement).offset();
+        picker.css("top", (offset.top - $(window).scrollTop()) - picker.height() + 2);
+        picker.css("left", offset.left - $(window).scrollLeft());
     }
 
-    private positionCalendarBelow(element: ElementRef) {
-        let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
-        let left = $(element.nativeElement).position().left
+    private positionCalendarBelow(inputElement: ElementRef, leftElement: ElementRef, picker: JQuery) {
+        let left = $(inputElement.nativeElement).position().left
         let caret = $(this.myElement.nativeElement).find(".ct-dp-caret");
-        picker.removeClass("display-above");
-        picker.addClass("display-below");
-        picker.css("left", "0px");
-        picker.css("top", "");        
         caret.css({ "left": (left + (picker.width() * .05)) + "px" });
+
+        let offset = $(leftElement.nativeElement).offset();
+        picker.css("top", (offset.top - $(window).scrollTop()) + $(inputElement.nativeElement).outerHeight() - 2);
+        picker.css("left", offset.left - $(window).scrollLeft());
     }
 
     private hideCalendar() {
@@ -190,37 +194,38 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         picker.removeClass("display-above");
         picker.addClass("display-below");
         picker.addClass("invisible");
+        $(window).off(".datepicker");
     }
 
     public onDateFromStringChange(val) {
-            let m = moment(new Date(val));
-            if (m.isValid()) {
-                if (this.dateFromValue === undefined || this.dateFromValue === null) {
-                    this.dateFromValue = m;
-                } else {
-                    this.dateFromValue.set(m.toObject());
-                }
-                this.cal1.date = this.dateFromValue;
-                this.shiftCal2();
-                this.dateFromChange.emit(this.dateFromValue);
-                this.renderCalendar();
+        let m = moment(new Date(val));
+        if (m.isValid()) {
+            if (this.dateFromValue === undefined || this.dateFromValue === null) {
+                this.dateFromValue = m;
+            } else {
+                this.dateFromValue.set(m.toObject());
             }
+            this.cal1.date = this.dateFromValue;
+            this.shiftCal2();
+            this.dateFromChange.emit(this.dateFromValue);
+            this.renderCalendar();
+        }
         this.touched();
     }
 
     public onDateToStringChange(val) {
-            let m = moment(new Date(val));
-            if (m.isValid()) {
-                if (this.dateToValue === undefined || this.dateToValue === null) {
-                    this.dateToValue = m;
-                } else {
-                    this.dateToValue.set(m.toObject());
-                }
-                this.cal2.date = this.dateToValue;
-                this.shiftCal1();
-                this.dateToChange.emit(this.dateToValue);
-                this.renderCalendar();
+        let m = moment(new Date(val));
+        if (m.isValid()) {
+            if (this.dateToValue === undefined || this.dateToValue === null) {
+                this.dateToValue = m;
+            } else {
+                this.dateToValue.set(m.toObject());
             }
+            this.cal2.date = this.dateToValue;
+            this.shiftCal1();
+            this.dateToChange.emit(this.dateToValue);
+            this.renderCalendar();
+        }
         this.touched();
     }
 
@@ -324,9 +329,9 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         this.inputTo.nativeElement.addEventListener('focus', () => { this.changeGlobalMode(DualPickerMode.To) });
 
         this.inputFrom.nativeElement.addEventListener('keyup', (event) => { this.onDateFromStringChange(this.inputFrom.nativeElement.value) });
-        this.inputFrom.nativeElement.addEventListener('blur', (event) => { this.correctDateTo()});
+        this.inputFrom.nativeElement.addEventListener('blur', (event) => { this.correctDateTo() });
         this.inputTo.nativeElement.addEventListener('keyup', (event) => { this.onDateToStringChange(this.inputTo.nativeElement.value) });
-        this.inputTo.nativeElement.addEventListener('blur', (event) => { this.correctDateFrom()});
+        this.inputTo.nativeElement.addEventListener('blur', (event) => { this.correctDateFrom() });
 
         this.inputTo.nativeElement.addEventListener('keydown', (event) => { this.closePicker(event); });
     }

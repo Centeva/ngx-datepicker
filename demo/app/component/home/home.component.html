@@ -128,6 +128,22 @@
                     </form>
                 </div>
             </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Bad overflow</div>
+                <div class="panel-body" style="height: 200px; overflow: auto; margin-bottom: 500px; background-color:gray;">
+                    <form class="form" [formGroup]="dynamicDateForm">
+                        <div class="form-group" style="height: 500px;">
+                            <label>Single Date</label>
+                            <ct-date-picker [(date)]="date1" zIndex="100" formControlName="singlePicker" [maxDate]="selectedMaxDate" (dateChange)="onChange('singlePicker')">
+                                <input #date class="form-control" />
+                            </ct-date-picker>
+                            {{dynamicDateForm.get('singlePicker').touched | json}}
+                        </div>
+                        {{date1 | json}}
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
