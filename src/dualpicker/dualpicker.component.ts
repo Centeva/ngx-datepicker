@@ -175,7 +175,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         caret.css({ "left": (left + (picker.width() * .05)) + "px" });
         
         let offset = $(leftElement.nativeElement).offset();
-        picker.css("top", (offset.top - $(window).scrollTop()) - picker.height() + 2);
+        picker.css("top", (offset.top - $(window).scrollTop()) - picker.height() + this.PICKER_OFFSET);
         picker.css("left", offset.left - $(window).scrollLeft());
     }
 
@@ -185,7 +185,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         caret.css({ "left": (left + (picker.width() * .05)) + "px" });
 
         let offset = $(leftElement.nativeElement).offset();
-        picker.css("top", (offset.top - $(window).scrollTop()) + $(inputElement.nativeElement).outerHeight() - 2);
+        picker.css("top", (offset.top - $(window).scrollTop()) + $(inputElement.nativeElement).outerHeight() - this.PICKER_OFFSET);
         picker.css("left", offset.left - $(window).scrollLeft());
     }
 

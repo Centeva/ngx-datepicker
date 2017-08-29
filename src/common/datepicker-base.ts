@@ -13,6 +13,8 @@ export abstract class DatePickerBase implements ControlValueAccessor {
   /** Enum Accessors for HTML */
   public CalendarMode = CalendarMode;
 
+  readonly PICKER_OFFSET = 5;
+
   /** Validation Functions */
   propagateChange: any = () => { };
   propagateTouched: any = () => { };

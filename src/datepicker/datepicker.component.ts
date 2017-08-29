@@ -118,13 +118,13 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
 
   private positionCalendarAbove(picker: JQuery) {
     let offset = $(this.input.nativeElement).offset();
-    picker.css("top", (offset.top - $(window).scrollTop()) - picker.height() + 2);
+    picker.css("top", (offset.top - $(window).scrollTop()) - picker.height() + this.PICKER_OFFSET);
     picker.css("left", offset.left - $(window).scrollLeft());
   }
 
   private positionCalendarBelow(picker: JQuery) {
     let offset = $(this.input.nativeElement).offset();
-    picker.css("top", (offset.top - $(window).scrollTop()) + $(this.input.nativeElement).outerHeight() - 2);
+    picker.css("top", (offset.top - $(window).scrollTop()) + $(this.input.nativeElement).outerHeight() - this.PICKER_OFFSET);
     picker.css("left", offset.left - $(window).scrollLeft());
   }
 
