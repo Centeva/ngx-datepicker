@@ -405,13 +405,17 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     }
 
     private correctDateTo() {
-        if (this.dateTo && this.dateFrom.isAfter(this.dateTo)) {
+        if (this.dateFrom && this.dateFrom.isValid()
+            && this.dateTo && this.dateTo.isValid()
+            && this.dateFrom.isAfter(this.dateTo)) {
             this.dateTo = moment(this.dateFrom);
         }
     }
 
     private correctDateFrom() {
-        if (this.dateFrom && this.dateFrom.isValid() && this.dateTo.isBefore(this.dateFrom)) {
+        if (this.dateTo && this.dateTo.isValid()
+            && this.dateFrom && this.dateFrom.isValid() 
+            && this.dateTo.isBefore(this.dateFrom)) {
             this.dateFrom = moment(this.dateTo);
         }
     }
