@@ -7,6 +7,8 @@ import { DualPickerComponent } from './dualpicker/dualpicker.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { CalendarGridComponent } from './calendar-grid/calendar-grid.component';
 import { DatePickerConfig } from "./datepicker.config";
+import { DatePickerPopupService } from './DatePickerPopupService';
+import { DatePickerPopupComponent } from './datepicker-popup/datepicker-popup.component';
 
 export { DatePickerConfig } from "./datepicker.config";
 
@@ -19,7 +21,10 @@ export { DatePickerConfig } from "./datepicker.config";
     DatePickerComponent,
     DualPickerComponent,
     CalendarComponent,
-    CalendarGridComponent],
+    CalendarGridComponent,
+    DatePickerPopupComponent],
+  providers: [DatePickerPopupService],
+  entryComponents: [DatePickerPopupComponent],
   imports: [CommonModule, FormsModule]
 })
 export class DatePickerModule {

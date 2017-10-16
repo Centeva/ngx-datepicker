@@ -9,6 +9,7 @@ import { CalendarMode } from '../common/calendar-mode';
 import * as $ from 'jquery';
 import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { DatePickerBase } from '../common/datepicker-base';
+import { DatePickerPopupService } from '../DatePickerPopupService'
 
 export enum DatePickerMode {
   Visible, Hidden
@@ -17,7 +18,7 @@ export enum DatePickerMode {
 @Component({
   selector: 'ct-date-picker',
   templateUrl: 'datepicker.component.html',
-  styleUrls: ['datepicker.component.less', '../common/common.less'],
+  styleUrls: ['../common/common.less'],
   encapsulation: ViewEncapsulation.None,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DatePickerComponent), multi: true },
@@ -64,10 +65,15 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
 
   @ContentChild('date') input: ElementRef;
 
-  @ViewChild('cal') public cal: CalendarComponent;
+  get cal() {
+    return this.datePickerPopupService.getDatePickerPopupComponent().cal
+  }
   public mode: DatePickerMode = DatePickerMode.Hidden;
+  private closePopupListener: (MouseEvent) => void;
+  private unsubCalMonthChange: () => void;
+  private unsubCalYearChange: () => void;
 
-  constructor(private myElement: ElementRef, private renderer: Renderer) {
+  constructor(private myElement: ElementRef, private renderer: Renderer, private datePickerPopupService: DatePickerPopupService) {
     super();
   }
 
@@ -88,18 +94,57 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     this.mode = mode;
     switch (this.mode) {
       case DatePickerMode.Visible:
+        this.datePickerPopupService.getDatePickerPopupComponent().setActiveDatePickerComponent(this);
+        // TODO this code need to be moved/modified to take into account that it is using the single datePickerPopup component
+        // that is shared with all other datepickers instead of a dedicated popup for just this input
+        this.cal.initCalendar(this.date, this.minDate, this.maxDate);
+    
+        this.unsubCalMonthChange = this.cal.subscribeToChangeMonth(this.monthChangeListener);
+        this.unsubCalYearChange = this.cal.subscribeToChangeYear(this.yearChangeListener);
+    
         this.changeMode(this._globalMode);
         $(this.myElement.nativeElement).addClass("ct-dp-active");
         this.positionCalendar();
+        this.registerListenersForClosingPopup();
         break;
       case DatePickerMode.Hidden:
         this.hideCalendar();
         $(this.myElement.nativeElement).removeClass("ct-dp-active");
+        this.deregisterListenersForClosingPopup();
+        this.unsubCalMonthChange();
+        this.unsubCalYearChange();
+        this.unsubCalMonthChange = null;
+        this.unsubCalYearChange = null;
     }
   }
 
+  private registerListenersForClosingPopup(){
+    this.deregisterListenersForClosingPopup()
+
+    function isChildOf(target:Node,parent:Node){
+      if(target.parentNode == null) return false
+      if(parent == target) return true;
+      return isChildOf(target.parentNode,parent)
+    }
+
+    this.closePopupListener = (event:KeyboardEvent) => {
+      const clickInInput = event.target as Node == this.input.nativeElement;
+      const clickInPopup = isChildOf(event.target as Node,this.datePickerPopupService.getDatePickerPopupComponent().getMyElement().nativeElement);
+      if(!clickInInput && ! clickInPopup){
+        event.preventDefault();
+        event.stopPropagation();
+        this.changeGlobalMode(DatePickerMode.Hidden)
+      }
+    }
+    document.body.addEventListener('click',this.closePopupListener,true);
+  }
+
+  private deregisterListenersForClosingPopup(){
+    document.body.removeEventListener('click',this.closePopupListener,true);
+  }
+
   private positionCalendar() {
-    let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
+    const picker = this.getPicker();
     picker.removeClass("invisible");
     let top = $(this.input.nativeElement).offset().top + $(this.input.nativeElement).outerHeight();
     let scrollTop = $(window).scrollTop();
@@ -116,6 +161,10 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     }
   }
 
+  private getPicker(){
+    return $(this.datePickerPopupService.getDatePickerPopupComponent().getMyElement().nativeElement).find(".ct-dp-picker-wrapper");
+  }
+
   private positionCalendarAbove(picker: JQuery) {
     let offset = $(this.input.nativeElement).offset();
     picker.css("top", (offset.top - $(window).scrollTop()) - picker.height() + this.PICKER_OFFSET);
@@ -129,7 +178,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   }
 
   private hideCalendar() {
-    let picker = $(this.myElement.nativeElement).find(".ct-dp-picker-wrapper");
+    const picker = this.getPicker();
     picker.removeClass("display-above");
     picker.addClass("display-below");
     picker.addClass("invisible");
@@ -174,12 +223,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   }
 
   ngOnInit() {
-    this.cal.initCalendar(this.date, this.minDate, this.maxDate);
 
-    this.cal.subscribeToChangeMonth(this.monthChangeListener);
-    this.cal.subscribeToChangeYear(this.yearChangeListener);
-
-    this.changeMode(this._globalMode);
   }
 
   ngOnChanges(inputs) {
@@ -188,7 +232,6 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
 
   ngAfterViewInit() {
     this.renderCalendar();
-    this.input.nativeElement.style['z-index'] = this.zIndexVal;
     this.input.nativeElement.addEventListener('focus', () => { this.changeGlobalMode(DatePickerMode.Visible) });
     this.input.nativeElement.addEventListener('keyup', (event) => { this.onDateStringChange(this.input.nativeElement.value) });
     this.input.nativeElement.addEventListener('keydown', (event) => { this.closePicker(event); });
