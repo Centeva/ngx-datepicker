@@ -1,32 +1,13 @@
 import {
   Component,
-  forwardRef,
-  OnChanges,
-  AfterViewInit,
-  OnDestroy,
-  ContentChild,
   ElementRef,
-  OnInit,
-  Renderer,
   ViewEncapsulation,
-  Input,
   ViewChild,
-  QueryList,
-  Output,
-  EventEmitter
 } from "@angular/core";
-import * as moment from "moment";
 import { CalendarComponent } from "../calendar/calendar.component";
 import { CalendarMode } from "../common/calendar-mode";
-import * as $ from "jquery";
-import {
-  FormControl,
-  ControlValueAccessor,
-  NG_VALUE_ACCESSOR,
-  NG_VALIDATORS
-} from "@angular/forms";
 import { DatePickerBase } from "../common/datepicker-base";
-//import { DualPickerMode } from "../dualpicker/dualpicker.component";
+import { DualPickerMode } from "../common/DualPickerMode";
 
 export interface DatePickerPopupConfig {
   inputEl: Element;
@@ -63,5 +44,5 @@ export class DualPickerPopupComponent {
 
   /** Enum Accessors for HTML */
   public CalendarMode = CalendarMode;
-  public DualPickerMode = {};
+  public DualPickerMode = DualPickerMode;
 }

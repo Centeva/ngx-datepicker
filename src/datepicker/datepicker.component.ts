@@ -1,43 +1,71 @@
 import {
-  Component, forwardRef, OnChanges, AfterViewInit,
-  OnDestroy, ContentChild, ElementRef, OnInit, Renderer, ViewEncapsulation,
-  Input, ViewChild, QueryList, Output, EventEmitter
-} from '@angular/core';
-import * as moment from 'moment';
-import { CalendarComponent } from '../calendar/calendar.component';
-import { CalendarMode } from '../common/calendar-mode';
-import * as $ from 'jquery';
-import { FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
-import { DatePickerBase } from '../common/datepicker-base';
-import { DatePickerPopupService } from '../DatePickerPopupService'
+  Component,
+  forwardRef,
+  OnChanges,
+  AfterViewInit,
+  OnDestroy,
+  ContentChild,
+  ElementRef,
+  OnInit,
+  Renderer,
+  ViewEncapsulation,
+  Input,
+  ViewChild,
+  QueryList,
+  Output,
+  EventEmitter
+} from "@angular/core";
+import * as moment from "moment";
+import { CalendarComponent } from "../calendar/calendar.component";
+import { CalendarMode } from "../common/calendar-mode";
+import * as $ from "jquery";
+import {
+  FormControl,
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  NG_VALIDATORS
+} from "@angular/forms";
+import { DatePickerBase } from "../common/datepicker-base";
+import { DatePickerPopupService } from "../DatePickerPopupService";
 
 export enum DatePickerMode {
-  Visible, Hidden
+  Visible,
+  Hidden
 }
 
 @Component({
-  selector: 'ct-date-picker',
-  templateUrl: 'datepicker.component.html',
-  styleUrls: ['../common/common.less'],
+  selector: "ct-date-picker",
+  templateUrl: "datepicker.component.html",
+  styleUrls: ["../common/common.less"],
   encapsulation: ViewEncapsulation.None,
   providers: [
-    { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DatePickerComponent), multi: true },
-    { provide: NG_VALIDATORS, useExisting: forwardRef(() => DatePickerComponent), multi: true }
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DatePickerComponent),
+      multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => DatePickerComponent),
+      multi: true
+    }
   ]
 })
-export class DatePickerComponent extends DatePickerBase implements AfterViewInit, OnDestroy, OnInit, OnChanges {
+export class DatePickerComponent extends DatePickerBase
+  implements AfterViewInit, OnDestroy, OnInit, OnChanges {
   /** Enum Accessors for HTML */
   public CalendarMode = CalendarMode;
   public DatePickerMode = DatePickerMode;
 
   private _globalMode: CalendarMode = CalendarMode.Calendar;
   /** Set the starting mode for selecting a date. (eg. Calendar, Month, Year) **/
-  @Input() set globalMode(val: string) {
+  @Input()
+  set globalMode(val: string) {
     if (CalendarMode.hasOwnProperty(val)) {
       switch (CalendarMode[`${val}`]) {
         case CalendarMode.Calendar:
         case CalendarMode.Year:
-          this._globalMode = CalendarMode[`${val}`]
+          this._globalMode = CalendarMode[`${val}`];
       }
     }
   }
@@ -52,7 +80,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     }
     if (val instanceof moment && val.isValid()) {
       this.input.nativeElement.value = val.format("MM/DD/YYYY");
-      val = moment(val.format('YYYY-MM-DD'));
+      val = moment(val.format("YYYY-MM-DD"));
       this.dateValue = val;
       this.dateChange.emit(val);
     } else {
@@ -63,25 +91,32 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   }
   @Output() dateChange = new EventEmitter();
 
-  @ContentChild('date') input: ElementRef;
+  @ContentChild("date") input: ElementRef;
 
   get cal() {
-    return this.datePickerPopupService.getDatePickerPopupComponent().cal
+    return this.datePickerPopupService.getDatePickerPopupComponent().cal;
   }
   public mode: DatePickerMode = DatePickerMode.Hidden;
   private closePopupListener: (MouseEvent) => void;
   private unsubCalMonthChange: () => void;
   private unsubCalYearChange: () => void;
 
-  constructor(private myElement: ElementRef, private renderer: Renderer, private datePickerPopupService: DatePickerPopupService) {
+  constructor(
+    private myElement: ElementRef,
+    private renderer: Renderer,
+    private datePickerPopupService: DatePickerPopupService
+  ) {
     super();
   }
 
   public onDateStringChange(val) {
     let m = moment(new Date(val));
     if (m.isValid()) {
-      if (this.dateValue === undefined || this.dateValue === null) { this.dateValue = m; }
-      else { this.dateValue.set(m.toObject()); }
+      if (this.dateValue === undefined || this.dateValue === null) {
+        this.dateValue = m;
+      } else {
+        this.dateValue.set(m.toObject());
+      }
 
       this.dateChange.emit(this.dateValue);
       this.cal.date = this.dateValue;
@@ -94,14 +129,20 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     this.mode = mode;
     switch (this.mode) {
       case DatePickerMode.Visible:
-        this.datePickerPopupService.getDatePickerPopupComponent().setActiveDatePickerComponent(this);
+        this.datePickerPopupService
+          .getDatePickerPopupComponent()
+          .setActiveDatePickerComponent(this);
         // TODO this code need to be moved/modified to take into account that it is using the single datePickerPopup component
         // that is shared with all other datepickers instead of a dedicated popup for just this input
         this.cal.initCalendar(this.date, this.minDate, this.maxDate);
-    
-        this.unsubCalMonthChange = this.cal.subscribeToChangeMonth(this.monthChangeListener);
-        this.unsubCalYearChange = this.cal.subscribeToChangeYear(this.yearChangeListener);
-    
+
+        this.unsubCalMonthChange = this.cal.subscribeToChangeMonth(
+          this.monthChangeListener
+        );
+        this.unsubCalYearChange = this.cal.subscribeToChangeYear(
+          this.yearChangeListener
+        );
+
         this.changeMode(this._globalMode);
         $(this.myElement.nativeElement).addClass("ct-dp-active");
         this.positionCalendar();
@@ -118,62 +159,84 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     }
   }
 
-  private registerListenersForClosingPopup(){
-    this.deregisterListenersForClosingPopup()
+  private registerListenersForClosingPopup() {
+    this.deregisterListenersForClosingPopup();
 
-    function isChildOf(target:Node,parent:Node){
-      if(target.parentNode == null) return false
-      if(parent == target) return true;
-      return isChildOf(target.parentNode,parent)
+    function isChildOf(target: Node, parent: Node) {
+      if (target.parentNode == null) return false;
+      if (parent == target) return true;
+      return isChildOf(target.parentNode, parent);
     }
 
-    this.closePopupListener = (event:KeyboardEvent) => {
-      const clickInInput = event.target as Node == this.input.nativeElement;
-      const clickInPopup = isChildOf(event.target as Node,this.datePickerPopupService.getDatePickerPopupComponent().getMyElement().nativeElement);
-      if(!clickInInput && ! clickInPopup){
+    this.closePopupListener = (event: KeyboardEvent) => {
+      const clickInInput = (event.target as Node) == this.input.nativeElement;
+      const clickInPopup = isChildOf(
+        event.target as Node,
+        this.datePickerPopupService.getDatePickerPopupComponent().getMyElement()
+          .nativeElement
+      );
+      if (!clickInInput && !clickInPopup) {
         event.preventDefault();
         event.stopPropagation();
-        this.changeGlobalMode(DatePickerMode.Hidden)
+        this.changeGlobalMode(DatePickerMode.Hidden);
       }
-    }
-    document.body.addEventListener('click',this.closePopupListener,true);
+    };
+    document.body.addEventListener("click", this.closePopupListener, true);
   }
 
-  private deregisterListenersForClosingPopup(){
-    document.body.removeEventListener('click',this.closePopupListener,true);
+  private deregisterListenersForClosingPopup() {
+    document.body.removeEventListener("click", this.closePopupListener, true);
   }
 
   private positionCalendar() {
     const picker = this.getPicker();
     picker.removeClass("invisible");
-    let top = $(this.input.nativeElement).offset().top + $(this.input.nativeElement).outerHeight();
+    let top =
+      $(this.input.nativeElement).offset().top +
+      $(this.input.nativeElement).outerHeight();
     let scrollTop = $(window).scrollTop();
-    if ($(window).height() < (top - scrollTop) + picker.height()) {
+    if ($(window).height() < top - scrollTop + picker.height()) {
       picker.removeClass("display-below");
       picker.addClass("display-above");
       this.positionCalendarAbove(picker);
-      $(window).on("scroll.datepicker", () => this.positionCalendarAbove(picker));
+      $(window).on("scroll.datepicker", () =>
+        this.positionCalendarAbove(picker)
+      );
     } else {
       picker.removeClass("display-above");
       picker.addClass("display-below");
       this.positionCalendarBelow(picker);
-      $(window).on("scroll.datepicker", () => this.positionCalendarBelow(picker));
+      $(window).on("scroll.datepicker", () =>
+        this.positionCalendarBelow(picker)
+      );
     }
   }
 
-  private getPicker(){
-    return $(this.datePickerPopupService.getDatePickerPopupComponent().getMyElement().nativeElement).find(".ct-dp-picker-wrapper");
+  private getPicker() {
+    return $(
+      this.datePickerPopupService.getDatePickerPopupComponent().getMyElement()
+        .nativeElement
+    ).find(".ct-dp-picker-wrapper");
   }
 
   private positionCalendarAbove(picker: JQuery) {
     let offset = $(this.input.nativeElement).offset();
-    picker.css("top", (offset.top - $(window).scrollTop()) - picker.height() + this.PICKER_OFFSET);
+    picker.css(
+      "top",
+      offset.top - $(window).scrollTop() - picker.height() + this.PICKER_OFFSET
+    );
     picker.css("left", offset.left - $(window).scrollLeft());
   }
 
   private positionCalendarBelow(picker: JQuery) {
     let offset = $(this.input.nativeElement).offset();
-    picker.css("top", (offset.top - $(window).scrollTop()) + $(this.input.nativeElement).outerHeight() - this.PICKER_OFFSET);
+    picker.css(
+      "top",
+      offset.top -
+        $(window).scrollTop() +
+        $(this.input.nativeElement).outerHeight() -
+        this.PICKER_OFFSET
+    );
     picker.css("left", offset.left - $(window).scrollLeft());
   }
 
@@ -222,9 +285,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     }
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   ngOnChanges(inputs) {
     // console.log('ngOnChanges');
@@ -232,25 +293,31 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
 
   ngAfterViewInit() {
     this.renderCalendar();
-    this.input.nativeElement.addEventListener('focus', () => { this.changeGlobalMode(DatePickerMode.Visible) });
-    this.input.nativeElement.addEventListener('keyup', (event) => { this.onDateStringChange(this.input.nativeElement.value) });
-    this.input.nativeElement.addEventListener('keydown', (event) => { this.closePicker(event); });
+    this.input.nativeElement.addEventListener("focus", () => {
+      this.changeGlobalMode(DatePickerMode.Visible);
+    });
+    this.input.nativeElement.addEventListener("keyup", event => {
+      this.onDateStringChange(this.input.nativeElement.value);
+    });
+    this.input.nativeElement.addEventListener("keydown", event => {
+      this.closePicker(event);
+    });
   }
 
   dateClickListener = (date: moment.Moment) => {
     let d = moment(date);
     return () => {
       this.setDate(d);
-    }
-  }
+    };
+  };
 
   private monthChangeListener = () => {
     this.changeMode(CalendarMode.Calendar);
-  }
+  };
 
   private yearChangeListener = () => {
     this.changeMode(CalendarMode.Calendar);
-  }
+  };
 
   setDate(date: moment.Moment) {
     switch (this.mode) {
@@ -263,9 +330,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     this.renderCalendar();
   }
 
-  ngOnDestroy() {
-
-  }
+  ngOnDestroy() {}
 
   renderCalendar() {
     this.cal.renderCalendar(this.dateClickListener, this.date, this.date);
@@ -293,7 +358,6 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   updateMinDate(minDate: moment.Moment) {
     this.cal.minDate = minDate;
     this.cal.initCalendar(this.date);
-
   }
   updateMaxDate(maxDate: moment.Moment) {
     this.cal.maxDate = maxDate;

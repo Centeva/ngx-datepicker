@@ -27,18 +27,7 @@ import {
 } from "@angular/forms";
 import { DatePickerBase } from "../common/datepicker-base";
 import { DatePickerPopupService } from "../DatePickerPopupService";
-
-/**
- * Defines the mode of the picker
- */
-export enum DualPickerMode {
-  /** Allows selection of the to date. */
-  To,
-  /** Allows selection of the from date. */
-  From,
-  /** Makes the picker hidden, default state. */
-  Hidden
-}
+import { DualPickerMode } from "../common/DualPickerMode";
 
 @Component({
   selector: "ct-dual-picker",
