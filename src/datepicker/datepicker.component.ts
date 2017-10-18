@@ -97,9 +97,8 @@ export class DatePickerComponent extends DatePickerBase
     return this.datePickerPopupService.getDatePickerPopupComponent().cal;
   }
   public mode: DatePickerMode = DatePickerMode.Hidden;
-  private closePopupListener: (MouseEvent) => void;
-  private unsubCalMonthChange: () => void;
-  private unsubCalYearChange: () => void;
+  
+  popupSubscriptions: (()=>void)[] = []
 
   constructor(
     private myElement: ElementRef,
@@ -132,35 +131,23 @@ export class DatePickerComponent extends DatePickerBase
         this.datePickerPopupService
           .getDatePickerPopupComponent()
           .setActiveDatePickerComponent(this);
-        // TODO this code need to be moved/modified to take into account that it is using the single datePickerPopup component
-        // that is shared with all other datepickers instead of a dedicated popup for just this input
         this.cal.initCalendar(this.date, this.minDate, this.maxDate);
 
-        this.unsubCalMonthChange = this.cal.subscribeToChangeMonth(
-          this.monthChangeListener
-        );
-        this.unsubCalYearChange = this.cal.subscribeToChangeYear(
-          this.yearChangeListener
-        );
+        this.registerListenersForPopup();
 
         this.changeMode(this._globalMode);
         $(this.myElement.nativeElement).addClass("ct-dp-active");
         this.positionCalendar();
-        this.registerListenersForClosingPopup();
         break;
       case DatePickerMode.Hidden:
         this.hideCalendar();
         $(this.myElement.nativeElement).removeClass("ct-dp-active");
-        this.deregisterListenersForClosingPopup();
-        this.unsubCalMonthChange();
-        this.unsubCalYearChange();
-        this.unsubCalMonthChange = null;
-        this.unsubCalYearChange = null;
+        this.deregisterListenersPopup();
     }
   }
 
-  private registerListenersForClosingPopup() {
-    this.deregisterListenersForClosingPopup();
+  private registerListenersForPopup() {
+    this.deregisterListenersPopup();
 
     function isChildOf(target: Node, parent: Node) {
       if (target.parentNode == null) return false;
@@ -168,7 +155,11 @@ export class DatePickerComponent extends DatePickerBase
       return isChildOf(target.parentNode, parent);
     }
 
-    this.closePopupListener = (event: KeyboardEvent) => {
+    
+    this.popupSubscriptions.push(this.cal.subscribeToChangeMonth(this.monthChangeListener));
+    this.popupSubscriptions.push(this.cal.subscribeToChangeYear(this.yearChangeListener));
+
+    const closePopupListener = (event: KeyboardEvent) => {
       const clickInInput = (event.target as Node) == this.input.nativeElement;
       const clickInPopup = isChildOf(
         event.target as Node,
@@ -181,11 +172,19 @@ export class DatePickerComponent extends DatePickerBase
         this.changeGlobalMode(DatePickerMode.Hidden);
       }
     };
-    document.body.addEventListener("mousedown", this.closePopupListener, true);
+    document.body.addEventListener("mousedown", closePopupListener, true);
+    this.popupSubscriptions.push(() => {
+      document.body.removeEventListener("mousedown", closePopupListener, true);
+    })
+    document.body.addEventListener("wheel", closePopupListener, true);
+    this.popupSubscriptions.push(() => {
+      document.body.removeEventListener("wheel", closePopupListener, true);
+    })
   }
 
-  private deregisterListenersForClosingPopup() {
-    document.body.removeEventListener("mousedown", this.closePopupListener, true);
+  private deregisterListenersPopup() {
+    this.popupSubscriptions.forEach(x => x());
+    this.popupSubscriptions = []
   }
 
   private positionCalendar() {
@@ -364,3 +363,4 @@ export class DatePickerComponent extends DatePickerBase
     this.cal.initCalendar(this.date);
   }
 }
+

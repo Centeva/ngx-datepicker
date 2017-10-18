@@ -185,7 +185,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         this.cal2.subscribeToChangeYear(this.year2ChangeListener)
       );
 
-      const closePopupListener = (event: KeyboardEvent) => {
+      const closePopupListener = (event: Event) => {
         const clickInInputTo =
           (event.target as Node) == this.inputTo.nativeElement;
         const clickInInputFrom =
@@ -204,7 +204,15 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
       };
       document.body.addEventListener("mousedown", closePopupListener, true);
       this.popupSubscriptions.push(() => {
-        document.body.removeEventListener("mousedown", closePopupListener, true);
+        document.body.removeEventListener(
+          "mousedown",
+          closePopupListener,
+          true
+        );
+      });
+      document.body.addEventListener("wheel", closePopupListener, true);
+      this.popupSubscriptions.push(() => {
+        document.body.removeEventListener("wheel", closePopupListener, true);
       });
 
       this.popupIsOpen = true;
@@ -221,6 +229,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     this.mode = mode;
     switch (this.mode) {
       case DualPickerMode.To:
+        this.openPopup();
         $(this.myElement.nativeElement).addClass("ct-dp-active");
         this.positionCalendar(this.inputTo);
         break;
@@ -476,6 +485,14 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     this.inputTo.nativeElement.addEventListener("keydown", event => {
       this.closePicker(event);
     });
+    this.inputFrom.nativeElement.addEventListener(
+      "keydown",
+      (event: KeyboardEvent) => {
+        if (event.shiftKey && event.keyCode === 9) {
+          this.closePicker(event);
+        }
+      }
+    );
   }
 
   ngOnChanges(inputs) {}
