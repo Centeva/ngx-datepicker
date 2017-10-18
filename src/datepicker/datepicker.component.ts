@@ -307,6 +307,11 @@ export class DatePickerComponent extends DatePickerBase
     this.input.nativeElement.addEventListener("keydown", event => {
       this.closePicker(event);
     });
+    this.input.nativeElement.addEventListener("click", event => {
+      if(this.mode !== DatePickerMode.Visible){
+        this.changeGlobalMode(DatePickerMode.Visible);
+      }
+    });
   }
 
   dateClickListener = (date: moment.Moment) => {

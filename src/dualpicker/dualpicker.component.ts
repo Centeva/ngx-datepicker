@@ -482,6 +482,16 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     this.inputTo.nativeElement.addEventListener("focus", () => {
       this.changeGlobalMode(DualPickerMode.To);
     });
+    this.inputFrom.nativeElement.addEventListener("click", () => {
+      if (this.mode !== DualPickerMode.From) {
+        this.changeGlobalMode(DualPickerMode.From);
+      }
+    });
+    this.inputTo.nativeElement.addEventListener("click", () => {
+      if (this.mode !== DualPickerMode.To) {
+        this.changeGlobalMode(DualPickerMode.To);
+      }
+    });
 
     this.inputFrom.nativeElement.addEventListener("keyup", event => {
       this.onDateFromStringChange(this.inputFrom.nativeElement.value);
