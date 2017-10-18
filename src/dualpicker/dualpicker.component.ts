@@ -13,7 +13,8 @@ import {
   ViewChild,
   QueryList,
   Output,
-  EventEmitter
+  EventEmitter,
+  Inject
 } from "@angular/core";
 import * as moment from "moment";
 import * as $ from "jquery";
@@ -28,6 +29,7 @@ import {
 import { DatePickerBase } from "../common/datepicker-base";
 import { DatePickerPopupService } from "../DatePickerPopupService";
 import { DualPickerMode } from "../common/DualPickerMode";
+import { DOCUMENT } from "@angular/platform-browser";
 
 @Component({
   selector: "ct-dual-picker",
@@ -134,11 +136,15 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
   /** Mode */
   public mode: DualPickerMode = DualPickerMode.Hidden;
 
+  private domDocument: Document;
+
   constructor(
     private myElement: ElementRef,
-    private datePickerPopupService: DatePickerPopupService
+    private datePickerPopupService: DatePickerPopupService,
+    @Inject(DOCUMENT) document
   ) {
     super();
+    this.domDocument = document;
   }
 
   /**
@@ -202,17 +208,25 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
           this.changeGlobalMode(DualPickerMode.Hidden);
         }
       };
-      document.body.addEventListener("mousedown", closePopupListener, true);
+      this.domDocument.body.addEventListener(
+        "mousedown",
+        closePopupListener,
+        true
+      );
       this.popupSubscriptions.push(() => {
-        document.body.removeEventListener(
+        this.domDocument.body.removeEventListener(
           "mousedown",
           closePopupListener,
           true
         );
       });
-      document.body.addEventListener("wheel", closePopupListener, true);
+      this.domDocument.body.addEventListener("wheel", closePopupListener, true);
       this.popupSubscriptions.push(() => {
-        document.body.removeEventListener("wheel", closePopupListener, true);
+        this.domDocument.body.removeEventListener(
+          "wheel",
+          closePopupListener,
+          true
+        );
       });
 
       this.popupIsOpen = true;

@@ -13,7 +13,8 @@ import {
   ViewChild,
   QueryList,
   Output,
-  EventEmitter
+  EventEmitter,
+  Inject
 } from "@angular/core";
 import * as moment from "moment";
 import { CalendarComponent } from "../calendar/calendar.component";
@@ -27,6 +28,7 @@ import {
 } from "@angular/forms";
 import { DatePickerBase } from "../common/datepicker-base";
 import { DatePickerPopupService } from "../DatePickerPopupService";
+import { DOCUMENT } from '@angular/platform-browser';
 
 export enum DatePickerMode {
   Visible,
@@ -100,12 +102,16 @@ export class DatePickerComponent extends DatePickerBase
   
   popupSubscriptions: (()=>void)[] = []
 
+  private domDocument: Document;
+
   constructor(
     private myElement: ElementRef,
     private renderer: Renderer,
-    private datePickerPopupService: DatePickerPopupService
+    private datePickerPopupService: DatePickerPopupService,
+    @Inject(DOCUMENT) document
   ) {
     super();
+    this.domDocument = document;
   }
 
   public onDateStringChange(val) {
@@ -172,13 +178,13 @@ export class DatePickerComponent extends DatePickerBase
         this.changeGlobalMode(DatePickerMode.Hidden);
       }
     };
-    document.body.addEventListener("mousedown", closePopupListener, true);
+    this.domDocument.body.addEventListener("mousedown", closePopupListener, true);
     this.popupSubscriptions.push(() => {
-      document.body.removeEventListener("mousedown", closePopupListener, true);
+      this.domDocument.body.removeEventListener("mousedown", closePopupListener, true);
     })
-    document.body.addEventListener("wheel", closePopupListener, true);
+    this.domDocument.body.addEventListener("wheel", closePopupListener, true);
     this.popupSubscriptions.push(() => {
-      document.body.removeEventListener("wheel", closePopupListener, true);
+      this.domDocument.body.removeEventListener("wheel", closePopupListener, true);
     })
   }
 
