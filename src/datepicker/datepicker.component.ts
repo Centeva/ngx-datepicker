@@ -181,11 +181,11 @@ export class DatePickerComponent extends DatePickerBase
         this.changeGlobalMode(DatePickerMode.Hidden);
       }
     };
-    document.body.addEventListener("click", this.closePopupListener, true);
+    document.body.addEventListener("mousedown", this.closePopupListener, true);
   }
 
   private deregisterListenersForClosingPopup() {
-    document.body.removeEventListener("click", this.closePopupListener, true);
+    document.body.removeEventListener("mousedown", this.closePopupListener, true);
   }
 
   private positionCalendar() {

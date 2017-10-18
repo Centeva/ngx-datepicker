@@ -202,9 +202,9 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
           this.changeGlobalMode(DualPickerMode.Hidden);
         }
       };
-      document.body.addEventListener("click", closePopupListener, true);
+      document.body.addEventListener("mousedown", closePopupListener, true);
       this.popupSubscriptions.push(() => {
-        document.body.removeEventListener("click", closePopupListener, true);
+        document.body.removeEventListener("mousedown", closePopupListener, true);
       });
 
       this.popupIsOpen = true;
