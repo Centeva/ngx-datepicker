@@ -5,6 +5,7 @@
   "description": "Angular 2 Datepicker for Centeva projects",
   "main": "dist/ctng.umd.js",
   "files": [
+    "**/*",
     "dist/"
   ],
   "scripts": {
