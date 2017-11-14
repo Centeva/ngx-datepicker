@@ -72,12 +72,8 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   }
 
   public onDateStringChange(val) {
-    let jsDate = new Date(val);
-    if (jsDate.getFullYear() < 1970) {
-      jsDate.setFullYear(jsDate.getFullYear() + 100);
-    }
     let m = moment(new Date(val));
-
+    
     if (m.isValid()) {
       if (this.dateValue === undefined || this.dateValue === null) { this.dateValue = m; }
       else { this.dateValue.set(m.toObject()); }
