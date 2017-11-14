@@ -114,17 +114,9 @@ export class DatePickerComponent extends DatePickerBase
     this.domDocument = document;
   }
 
-  public onDateStringChange(val: string) {
-    let jsDate = new Date(val);
-    let m = moment(jsDate);
-
+  public onDateStringChange(val) {
+    let m = moment(new Date(val));
     if (m.isValid()) {
-      // IE11 WORKAROUND: When Date is given a two-digit year, it gives back a date before the UNIX epoch,
-      //    which is an "invalid" year as far as we are concerned.
-      if (jsDate.getFullYear() < 1970) {
-        jsDate.setFullYear(jsDate.getFullYear() + 100);
-        m = moment(jsDate);
-      }
       if (this.dateValue === undefined || this.dateValue === null) {
         this.dateValue = m;
       } else {
