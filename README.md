@@ -93,9 +93,6 @@ Because the datepicker returns a moment date, not a string.
 
 
 ## Release Notes
- - 4.3.5 - Reverting IE date bug. Current workaround: Enter a 4-digit year.
- - 4.3.1 - 4.3.4 - Fix IE bug dealing with two digit year values. Should give you a "valid" year now.
- - 4.3.0 - Move html for the datepicker out to the body to prevent issues with z-index and absolute positioning when translations are applied.
  - 4.2.4 - Fix bug where setting a from date, then clicking to date (dualpicker) without selecting a date and then clicking back into the from date causes an exception because dateTo is undefined.
  - 4.2.3 - Fix bug where dual picker is hidden when clicking on the to input.
  - 4.2.2 - Make jquery typings a dependency, remove unneded styling.

@@ -1,1 +1,17 @@
 <ng-content></ng-content>
+<div class="ct-dp-shadow-box" (click)="changeGlobalMode(DatePickerMode.Hidden)" *ngIf="mode != DatePickerMode.Hidden" [style.z-index]="shadowZIndex">
+</div>
+<div class="ct-dp-picker-wrapper invisible display-below" [style.z-index]="zIndexVal">
+    <div class="ct-dp-picker" >
+        <div class="ct-dp-caret-1"></div>
+        <div class="ct-dp-caret-2"></div>
+        <div class="ct-dp-header"><!--
+            --><button tabindex="-1" class="ct-dp-btn-prev  ct-dp-btn" (click)="goPrev()" [disabled]="cal.mode == CalendarMode.Month">&lt;</button><!--
+            --><button tabindex="-1" class="ct-dp-btn-month ct-dp-btn" (click)="changeMode(CalendarMode.Month)">{{cal.date.format("MMMM")}}</button><!--
+            --><button tabindex="-1" class="ct-dp-btn-year  ct-dp-btn" (click)="changeMode(CalendarMode.Year)">{{cal.date.format("YYYY")}}</button><!--
+            --><button tabindex="-1" class="ct-dp-btn-next  ct-dp-btn" (click)="goNext()" [disabled]="cal.mode == CalendarMode.Month">&gt;</button>
+        </div>
+        <ct-calendar #cal></ct-calendar>
+        <div class="clearfix"></div>
+    </div>
+</div>
