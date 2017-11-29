@@ -10,6 +10,9 @@ import * as $ from 'jquery';
     encapsulation: ViewEncapsulation.None
 })
 export class CalendarGridComponent implements OnInit, OnDestroy {
+
+    private today: moment.Moment = moment();
+
     constructor(private myElement: ElementRef, private renderer: Renderer) {
     }
 
@@ -24,7 +27,7 @@ export class CalendarGridComponent implements OnInit, OnDestroy {
     /**
      * Renders a calendar based on the date, selecting the proper from/to if visible.
      */
-    renderCalendar(date: moment.Moment, clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment) {
+    renderCalendar(date: moment.Moment, clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment, minDate: moment.Moment, maxDate: moment.Moment) {
         let d = moment(date);
         d.date(1); //reset date.
 
@@ -48,7 +51,6 @@ export class CalendarGridComponent implements OnInit, OnDestroy {
 
             el.attr("ct-dp-cal-day", i.toString());
             el.addClass("ct-dp-cal-day");
-
             body.append(el);
         }
 
@@ -59,11 +61,19 @@ export class CalendarGridComponent implements OnInit, OnDestroy {
             el.attr("tabIndex", "-1");
             el.addClass("ct-dp-cal-day");
 
+            if (this.today.date() === d.date() && this.today.month() === d.month()) { el.addClass("today"); }
+
             if ((dateTo && d.isSame(dateTo, "day")) || (dateFrom && d.isSame(dateFrom, "day"))) {
                 el.addClass("active");
             }
             if (dateFrom && dateTo && d.isBetween(dateFrom, dateTo)) {
                 el.addClass("between");
+            }
+            if (minDate && d.isBefore(minDate) ) {
+                el.attr("disabled", "disabled");
+            }
+            if (maxDate && d.isAfter(maxDate) ) {
+                el.attr("disabled", "disabled");                
             }
             el.click(clickCallback(d));
             d.date(d.date() + 1);
