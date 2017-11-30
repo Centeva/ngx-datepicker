@@ -2,12 +2,12 @@
     <ct-calendar-grid></ct-calendar-grid>
 </div>
 <div class="ct-dp-months" [ngClass]="{'hidden': mode != CalendarMode.Month}">
-    <template ngFor let-item [ngForOf]="months" [ngForTrackBy]="myTrackBy" let-i="index"><!--
+    <ng-template *ngFor="let item of months;let i = index; trackBy: myTrackBy"><!--
         --><button tabindex="-1" class="ct-dp-btn ct-dp-month" [disabled]="disableBtn(item, 'month')" (click)="setMonth(i)">{{item}}</button>
-    </template>
+    </ng-template>
 </div>
 <div class="ct-dp-years" [ngClass]="{'hidden': mode != CalendarMode.Year}">
-    <template ngFor let-item [ngForOf]="years" [ngForTrackBy]="myTrackBy" let-i="index"><!--
+    <ng-template *ngFor="let item of years;let i = index; trackBy: myTrackBy"><!--
         --><button tabindex="-1" class="ct-dp-btn ct-dp-year" [disabled]="disableBtn(item, 'year')" (click)="setYear(item)">{{item}}</button>
-    </template>
+    </ng-template>
 </div>
