@@ -93,6 +93,8 @@ Because the datepicker returns a moment date, not a string.
 
 
 ## Release Notes
+ - 5.0.0 -- Angular 4+ is the future!
+ - 4.3.0 - 4.4.0 -- The last of the Angular 2 days.
  - 4.2.4 - Fix bug where setting a from date, then clicking to date (dualpicker) without selecting a date and then clicking back into the from date causes an exception because dateTo is undefined.
  - 4.2.3 - Fix bug where dual picker is hidden when clicking on the to input.
  - 4.2.2 - Make jquery typings a dependency, remove unneded styling.
