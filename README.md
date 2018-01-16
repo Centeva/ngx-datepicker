@@ -93,6 +93,7 @@ Because the datepicker returns a moment date, not a string.
 
 
 ## Release Notes
+ - 5.0.1 - Fix a bug where the month and year selection was not displaying properly.
  - 5.0.0 -- Angular 4+ is the future!
  - 4.3.0 - 4.4.0 -- The last of the Angular 2 days.
  - 4.2.4 - Fix bug where setting a from date, then clicking to date (dualpicker) without selecting a date and then clicking back into the from date causes an exception because dateTo is undefined.
