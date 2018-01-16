@@ -1,12 +1,14 @@
 {
   "name": "ct-ngx-datepicker",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "module": "index.js",
   "description": "Angular 2 Datepicker for Centeva projects",
   "main": "dist/ctng.umd.js",
   "typings": "index.d.ts",
   "scripts": {
-    "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS"
+    "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS",
+    "serve": "./node_modules/.bin/grunt serve",
+    "dist": "./node_modules/.bin/grunt dist"
   },
   "author": "Travis Marble <travis.marble@centeva.com>",
   "license": "MIT",
