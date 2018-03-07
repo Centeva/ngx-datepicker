@@ -14,7 +14,7 @@ export class CalendarComponent implements OnDestroy {
 	private static numYearsShown = 15;/** Determines how many year buttons are shown. */
 	private static halfNumYearsShown = Math.floor(CalendarComponent.numYearsShown / 2); /** convenience variable for generating years */
 	public CalendarMode = CalendarMode;/** Accessor to the mode for html */
-	public mode: CalendarMode;
+	public mode: CalendarMode = CalendarMode.Calendar;
 	public date: moment.Moment = moment();/** Date object representing the month/year shown on this calendar */
 	public today: moment.Moment;/** Date object representing today.This should never change in the rendering of the calendar grid */
 	private months: string[] = [];/** Array of months to show when selecting a new month */
@@ -42,7 +42,7 @@ export class CalendarComponent implements OnDestroy {
 		}
 
 		this.minDate = minDate;
-		this.maxDate = maxDate;
+    this.maxDate = maxDate;
 	}
 	 
 	ngOnDestroy() {}
