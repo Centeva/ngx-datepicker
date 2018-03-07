@@ -135,7 +135,23 @@
                     <form class="form" [formGroup]="dynamicDateForm">
                         <div class="form-group" style="height: 500px;">
                             <label>Single Date</label>
-                            <ct-date-picker [(date)]="date1" zIndex="100" formControlName="singlePicker" [maxDate]="selectedMaxDate" (dateChange)="onChange('singlePicker')">
+                            <ct-date-picker [(date)]="date1" zIndex="100" formControlName="singlePicker" (dateChange)="onChange('singlePicker')">
+                                <input #date class="form-control" />
+                            </ct-date-picker>
+                            {{dynamicDateForm.get('singlePicker').touched | json}}
+                        </div>
+                        {{date1 | json}}
+                    </form>
+                </div>
+            </div>
+
+            <div class="panel panel-default" style="position: fixed; left: 0; width: 200px; bottom: 0; height: 200px; z-index: 1000;">
+                <div class="panel-heading">Z-Index overflow</div>
+                <div class="panel-body">
+                    <form class="form" [formGroup]="dynamicDateForm">
+                        <div class="form-group" style="height: 500px;">
+                            <label>Single Date</label>
+                            <ct-date-picker [(date)]="date1" zIndex="10001" formControlName="singlePicker" (dateChange)="onChange('singlePicker')">
                                 <input #date class="form-control" />
                             </ct-date-picker>
                             {{dynamicDateForm.get('singlePicker').touched | json}}

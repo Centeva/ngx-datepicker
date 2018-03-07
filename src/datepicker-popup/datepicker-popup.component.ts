@@ -1,7 +1,9 @@
 import { Component, ElementRef, ViewEncapsulation, ViewChild } from "@angular/core";
 import { CalendarComponent } from "../calendar/calendar.component";
 import { CalendarMode } from "../common/calendar-mode";
-import { DatePickerMode } from "../datepicker/datepicker.component"
+import { DatePickerMode, DatePickerComponent } from "../datepicker/datepicker.component"
+import * as $ from "jquery";
+
 
 export interface DatePickerPopupConfig {
   inputEl: Element;
@@ -24,17 +26,19 @@ function isChildOf(target: Node, parent: Node): boolean {
 })
 export class DatePickerPopupComponent {
 	@ViewChild('cal') public cal: CalendarComponent;
+	zIndex: number;
 
 	constructor(private myElement: ElementRef) {}
 
-	private activeDatePicker: any;
+	private activeDatePicker: DatePickerComponent;
 
 	public getMyElement(){
 		return this.myElement
 	}
 
-	public setActiveDatePickerComponent(datepickerComponent){
+	public setActiveDatePickerComponent(datepickerComponent: DatePickerComponent){
 		this.activeDatePicker = datepickerComponent
+		this.zIndex = this.activeDatePicker.zIndex;
 	}
 
 	/** Enum Accessors for HTML */

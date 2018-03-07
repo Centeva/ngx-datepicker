@@ -20,12 +20,7 @@ export abstract class DatePickerBase implements ControlValueAccessor {
   propagateTouched: any = () => { };
   validateFn: any = () => { };
 
-  shadowZIndex: number = 100;
-  zIndexVal: number = 101;
-  @Input('zIndex') set zIndex(val: number) {
-    this.shadowZIndex = val;
-    this.zIndexVal = val + 1.0;
-  }
+  @Input() zIndex: number = 100;
 
   minDateVal: moment.Moment = null;
   maxDateVal: moment.Moment = null;
