@@ -4,8 +4,8 @@
         <div class="ct-dp-caret-2"></div>
         <div class="ct-dp-header"><!--
             --><button tabindex="-1" class="ct-dp-btn-prev  ct-dp-btn" (click)="activeDatePicker.goPrev()" [disabled]="cal.mode == CalendarMode.Month">&lt;</button><!--
-            --><button tabindex="-1" class="ct-dp-btn-month ct-dp-btn" (click)="activeDatePicker.changeMode(CalendarMode.Month)">{{cal.date.format("MMMM")}}</button><!--
-            --><button tabindex="-1" class="ct-dp-btn-year  ct-dp-btn" (click)="activeDatePicker.changeMode(CalendarMode.Year)">{{cal.date.format("YYYY")}}</button><!--
+            --><button tabindex="-1" class="ct-dp-btn-month ct-dp-btn" (click)="activeDatePicker.changeMode(CalendarMode.Month)">{{cal.date?.format("MMMM")}}</button><!--
+            --><button tabindex="-1" class="ct-dp-btn-year  ct-dp-btn" (click)="activeDatePicker.changeMode(CalendarMode.Year)">{{cal.date?.format("YYYY")}}</button><!--
             --><button tabindex="-1" class="ct-dp-btn-next  ct-dp-btn" (click)="activeDatePicker.goNext()" [disabled]="cal.mode == CalendarMode.Month">&gt;</button>
         </div>
         <ct-calendar #cal></ct-calendar>

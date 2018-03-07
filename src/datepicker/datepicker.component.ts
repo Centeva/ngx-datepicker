@@ -30,10 +30,7 @@ import { DatePickerBase } from "../common/datepicker-base";
 import { DatePickerPopupService } from "../DatePickerPopupService";
 import { DOCUMENT } from '@angular/platform-browser';
 
-export enum DatePickerMode {
-  Visible,
-  Hidden
-}
+export enum DatePickerMode { Visible, Hidden }
 
 @Component({
   selector: "ct-date-picker",
@@ -73,9 +70,7 @@ export class DatePickerComponent extends DatePickerBase
   }
   private dateValue: moment.Moment;
   @Input()
-  get date() {
-    return this.dateValue;
-  }
+  get date() {  return this.dateValue; }
   set date(val) {
     if (this.isSameDay(val, this.dateValue)) {
       return;
@@ -104,15 +99,10 @@ export class DatePickerComponent extends DatePickerBase
 
   private domDocument: Document;
 
-  constructor(
-    private myElement: ElementRef,
-    private renderer: Renderer,
-    private datePickerPopupService: DatePickerPopupService,
-    @Inject(DOCUMENT) document
-  ) {
-    super();
-    this.domDocument = document;
-  }
+	constructor(private myElement: ElementRef, private renderer: Renderer, private datePickerPopupService: DatePickerPopupService, @Inject(DOCUMENT) document) {
+		super();
+		this.domDocument = document;
+	}
 
   public onDateStringChange(val) {
     let m = moment(new Date(val));
@@ -134,9 +124,7 @@ export class DatePickerComponent extends DatePickerBase
     this.mode = mode;
     switch (this.mode) {
       case DatePickerMode.Visible:
-        this.datePickerPopupService
-          .getDatePickerPopupComponent()
-          .setActiveDatePickerComponent(this);
+        this.datePickerPopupService.getDatePickerPopupComponent().setActiveDatePickerComponent(this);
         this.cal.initCalendar(this.date, this.minDate, this.maxDate);
 
         this.registerListenersForPopup();
@@ -161,7 +149,6 @@ export class DatePickerComponent extends DatePickerBase
       return isChildOf(target.parentNode, parent);
     }
 
-    
     this.popupSubscriptions.push(this.cal.subscribeToChangeMonth(this.monthChangeListener));
     this.popupSubscriptions.push(this.cal.subscribeToChangeYear(this.yearChangeListener));
 
@@ -196,52 +183,34 @@ export class DatePickerComponent extends DatePickerBase
   private positionCalendar() {
     const picker = this.getPicker();
     picker.removeClass("invisible");
-    let top =
-      $(this.input.nativeElement).offset().top +
-      $(this.input.nativeElement).outerHeight();
+    let top = $(this.input.nativeElement).offset().top + $(this.input.nativeElement).outerHeight();
     let scrollTop = $(window).scrollTop();
     if ($(window).height() < top - scrollTop + picker.height()) {
       picker.removeClass("display-below");
       picker.addClass("display-above");
       this.positionCalendarAbove(picker);
-      $(window).on("scroll.datepicker", () =>
-        this.positionCalendarAbove(picker)
-      );
+      $(window).on("scroll.datepicker", () => this.positionCalendarAbove(picker));
     } else {
       picker.removeClass("display-above");
       picker.addClass("display-below");
       this.positionCalendarBelow(picker);
-      $(window).on("scroll.datepicker", () =>
-        this.positionCalendarBelow(picker)
-      );
+      $(window).on("scroll.datepicker", () => this.positionCalendarBelow(picker));
     }
   }
 
   private getPicker() {
-    return $(
-      this.datePickerPopupService.getDatePickerPopupComponent().getMyElement()
-        .nativeElement
-    ).find(".ct-dp-picker-wrapper");
+    return $(this.datePickerPopupService.getDatePickerPopupComponent().getMyElement().nativeElement).find(".ct-dp-picker-wrapper");
   }
 
   private positionCalendarAbove(picker: JQuery) {
     let offset = $(this.input.nativeElement).offset();
-    picker.css(
-      "top",
-      offset.top - $(window).scrollTop() - picker.height() + this.PICKER_OFFSET
-    );
+    picker.css("top", offset.top - $(window).scrollTop() - picker.height() + this.PICKER_OFFSET);
     picker.css("left", offset.left - $(window).scrollLeft());
   }
 
   private positionCalendarBelow(picker: JQuery) {
     let offset = $(this.input.nativeElement).offset();
-    picker.css(
-      "top",
-      offset.top -
-        $(window).scrollTop() +
-        $(this.input.nativeElement).outerHeight() -
-        this.PICKER_OFFSET
-    );
+    picker.css("top", offset.top - $(window).scrollTop() + $(this.input.nativeElement).outerHeight() - this.PICKER_OFFSET);
     picker.css("left", offset.left - $(window).scrollLeft());
   }
 
@@ -292,9 +261,7 @@ export class DatePickerComponent extends DatePickerBase
 
   ngOnInit() {}
 
-  ngOnChanges(inputs) {
-    // console.log('ngOnChanges');
-  }
+  ngOnChanges(inputs) {}
 
   ngAfterViewInit() {
     this.renderCalendar();
@@ -316,9 +283,7 @@ export class DatePickerComponent extends DatePickerBase
 
   dateClickListener = (date: moment.Moment) => {
     let d = moment(date);
-    return () => {
-      this.setDate(d);
-    };
+    return () => { this.setDate(d); };
   };
 
   private monthChangeListener = () => {
@@ -374,4 +339,3 @@ export class DatePickerComponent extends DatePickerBase
     this.cal.initCalendar(this.date);
   }
 }
-

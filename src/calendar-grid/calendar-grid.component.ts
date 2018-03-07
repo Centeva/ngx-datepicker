@@ -10,25 +10,18 @@ import * as $ from 'jquery';
     encapsulation: ViewEncapsulation.None
 })
 export class CalendarGridComponent implements OnInit, OnDestroy {
-
     private today: moment.Moment = moment();
 
-    constructor(private myElement: ElementRef, private renderer: Renderer) {
-    }
+    constructor(private myElement: ElementRef, private renderer: Renderer) {}
 
-    ngOnInit() {
-    }
+    ngOnInit() {}
 
-    ngOnDestroy() {
-
-    }
-
-
-    /**
-     * Renders a calendar based on the date, selecting the proper from/to if visible.
-     */
+    ngOnDestroy() {}
+    
+    /** * Renders a calendar based on the date, selecting the proper from/to if visible.*/
     renderCalendar(date: moment.Moment, clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment, minDate: moment.Moment, maxDate: moment.Moment) {
-        let d = moment(date);
+		let d = moment(date);
+		// do check
         d.date(1); //reset date.
 
         let header = $("<div class='ct-dp-cal-header'></div>");
@@ -53,8 +46,8 @@ export class CalendarGridComponent implements OnInit, OnDestroy {
             el.addClass("ct-dp-cal-day");
             body.append(el);
         }
-
-        while (d.month() === date.month()) {
+		
+        while(d.month() === date.month()) {
             let el = $("<button></button>");
             el.text((d.date()).toString())
             el.attr("ct-dp-cal-day", d.date().toString());
@@ -85,9 +78,7 @@ export class CalendarGridComponent implements OnInit, OnDestroy {
         body.appendTo(this.myElement.nativeElement);
     }
 
-    /**
-     * Deprecated until support of renderer is more stable.
-     */
+    /** * Deprecated until support of renderer is more stable. */
     renderCalendarRenderer(cal: CalendarComponent, clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment) {
         let d = moment(cal.date);
         d.date(1); //reset date.

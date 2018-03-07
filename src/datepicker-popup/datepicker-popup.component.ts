@@ -1,9 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  ViewEncapsulation,
-  ViewChild,
-} from "@angular/core";
+import { Component, ElementRef, ViewEncapsulation, ViewChild } from "@angular/core";
 import { CalendarComponent } from "../calendar/calendar.component";
 import { CalendarMode } from "../common/calendar-mode";
 import { DatePickerMode } from "../datepicker/datepicker.component"
@@ -28,25 +23,21 @@ function isChildOf(target: Node, parent: Node): boolean {
   // ]
 })
 export class DatePickerPopupComponent {
+	@ViewChild('cal') public cal: CalendarComponent;
 
-  @ViewChild('cal') public cal: CalendarComponent;
+	constructor(private myElement: ElementRef) {}
 
-  constructor(private myElement: ElementRef) {
+	private activeDatePicker: any;
 
-  }
+	public getMyElement(){
+		return this.myElement
+	}
 
-  private activeDatePicker: any;
+	public setActiveDatePickerComponent(datepickerComponent){
+		this.activeDatePicker = datepickerComponent
+	}
 
-  public getMyElement(){
-    return this.myElement
-  }
-
-  public setActiveDatePickerComponent(datepickerComponent){
-    this.activeDatePicker = datepickerComponent
-  }
-
-  /** Enum Accessors for HTML */
-  public CalendarMode = CalendarMode;
-  public DatePickerMode = DatePickerMode;
-
+	/** Enum Accessors for HTML */
+	public CalendarMode = CalendarMode;
+	public DatePickerMode = DatePickerMode;
 }

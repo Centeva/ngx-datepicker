@@ -1,13 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ElementRef,
-  Renderer,
-  ViewEncapsulation,
-  Input,
-  ViewChild
-} from "@angular/core";
+import { Component, OnInit, OnDestroy,  ElementRef, Renderer, ViewEncapsulation, Input, ViewChild } from "@angular/core";
 import * as moment from "moment";
 import { CalendarMode } from "../common/calendar-mode";
 import { CalendarGridComponent } from "../calendar-grid/calendar-grid.component";
@@ -18,79 +9,53 @@ import { CalendarGridComponent } from "../calendar-grid/calendar-grid.component"
   styleUrls: ["calendar.component.less"],
   encapsulation: ViewEncapsulation.None
 })
+/** * NOTE: Calendar is rendered on page load, make sure appropriate variables are always valid. */
 export class CalendarComponent implements OnDestroy {
-  /** Determines how many year buttons are shown. */
-  private static numYearsShown = 15;
-  /** convenience variable for generating years */
-  private static halfNumYearsShown = Math.floor(
-    CalendarComponent.numYearsShown / 2
-  );
-  /** Accessor to the mode for html */
-  public CalendarMode = CalendarMode;
-  public mode: CalendarMode;
-  /** Date object representing the month/year shown on this calendar */
-  public date: moment.Moment;
-  /** Date object representing today.This should never change in the rendering of the calendar grid */
-  public today: moment.Moment;
-  /** Array of months to show when selecting a new month */
-  private months: string[] = [];
-  /** Array of years to show when selecting a new year */
-  private years: number[] = [];
-  get yearData(): number[] {
-    return this.years;
-  }
-  /** Listeners for month change */
-  private monthListeners: Function[] = [];
-  /** Listeners for year change */
-  private yearListeners: Function[] = [];
-  /** Grid view child component (actually shows the number grid) */
-  @ViewChild(CalendarGridComponent) public grid: CalendarGridComponent;
-  /** The minimum date allowed to select */
-  public minDate: moment.Moment;
-  /** The maximum date allowed to select */
-  public maxDate: moment.Moment;
+	private static numYearsShown = 15;/** Determines how many year buttons are shown. */
+	private static halfNumYearsShown = Math.floor(CalendarComponent.numYearsShown / 2); /** convenience variable for generating years */
+	public CalendarMode = CalendarMode;/** Accessor to the mode for html */
+	public mode: CalendarMode;
+	public date: moment.Moment = moment();/** Date object representing the month/year shown on this calendar */
+	public today: moment.Moment;/** Date object representing today.This should never change in the rendering of the calendar grid */
+	private months: string[] = [];/** Array of months to show when selecting a new month */
+	private years: number[] = [];/** Array of years to show when selecting a new year */
+	get yearData(): number[] { return this.years; }
+	private monthListeners: Function[] = [];/** Listeners for month change */
+	private yearListeners: Function[] = [];/** Listeners for year change */
+	@ViewChild(CalendarGridComponent) public grid: CalendarGridComponent;/** Grid view child component (actually shows the number grid) */
+	public minDate: moment.Moment;/** The minimum date allowed to select */
+	public maxDate: moment.Moment;/** The maximum date allowed to select */
 
-  constructor() {
-    this.generateMonthData();
-  }
+  	constructor() { this.generateMonthData(); }
 
-  initCalendar(
-    date: moment.Moment,
-    minDate: moment.Moment = this.minDate,
-    maxDate: moment.Moment = this.maxDate
-  ) {
-    if (date instanceof moment && date.isValid()) {
-      this.date = moment(this.date);
-    } else {
-      this.date = moment();
-    }
+  	initCalendar(date: moment.Moment, minDate: moment.Moment = this.minDate, maxDate: moment.Moment = this.maxDate) {
+		if (date instanceof moment && date.isValid()) {
+			this.date = moment(date);
+		} else {
+			this.date = moment();
+		}
 
-    if (minDate instanceof moment && minDate.isValid() && this.date < minDate) {
-      this.date = moment(minDate);
-    } else if (
-      maxDate instanceof moment &&
-      maxDate.isValid() &&
-      this.date > maxDate
-    ) {
-      this.date = moment(maxDate);
-    }
+		if (minDate instanceof moment && minDate.isValid() && this.date < minDate) {
+			this.date = moment(minDate);
+		} else if (maxDate instanceof moment && maxDate.isValid() && this.date > maxDate) {
+			this.date = moment(maxDate);
+		}
 
-    this.minDate = minDate;
-    this.maxDate = maxDate;
-  }
-  ngOnDestroy() {}
+		this.minDate = minDate;
+		this.maxDate = maxDate;
+	}
+	 
+	ngOnDestroy() {}
 
-  subscribeToChangeMonth(listener: Function) {
-    this.monthListeners.push(listener);
-    return () =>
-      (this.yearListeners = this.yearListeners.filter(x => x !== listener));
-  }
+	subscribeToChangeMonth(listener: Function) {
+		this.monthListeners.push(listener);
+		return () => (this.yearListeners = this.yearListeners.filter(x => x !== listener));
+	}
 
-  subscribeToChangeYear(listener: Function) {
-    this.yearListeners.push(listener);
-    return () =>
-      (this.yearListeners = this.yearListeners.filter(x => x !== listener));
-  }
+	subscribeToChangeYear(listener: Function) {
+		this.yearListeners.push(listener);
+		return () => (this.yearListeners = this.yearListeners.filter(x => x !== listener));
+	}
 
   changeMode(mode: CalendarMode) {
     this.mode = mode;
@@ -141,27 +106,13 @@ export class CalendarComponent implements OnDestroy {
       case CalendarMode.Month:
         break;
       case CalendarMode.Year:
-        this.generateYearData(
-          this.years[CalendarComponent.halfNumYearsShown] +
-            CalendarComponent.numYearsShown
-        );
+        this.generateYearData(this.years[CalendarComponent.halfNumYearsShown] + CalendarComponent.numYearsShown);
     }
   }
 
-  renderCalendar(
-    clickCallback: Function,
-    dateTo: moment.Moment,
-    dateFrom: moment.Moment
-  ) {
-    this.grid.renderCalendar(
-      this.date,
-      clickCallback,
-      dateTo,
-      dateFrom,
-      this.minDate,
-      this.maxDate
-    );
-  }
+	renderCalendar = (clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment) => {
+		this.grid.renderCalendar(this.date, clickCallback, dateTo, dateFrom, this.minDate, this.maxDate);
+	}
 
   setMonth(index: number) {
     this.date.month(index);
