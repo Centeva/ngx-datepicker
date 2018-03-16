@@ -24,7 +24,7 @@ Config is optional, more details to come on what options are configurable.
 
 Usage Example 
 ```
-<ct-date-picker [(date)]="date1" zIndex="100" formControlName="singlePicker">
+<ct-date-picker [(ngModel)]="date1" zIndex="100" formControlName="singlePicker">
     <input #date class="form-control" />
 </ct-date-picker>
 ```
@@ -44,14 +44,14 @@ npm install --save ct-ngx-datepicker
 ## Usage
 ### Single datepicker
 ```
-<ct-date-picker [(date)]="date1" zIndex="100" formControlName="singlePicker">
+<ct-date-picker [(ngModel)]="date1" zIndex="100" formControlName="singlePicker">
     <input #date class="form-control" />
 </ct-date-picker>
 ```
 Wrap a input field in the <ct-date-picker> element. Mark the input field with #date
 
 #### Single datepicker parameters
- * date - date model
+ * ~~date - date model~~ Removed in version 5.1.0
  * dateChange - Event emitter for notification of date changes
  * zIndex - Allows specification of a custom z-index for the picker.
  * minDate - Minimum allowed date.
@@ -70,8 +70,8 @@ Wrap a input field in the <ct-date-picker> element. Mark the input field with #d
 Wrap two input fields in the <ct-dual-picker> element. Mark each input #dateFrom and #dateTo respectively.
 
 #### Dual datepicker parameters
- * dateFrom - date model
- * dateTo - date model
+ * ~~dateFrom - date model~~ deprecated in version 5.1.0
+ * ~~dateTo - date model~~ deprecated in version 5.1.0
  * dateFromChange - Event emitter for notification of date changes
  * dateToChange - Event emitter for notification of date changes
  * zIndex - Allows specification of a custom z-index for the picker.
@@ -93,6 +93,7 @@ Because the datepicker returns a moment date, not a string.
 
 
 ## Release Notes
+ - 5.1.0 - Fix bugs related to validation, Fix bugs related to Date changes.
  - 5.0.1 - Fix a bug where the month and year selection was not displaying properly.
  - 5.0.0 -- Angular 4+ is the future!
  - 4.3.0 - 4.4.0 -- The last of the Angular 2 days.
@@ -130,4 +131,5 @@ Because the datepicker returns a moment date, not a string.
  ..* Remove the match binding (if used). 
 
 ## Known Bug
+- If a date is bound to more than one control that is capable of changing it's value, and the date string is updated in one control, the string representation may not be reflected in other controls.
 - When using an ISO date (yyyy-mm-dd), the day selected on the calendar picker ends uup being localized for your timezone.
