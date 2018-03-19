@@ -22,15 +22,15 @@
                     <form class="form-inline" [formGroup]="form">
                         <div>
                             <label>Single Date</label>
-                            <ct-date-picker [(date)]="date1" zIndex="100" formControlName="singlePicker" maxDate="2018-02-15" minDate="2017-01-31" (dateChange)="onChange('singlePicker')">
+                            <ct-date-picker [(ngModel)]="dateObject.date1" zIndex="100" formControlName="singlePicker" maxDate="2018-02-15" minDate="2017-01-31" (dateChange)="onChange('singlePicker')">
                                 <input #date class="form-control" />
                             </ct-date-picker>
                             {{form.get('singlePicker').touched | json}}
                         </div>
-                        {{date1 | json}}
+                        {{dateObject.date1 | json}}
                         <div>
                             <label>Dual Date</label>
-                            <ct-dual-picker [(dateFrom)]="date2" [(dateTo)]="date3" zIndex="100" formControlName="dualPicker" maxDate="2017-02-15" minDate="2017-01-31"  (dateFromChange)="onChange('FromPicker')"  (dateToChange)="onChange('ToPicker')">
+                            <ct-dual-picker [(ngModel)]="dualDate" zIndex="100" formControlName="dualPicker" maxDate="2017-02-15" minDate="2017-01-31" (dateFromChange)="onChange('FromPicker')" (dateToChange)="onChange('ToPicker')">
                                 <input #dateFrom class="form-control" />
                                 <input #dateTo class="form-control" />
                             </ct-dual-picker>
@@ -54,27 +54,35 @@
             aliquet, quis lobortis ligula tristique. Maecenas rhoncus a erat sit amet euismod. Morbi consequat ac leo vel
             aliquet. Sed ut auctor ligula. Sed est arcu, euismod eget diam sagittis, dictum pharetra augue. Nulla egestas
             at lectus id euismod.
-
-            <div class="panel panel-default">
+			<!--button (click)="show()">show/hide</button-->
+            <div *ngIf="visible" class="panel panel-default">
                 <div class="panel-heading">Template Form</div>
                 <div class="panel-body">
                     <form class="form-inline" #f="ngForm">
+						<!--div>
+							<label>Single Date</label>
+							<ct-date-picker [(ngModel)]="dateObject.date1" zIndex="100" name="sd" #sd="ngModel" ngModel required>
+								<input #date class="form-control" />
+							</ct-date-picker>
+						</div>
+						{{dateObject.date1 | json}}
+						{{sd.valid | json}}-->
                         <div>
                             <label>Single Date</label>
-                            <ct-date-picker [(date)]="date1" zIndex="100" maxDate="2018-08-01" minDate="2017-08-01" name="sd" #sd="ngModel" ngModel>
+                            <ct-date-picker [(ngModel)]="dateObject.date1" zIndex="100" maxDate="2018-08-01" minDate="2017-08-01" name="sd" #sd="ngModel">
                                 <input #date class="form-control" />
                             </ct-date-picker>
                         </div>
-                        {{date1 | json}}
+                        {{dateObject.date1 | json}}
                         {{sd.valid | json}}
                         <div>
                             <label>Dual Date</label>
-                            <ct-dual-picker [(dateFrom)]="date2" [(dateTo)]="date3" zIndex="100" maxDate="2017-02-15" minDate="2017-01-31" name="dd" #dd="ngModel" ngModel>
+                            <ct-dual-picker [(ngModel)]="dualDate" zIndex="100" maxDate="2017-02-15" minDate="2017-01-31" name="dd" #dd="ngModel">
                                 <input #dateFrom class="form-control" />
                                 <input #dateTo class="form-control" />
                             </ct-dual-picker>
                         </div>
-                        {{date2 | json}} {{date3 | json}}
+                        {{dualDate.dateFrom | json}} {{dualDate.dateTo | json}}
                         {{dd.valid | json}}
                         <p *ngIf="!f.valid">Form is invalid!</p>                        
                     </form>
@@ -87,15 +95,15 @@
                     <form class="form" [formGroup]="nonInlineForm">
                         <div class="form-group">
                             <label>Single Date</label>
-                            <ct-date-picker [(date)]="date1" zIndex="100" formControlName="singlePicker" maxDate="2018-02-15" minDate="2017-01-31" (dateChange)="onChange('singlePicker')">
+                            <ct-date-picker [(ngModel)]="dateObject.date1" zIndex="100" formControlName="singlePicker" maxDate="2018-02-15" minDate="2017-01-31" (dateChange)="onChange('singlePicker')">
                                 <input #date class="form-control" />
                             </ct-date-picker>
                             {{nonInlineForm.get('singlePicker').touched | json}}
                         </div>
-                        {{date1 | json}}
+                        {{dateObject.date1 | json}}
                         <div class="form-group">
                             <label>Dual Date</label>
-                            <ct-dual-picker [(dateFrom)]="date2" [(dateTo)]="date3" zIndex="100" formControlName="dualPicker" (dateFromChange)="onChange('FromPicker')"  (dateToChange)="onChange('ToPicker')">
+                            <ct-dual-picker [(ngModel)]="dualDate" zIndex="100" formControlName="dualPicker" (dateFromChange)="onChange('FromPicker')"  (dateToChange)="onChange('ToPicker')">
                                 <input #dateFrom class="form-control" />
                                 <input #dateTo class="form-control" />
                             </ct-dual-picker>
@@ -119,12 +127,12 @@
                         </div>
                         <div class="form-group">
                             <label>Single Date</label>
-                            <ct-date-picker [(date)]="date1" zIndex="100" formControlName="singlePicker" [maxDate]="selectedMaxDate" [minDate]="dynamicDateForm.get('selectedMinDate')?.value" (dateChange)="onChange('singlePicker')">
+                            <ct-date-picker [(ngModel)]="dateObject.date1" zIndex="100" formControlName="singlePicker" [maxDate]="selectedMaxDate" [minDate]="dynamicDateForm.get('selectedMinDate')?.value" (dateChange)="onChange('singlePicker')">
                                 <input #date class="form-control" />
                             </ct-date-picker>
                             {{dynamicDateForm.get('singlePicker').touched | json}}
                         </div>
-                        {{date1 | json}}
+                        {{dateObject.date1 | json}}
                     </form>
                 </div>
             </div>
@@ -135,12 +143,12 @@
                     <form class="form" [formGroup]="dynamicDateForm">
                         <div class="form-group" style="height: 500px;">
                             <label>Single Date</label>
-                            <ct-date-picker [(date)]="date1" zIndex="100" formControlName="singlePicker" (dateChange)="onChange('singlePicker')">
+                            <ct-date-picker [(ngModel)]="dateObject.date1" zIndex="100" formControlName="singlePicker" (dateChange)="onChange('singlePicker')">
                                 <input #date class="form-control" />
                             </ct-date-picker>
                             {{dynamicDateForm.get('singlePicker').touched | json}}
                         </div>
-                        {{date1 | json}}
+                        {{dateObject.date1 | json}}
                     </form>
                 </div>
             </div>
@@ -151,12 +159,12 @@
                     <form class="form" [formGroup]="dynamicDateForm">
                         <div class="form-group" style="height: 500px;">
                             <label>Single Date</label>
-                            <ct-date-picker [(date)]="date1" zIndex="10001" formControlName="singlePicker" (dateChange)="onChange('singlePicker')">
+                            <ct-date-picker [(ngModel)]="dateObject.date1" zIndex="10001" formControlName="singlePicker" (dateChange)="onChange('singlePicker')">
                                 <input #date class="form-control" />
                             </ct-date-picker>
                             {{dynamicDateForm.get('singlePicker').touched | json}}
                         </div>
-                        {{date1 | json}}
+                        {{dateObject.date1 | json}}
                     </form>
                 </div>
             </div>

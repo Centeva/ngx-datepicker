@@ -8,8 +8,7 @@ import { CalendarGridComponent } from "../calendar-grid/calendar-grid.component"
   templateUrl: "calendar.component.html",
   styleUrls: ["calendar.component.less"],
   encapsulation: ViewEncapsulation.None
-})
-/** * NOTE: Calendar is rendered on page load, make sure appropriate variables are always valid. */
+})/**  NOTE: Calendar is rendered on page load, make sure appropriate variables are always valid. */
 export class CalendarComponent implements OnDestroy {
 	private static numYearsShown = 15;/** Determines how many year buttons are shown. */
 	private static halfNumYearsShown = Math.floor(CalendarComponent.numYearsShown / 2); /** convenience variable for generating years */
@@ -57,91 +56,86 @@ export class CalendarComponent implements OnDestroy {
 		return () => (this.yearListeners = this.yearListeners.filter(x => x !== listener));
 	}
 
-  changeMode(mode: CalendarMode) {
-    this.mode = mode;
-    switch (mode) {
-      case CalendarMode.Year:
-        this.generateYearData(this.date.year());
-        break;
-    }
-  }
+	changeMode(mode: CalendarMode) {
+		this.mode = mode;
+		switch (mode) {
+			case CalendarMode.Year:
+			this.generateYearData(this.date.year());
+			break;
+		}
+	}
 
-  private generateMonthData() {
-    let date = moment(new Date()); //doesn't change
-    date.month(0);
-    let d = moment(new Date());
-    d.month(0);
-    while (date.year() === d.year()) {
-      this.months.push(d.format("MMM"));
-      d.month(d.month() + 1);
-    }
-  }
+	private generateMonthData() {
+		let date = moment(new Date()); //doesn't change
+		date.month(0);
+		let d = moment(new Date());
+		d.month(0);
+		while (date.year() === d.year()) {
+			this.months.push(d.format("MMM"));
+			d.month(d.month() + 1);
+		}
+	}
 
-  private generateYearData(year: number) {
-    this.years = [];
-    let y = year - CalendarComponent.halfNumYearsShown;
-    for (var i = 0; i < CalendarComponent.numYearsShown; i++) {
-      this.years.push(y + i);
-    }
-  }
+	private generateYearData(year: number) {
+		this.years = [];
+		let y = year - CalendarComponent.halfNumYearsShown;
+		for (var i = 0; i < CalendarComponent.numYearsShown; i++) {
+			this.years.push(y + i);
+		}
+	}
 
-  goPrev() {
-    switch (this.mode) {
-      case CalendarMode.Calendar:
-        break;
-      case CalendarMode.Month:
-        break;
-      case CalendarMode.Year:
-        this.generateYearData(
-          this.years[CalendarComponent.halfNumYearsShown] -
-            CalendarComponent.numYearsShown
-        );
-    }
-  }
+	goPrev() {
+		switch (this.mode) {
+			case CalendarMode.Calendar:
+				break;
+			case CalendarMode.Month:
+				break;
+			case CalendarMode.Year:
+				this.generateYearData(this.years[CalendarComponent.halfNumYearsShown] - CalendarComponent.numYearsShown);
+		}
+	}
 
-  goNext() {
-    switch (this.mode) {
-      case CalendarMode.Calendar:
-        break;
-      case CalendarMode.Month:
-        break;
-      case CalendarMode.Year:
-        this.generateYearData(this.years[CalendarComponent.halfNumYearsShown] + CalendarComponent.numYearsShown);
-    }
-  }
+	goNext() {
+		switch (this.mode) {
+			case CalendarMode.Calendar:
+				break;
+			case CalendarMode.Month:
+				break;
+			case CalendarMode.Year:
+				this.generateYearData(this.years[CalendarComponent.halfNumYearsShown] + CalendarComponent.numYearsShown);
+		}
+	}
 
 	renderCalendar = (clickCallback: Function, dateTo: moment.Moment, dateFrom: moment.Moment) => {
 		this.grid.renderCalendar(this.date, clickCallback, dateTo, dateFrom, this.minDate, this.maxDate);
 	}
 
-  setMonth(index: number) {
-    this.date.month(index);
-    for (let fn of this.monthListeners) {
-      fn();
-    }
-  }
+	setMonth(index: number) {
+		this.date.month(index);
+		for (let fn of this.monthListeners) {
+			fn();
+		}
+	}
 
-  setYear(year: number) {
-    this.date.year(year);
-    for (let fn of this.yearListeners) {
-      fn();
-    }
-  }
-  disableBtn(item: any, unit: moment.unitOfTime.StartOf) {
-    let validDate: moment.Moment;
-    if (unit === "year") {
-      validDate = moment({ year: item, month: 0, day: 1 });
-    }
-    if (unit === "month") {
-      // because of how we loop over the months, we have to get the number representation of the string month
-      validDate = moment({
-        year: this.date.year(),
-        month: moment()
-          .month(item)
-          .month(),
-        day: 1
-      });
-    }
-    return !validDate.isBetween(this.minDate, this.maxDate, unit, "[]");
-  }
+	setYear(year: number) {
+		this.date.year(year);
+		for (let fn of this.yearListeners) {
+			fn();
+		}
+	}
+
+	disableBtn(item: any, unit: moment.unitOfTime.StartOf) {
+		let validDate: moment.Moment;
+		if (unit === "year") {
+			validDate = moment({ year: item, month: 0, day: 1 });
+		}
+		if (unit === "month") {// because of how we loop over the months, we have to get the number representation of the string month
+			validDate = moment({
+				year: this.date.year(),
+				month: moment().month(item).month(),
+				day: 1
+			});
+		}
+		return !validDate.isBetween(this.minDate, this.maxDate, unit, "[]");
+	}
 }
