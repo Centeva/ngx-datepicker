@@ -51,7 +51,7 @@ npm install --save ct-ngx-datepicker
 Wrap a input field in the <ct-date-picker> element. Mark the input field with #date
 
 #### Single datepicker parameters
- * ~~date - date model~~ Removed in version 5.1.0
+ * ~~date - date model~~ deprecated in version 5.1.0
  * dateChange - Event emitter for notification of date changes
  * zIndex - Allows specification of a custom z-index for the picker.
  * minDate - Minimum allowed date.
