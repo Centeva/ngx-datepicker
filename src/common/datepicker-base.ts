@@ -27,6 +27,7 @@ export abstract class DatePickerBase implements ControlValueAccessor {
     this.zIndexVal = val + 1.0;
   }
 
+  displayFormatVal: string = null;
   minDateVal: moment.Moment = null;
   maxDateVal: moment.Moment = null;
   @Input('minDate') set minDate(val: any) {
@@ -49,7 +50,9 @@ export abstract class DatePickerBase implements ControlValueAccessor {
     }
     this.updateMaxDate(this.maxDateVal);    
   } get maxDate() { return this.maxDateVal }
-
+  @Input('displayFormat') set displayFormat(val: string) {
+    this.displayFormatVal = val;
+  } get displayFormat() { return this.displayFormatVal }
   public registerOnChange(fn) {
     this.propagateChange = fn;
   }
@@ -65,7 +68,32 @@ export abstract class DatePickerBase implements ControlValueAccessor {
     return date1 === date2;
   }
 
+  public twoDigitYearShim(date:(moment.Moment|any), rawValue:string){
+    //When the user is entering a two digit year, we have problems in IE where it figures the year is 1900.
+    //I.E. if you enter 18, it thinks it is 1918.  When we may want the value to be 2018.  This is only in IE.  Chrome doesn't have this issue
+    //So we will want to date the date, and if it is more than 50 years from the current date, then change to be the current century.
+    if(rawValue && date){
+      let regExMatch = rawValue.match(/[\/,-](\d{2})$/);
+      if(regExMatch){
+        let rawYear = regExMatch[1];
+        let dateYear = date.format('YY');
+        let yearDiff = moment().diff(date, 'years');
+        //If the year we pulled from the regex is the year in the date, and it is more than 50 years old, then bring it up to this century
+        if(rawYear === dateYear && yearDiff>50){
+          date.add(100,'years');
+        }
+      }
+   }
+    return date;
+  }
   public abstract writeValue(value: any);
+  public formatDisplayDate(input: ElementRef, date: any){
+    //If we have been given a date, and we have a Display Format to use, then set the input box to have this date
+    if(date && date instanceof moment && date.isValid() && this.displayFormatVal){
+      input.nativeElement.value = date.format(this.displayFormatVal);
+
+    }
+  }
   abstract updateMinDate(minDate: moment.Moment);
   abstract updateMaxDate(maxDate: moment.Moment);
 }

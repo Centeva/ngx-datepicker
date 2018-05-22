@@ -50,7 +50,13 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
       return;
     }
     if (val instanceof moment && val.isValid()) {
-      this.input.nativeElement.value = val.format("MM/DD/YYYY");
+      //If we have a a pre-defined date format, then use it to set the date.  Otherwise, roll back to the default
+      if(this.displayFormatVal){
+        this.input.nativeElement.value = val.format(this.displayFormatVal);
+      }
+      else{
+        this.input.nativeElement.value = val.format("MM/DD/YYYY");
+      }
       val = moment(val.format('YYYY-MM-DD'));
       this.dateValue = val;
       this.dateChange.emit(val);
@@ -74,11 +80,19 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
   public onDateStringChange(val) {
     let m = moment(new Date(val));
     if (m.isValid()) {
+      m = this.twoDigitYearShim(m, val);
       if (this.dateValue === undefined || this.dateValue === null) { this.dateValue = m; }
       else { this.dateValue.set(m.toObject()); }
 
       this.dateChange.emit(this.dateValue);
       this.cal.date = this.dateValue;
+      this.renderCalendar();
+    }
+    else if (val === '' || val === null){
+      //If they have removed all of the text, then empty the date field and set the calendar to today...
+      this.date = null;
+      this.dateChange.emit(null);
+      this.cal.date = moment();
       this.renderCalendar();
     }
     this.touched();
@@ -192,6 +206,7 @@ export class DatePickerComponent extends DatePickerBase implements AfterViewInit
     this.input.nativeElement.addEventListener('focus', () => { this.changeGlobalMode(DatePickerMode.Visible) });
     this.input.nativeElement.addEventListener('keyup', (event) => { this.onDateStringChange(this.input.nativeElement.value) });
     this.input.nativeElement.addEventListener('keydown', (event) => { this.closePicker(event); });
+    this.input.nativeElement.addEventListener('blur', (event) => { this.formatDisplayDate(this.input, this.dateValue); });
   }
 
   dateClickListener = (date: moment.Moment) => {
