@@ -58,6 +58,7 @@ Wrap a input field in the <ct-date-picker> element. Mark the input field with #d
  * maxDate - Maximum allowed date.
  * ~~match - Optional regex for properly parsing typed in dates, e.g. mm/dd/yyyy~~ Removed in version 4.0.0
  * globalMode - Sets the starting mode for selecting a date, e.g. Calendar, Year. If no value is specified, Calendar mode is implied.
+ * displayFormat - Sets the date format to display the date in the date picker. e.g. MM/DD/YYYY.  If set, when focus is lost the date picker will display the date value in this format, inside the datepicker.
 
 
 ### Dual Date Picker
@@ -79,6 +80,7 @@ Wrap two input fields in the <ct-dual-picker> element. Mark each input #dateFrom
  * maxDate - Maximum allowed date.
  * ~~match - Optional regex for properly parsing typed in dates, e.g. mm/dd/yyyy~~ Removed in version 4.0.0
  * globalMode - Sets the starting mode for selecting a date, e.g. Calendar, Year. If no value is specified, Calendar mode is implied.
+ * displayFormat - Sets the date format to display the date in the date picker. e.g. MM/DD/YYYY.  If set, when focus is lost the date picker will display the date value in this format, inside the datepicker.
 
 ## Requirements
 - Angular 2+ (common, core, forms)
@@ -93,6 +95,7 @@ Because the datepicker returns a moment date, not a string.
 
 
 ## Release Notes
+ - 5.1.0 - Added DisplayFormat parameter.  Fixed a bug where clearing out text of a DatePicker didn't set the date to null, and added a shim so that if a two digit year is entered in IE, then it will pick the correct century (previously if you entered 10/3/15 it would choose 10/3/1915)
  - 5.0.1 - Fix a bug where the month and year selection was not displaying properly.
  - 5.0.0 -- Angular 4+ is the future!
  - 4.3.0 - 4.4.0 -- The last of the Angular 2 days.
