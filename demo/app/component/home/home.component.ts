@@ -17,6 +17,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   date2: moment.Moment = null;
   date3: moment.Moment = null;
 
+  dateTwoDigitYearSingle: moment.Moment = null;
+  dateTwoDigitYearMin: moment.Moment = null;
+  dateTwoDigitYearMax: moment.Moment = null;
+
+  dateFormatLostFocusSingle: moment.Moment = null;
+  dateFormatLostFocusMin: moment.Moment = null;
+  dateFormatLostFocusMax: moment.Moment = null;
+
+  dateLostFocusNullSingle: moment.Moment = null;
+  dateLostFocusNullMin: moment.Moment = null;
+  dateLostFocusNullMax: moment.Moment = null;
+
+
   minDateArray = [ moment('2017-06-16'), moment('2020-01-20'), moment('1999-10-05')];
   selectedMinDate: moment.Moment = null;
   selectedMaxDate: moment.Moment = null;

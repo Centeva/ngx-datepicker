@@ -69,7 +69,13 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
             return;
         }
         if (val instanceof moment && val.isValid()) {
-            this.inputFrom.nativeElement.value = val.format("MM/DD/YYYY");
+            //If we have a a pre-defined date format, then use it to set the date.  Otherwise, roll back to the default
+            if(this.displayFormatVal){
+                this.inputFrom.nativeElement.value = val.format(this.displayFormatVal);
+            }
+            else{
+                this.inputFrom.nativeElement.value = val.format("MM/DD/YYYY");
+            }
             val = moment(val.format('YYYY-MM-DD'));
             this.dateFromValue = val
             this.dateFromChange.emit(val);
@@ -89,7 +95,13 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
             return;
         }
         if (val instanceof moment && val.isValid()) {
-            this.inputTo.nativeElement.value = val.format("MM/DD/YYYY");
+            //If we have a a pre-defined date format, then use it to set the date.  Otherwise, roll back to the default
+            if(this.displayFormatVal){
+                this.inputTo.nativeElement.value = val.format(this.displayFormatVal);
+            }
+            else{
+                this.inputTo.nativeElement.value = val.format("MM/DD/YYYY");
+            }
             val = moment(val.format('YYYY-MM-DD'));
             this.dateToValue = val;
             this.dateToChange.emit(val);
@@ -200,6 +212,7 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
     public onDateFromStringChange(val) {
         let m = moment(new Date(val));
         if (m.isValid()) {
+            m = this.twoDigitYearShim(m, val);
             if (this.dateFromValue === undefined || this.dateFromValue === null) {
                 this.dateFromValue = m;
             } else {
@@ -210,12 +223,20 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
             this.dateFromChange.emit(this.dateFromValue);
             this.renderCalendar();
         }
+        else if (val === '' || val === null){
+            //If they have removed all of the text, then empty the date field and set the calendar to today...
+            this.dateFrom = null;
+            this.dateFromChange.emit(null);
+            this.correctDateTo();
+          }
+      
         this.touched();
     }
 
     public onDateToStringChange(val) {
         let m = moment(new Date(val));
         if (m.isValid()) {
+            m = this.twoDigitYearShim(m, val);
             if (this.dateToValue === undefined || this.dateToValue === null) {
                 this.dateToValue = m;
             } else {
@@ -225,6 +246,11 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
             this.shiftCal1();
             this.dateToChange.emit(this.dateToValue);
             this.renderCalendar();
+        }
+        else if (val === '' || val === null){
+            this.dateTo = null;
+            this.dateToChange.emit(null);
+            this.correctDateFrom();
         }
         this.touched();
     }
@@ -329,9 +355,9 @@ export class DualPickerComponent extends DatePickerBase implements OnChanges {
         this.inputTo.nativeElement.addEventListener('focus', () => { this.changeGlobalMode(DualPickerMode.To) });
 
         this.inputFrom.nativeElement.addEventListener('keyup', (event) => { this.onDateFromStringChange(this.inputFrom.nativeElement.value) });
-        this.inputFrom.nativeElement.addEventListener('blur', (event) => { this.correctDateTo() });
+        this.inputFrom.nativeElement.addEventListener('blur', (event) => { this.correctDateTo(); this.formatDisplayDate(this.inputTo, this.dateToValue); });
         this.inputTo.nativeElement.addEventListener('keyup', (event) => { this.onDateToStringChange(this.inputTo.nativeElement.value) });
-        this.inputTo.nativeElement.addEventListener('blur', (event) => { this.correctDateFrom() });
+        this.inputTo.nativeElement.addEventListener('blur', (event) => { this.correctDateFrom(); this.formatDisplayDate(this.inputFrom, this.dateFromValue); });
 
         this.inputTo.nativeElement.addEventListener('keydown', (event) => { this.closePicker(event); });
     }

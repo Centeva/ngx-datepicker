@@ -56,6 +56,94 @@
             at lectus id euismod.
 
             <div class="panel panel-default">
+                <div class="panel-heading">Two Digit Year Check</div>
+                <div class="panel-body">
+                    <span>
+                        When the user enters a date format with 2 digit year, the browser needs to figure out if it is for the 1900's or 2000's.  In IE, it defaults to 1900's.
+                        The component will be changed so that if it is a 2 digit year, which is more than 50 years away from the current date, then it will choose the current century.
+                        This can be overwritten by the user by deciding to use a 4 digit year
+                    </span>
+                    <form class="form-inline" #f="ngForm">
+                        <div>
+                            <label>Single Date</label>
+                            <ct-date-picker [(date)]="dateTwoDigitYearSingle" zIndex="100" maxDate="2018-08-01" minDate="2017-08-01" name="sdTwoDigitYear" #sdTwoDigitYear="ngModel" ngModel>
+                                <input #date class="form-control" />
+                            </ct-date-picker>
+                        </div>
+                        {{dateTwoDigitYearSingle | json}}
+                        {{sdTwoDigitYear.valid | json}}
+                        <div>
+                            <label>Dual Date</label>
+                            <ct-dual-picker [(dateFrom)]="dateTwoDigitYearMin" [(dateTo)]="dateTwoDigitYearMax" zIndex="100" maxDate="2017-02-15" minDate="2017-01-31" name="ddTwoDigitYear" #ddTwoDigitYear="ngModel" ngModel>
+                                <input #dateFrom class="form-control" />
+                                <input #dateTo class="form-control" />
+                            </ct-dual-picker>
+                        </div>
+                        {{dateTwoDigitYearMin | json}} {{dateTwoDigitYearMax | json}}
+                        {{ddTwoDigitYear.valid | json}}
+                        <p *ngIf="!f.valid">Form is invalid!</p>                        
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Format Date when focus is lost</div>
+                <div class="panel-body">
+                    <span>
+                        When the user leaves the date picker, the date picker should format the date field based on the arguments passed into the component.
+                    </span>
+                    <form class="form-inline" #f="ngForm">
+                        <div>
+                            <label>Single Date</label>
+                            <ct-date-picker [(date)]="dateFormatLostFocusSingle" zIndex="100" maxDate="2018-08-01" minDate="2017-08-01" name="sdFormatLostFocus" displayFormat="MM-DD-YYYY" #sdFormatLostFocus="ngModel" ngModel>
+                                <input #date class="form-control" />
+                            </ct-date-picker>
+                        </div>
+                        {{dateFormatLostFocusSingle | json}}
+                        {{sdFormatLostFocus.valid | json}}
+                        <div>
+                            <label>Dual Date</label>
+                            <ct-dual-picker [(dateFrom)]="dateFormatLostFocusMin" [(dateTo)]="dateFormatLostFocusMax" zIndex="100" maxDate="2017-02-15" minDate="2017-01-31" displayFormat="MM-DD-YYYY" name="ddFormatLostFocus" #ddFormatLostFocus="ngModel" ngModel>
+                                <input #dateFrom class="form-control" />
+                                <input #dateTo class="form-control" />
+                            </ct-dual-picker>
+                        </div>
+                        {{dateFormatLostFocusMin | json}} {{dateFormatLostFocusMax | json}}
+                        {{ddFormatLostFocus.valid | json}}
+                        <p *ngIf="!f.valid">Form is invalid!</p>                        
+                    </form>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Null Date if blank</div>
+                <div class="panel-body">
+                    <div>
+                        When the user leaves the date picker, if the text is empty, then set the date value to null.
+                    </div>
+                    <form class="form-inline" #f="ngForm">
+                        <div>
+                            <label>Single Date</label>
+                            <ct-date-picker [(date)]="dateLostFocusNullSingle" zIndex="100" maxDate="2018-08-01" minDate="2017-08-01" name="sdLostFocusNull" #sdLostFocusNull="ngModel" ngModel>
+                                <input #date class="form-control" />
+                            </ct-date-picker>
+                        </div>
+                        {{dateLostFocusNullSingle | json}}
+                        {{sdLostFocusNull.valid | json}}
+                        <div>
+                            <label>Dual Date</label>
+                            <ct-dual-picker [(dateFrom)]="dateLostFocusNullMin" [(dateTo)]="dateLostFocusNullMax" zIndex="100" maxDate="2017-02-15" minDate="2017-01-31" name="ddLostFocusNull" #ddLostFocusNull="ngModel" ngModel>
+                                <input #dateFrom class="form-control" />
+                                <input #dateTo class="form-control" />
+                            </ct-dual-picker>
+                        </div>
+                        {{dateLostFocusNullMin | json}} {{dateLostFocusNullMax | json}}
+                        {{ddLostFocusNull.valid | json}}
+                        <p *ngIf="!f.valid">Form is invalid!</p>                        
+                    </form>
+                </div>
+            </div>
+            
+            <div class="panel panel-default">
                 <div class="panel-heading">Template Form</div>
                 <div class="panel-body">
                     <form class="form-inline" #f="ngForm">
